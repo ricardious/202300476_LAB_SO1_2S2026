@@ -1,0 +1,31 @@
+# Binarios compilados de Go
+/api1/api1
+/api2/api2
+/api3/api3
+*.exe
+*.out
+*.test
+
+# Entorno y secretos
+.env
+.env.*
+*.key
+*.pem
+
+# Logs
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores / IDE
+.vscode/
+.idea/
+
+# Archivos temporales
+*.tmp
+*.bak
+
+# Mantener estructura de carpetas vacías
+!.gitkeep
