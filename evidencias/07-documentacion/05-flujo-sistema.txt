@@ -1,0 +1,4 @@
+CAPTURA: flujo del sistema
+Comando: bash -c grep -A8 '## 3. Flujo de comunicacion' /home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/docs/MANUAL_TECNICO.md
+Fecha: vie 21 ago 2026 00:41:45 CST
+----

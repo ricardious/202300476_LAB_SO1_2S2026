@@ -1,0 +1,29 @@
+CAPTURA: manual tecnico
+Comando: bash -c head -n 25 /home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/docs/MANUAL_TECNICO.md
+Fecha: vie 21 ago 2026 00:41:45 CST
+----
+# MANUAL TÉCNICO — Proyecto 1
+
+## Portada / Identificación del proyecto
+
+| Campo | Valor |
+|---|---|
+| **Proyecto** | Desarrollo, Conexión y Gestión de Contenedores en Entornos Virtualizados |
+| **Repositorio** | `202300476_LAB_SO1_2S2026` (privado, GitHub) |
+| **Carnet** | **202300476** |
+| **Curso** | Sistemas Operativos 1 — 2do Semestre 2026 |
+| **Universidad** | Universidad de San Carlos de Guatemala — Facultad de Ingeniería |
+| **Ponderación** | 15 pts |
+
+---
+
+## 1. Descripción del proyecto
+
+Se implementa un entorno virtualizado (KVM) con 3 máquinas virtuales Linux. En ellas se
+despliegan **3 APIs REST en Go** empaquetadas en contenedores, un **registro privado de
+imágenes (Zot)** y **comunicación cruzada** entre servicios mediante REST/HTTP con JSON.
+Cada VM usa un runtime de contenedores distinto, tal como exige el enunciado.
+
+---
+
+## 2. Arquitectura

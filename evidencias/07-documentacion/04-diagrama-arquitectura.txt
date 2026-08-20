@@ -1,0 +1,20 @@
+CAPTURA: diagrama de arquitectura
+Comando: bash -c grep -A15 'Diagrama de arquitectura' /home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/docs/MANUAL_TECNICO.md
+Fecha: vie 21 ago 2026 00:41:45 CST
+----
+### 2.1 Diagrama de arquitectura
+
+```
+              HOST (KVM / qemu-kvm · Fedora 42)
+              Red NAT "lab-so1" (virbr1, 192.168.100.0/24)
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+      VM1           VM2           VM3
+  so1-vm1        so1-vm2        so1-vm3
+  192.168.100.10 192.168.100.20 192.168.100.30
+   Containerd      Podman         Docker
+        │             │             │
+    API1, API2      API3        Zot Registry
+    :8081,:8082     :8083        :5000
+```

@@ -1,0 +1,29 @@
+CAPTURA: guia de instalacion
+Comando: bash -c head -n 25 /home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/docs/GUIA_INSTALACION.md
+Fecha: vie 21 ago 2026 00:41:45 CST
+----
+# GUÍA DE INSTALACIÓN — Proyecto 1
+
+> Sistemas Operativos 1 · 2do Semestre 2026 · Carnet: **202300476**
+> Repositorio: `202300476_LAB_SO1_2S2026`
+> Esta guía permite **reconstruir el proyecto desde cero** con los comandos reales usados.
+
+---
+
+## 1. Requisitos previos
+
+- Host Linux con **KVM/libvirt** (probado en Fedora 42, x86_64, AMD-V).
+- Paquetes: `qemu-kvm`, `libvirt`, `virt-install`, `virt-manager`, `cloud-image-utils`
+  (en Fedora: `virt-install`, `golang` para compilar).
+- Herramientas en el host: `docker` (para construir/transferir imágenes), `qemu-img`,
+  `genisoimage`, `sshpass` (opcional).
+- Imagen cloud base: `debian-12-genericcloud-amd64.qcow2`.
+- CPU con virtualización (AMD-V/Intel VT-x) y `/dev/kvm` disponible.
+
+---
+
+## 2. Preparación del entorno KVM (host)
+
+### 2.1 Verificar virtualización
+
+```bash

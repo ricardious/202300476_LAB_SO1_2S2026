@@ -1,0 +1,43 @@
+CAPTURA: estructura de evidencias
+Comando: bash -c find /home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias -name '*.txt' | sort
+Fecha: vie 21 ago 2026 00:41:45 CST
+----
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/01-entorno/01-virt-manager-3vms.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/01-entorno/02-virsh-list-all.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/01-vm1-ctr-namespace-ls.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/02-vm1-systemctl-containerd.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/03-vm1-docker-ausente.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/04-vm2-podman-info.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/05-vm2-podman-v.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/06-vm2-docker-ausente.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/07-vm3-docker-info.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/02-runtimes/08-vm3-docker-v.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/01-vm1-ctr-containers-ls.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/02-vm2-podman-ps.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/03-vm3-docker-ps.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/04-vm1-ctr-images-ls.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/05-vm2-podman-images.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/06-vm3-docker-images.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/07-dockerfiles.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/08-health-api1.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/09-health-api2.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/03-apis/10-health-api3.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/01-zot-container.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/02-zot-catalog.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/03-zot-push-vm1.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/04-zot-push-vm2.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/05-zot-pull-vm2.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/04-zot/06-zot-pull-vm1.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/05-comunicacion/01-seis-endpoints-true.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/05-comunicacion/02-error-connection-false.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/05-comunicacion/03-recuperacion-true.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/06-github/01-repo-privado.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/06-github/02-colaboradores.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/06-github/03-readme.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/06-github/04-releases.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/01-readme.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/02-manual-tecnico.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/03-guia-instalacion.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/04-diagrama-arquitectura.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/05-flujo-sistema.txt
+/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/evidencias/07-documentacion/06-evidencias-carpeta.txt
