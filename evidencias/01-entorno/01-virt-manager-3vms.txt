@@ -1,0 +1,10 @@
+CAPTURA: virt-manager muestra las 3 VMs (SO1-VM1/2/3)
+Comando: bash -c virsh -c qemu:///system list --all
+Fecha: vie 21 ago 2026 00:41:28 CST
+----
+ Id   Nombre    Estado
+----------------------------
+ 1    SO1-VM1   ejecutando
+ 2    SO1-VM2   ejecutando
+ 3    SO1-VM3   ejecutando
+
