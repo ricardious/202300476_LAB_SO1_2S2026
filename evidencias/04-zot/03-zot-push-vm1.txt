@@ -1,0 +1,6 @@
+CAPTURA: push API1/API2 desde VM1 (containerd)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.10 'ctr -n default images push --plain-http 192.168.100.30:5000/api1-202300476:1.0 2>&1 | tail -n1; ctr -n default images push --plain-http 192.168.100.30:5000/api2-202300476:1.0 2>&1 | tail -n1'
+Fecha: vie 21 ago 2026 00:41:34 CST
+----
+elapsed: 0.1 s                                                                        total:  3.0 Ki (29.5 KiB/s)                                      
+elapsed: 0.1 s                                                                        total:  3.0 Ki (29.8 KiB/s)                                      

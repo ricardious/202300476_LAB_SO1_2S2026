@@ -1,0 +1,5 @@
+CAPTURA: catalogo Zot
+Comando: bash -c curl -s http://192.168.100.30:5000/v2/_catalog
+Fecha: vie 21 ago 2026 00:41:34 CST
+----
+{"repositories":["api1-202300476","api2-202300476","api3-202300476"]}

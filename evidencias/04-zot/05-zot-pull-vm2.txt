@@ -1,0 +1,8 @@
+CAPTURA: pull API1 en VM2 (podman)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.20 'podman pull --tls-verify=false 192.168.100.30:5000/api1-202300476:1.0 2>&1 | tail -n1; podman images | grep 202300476'
+Fecha: vie 21 ago 2026 00:41:35 CST
+----
+8d78c2b09d1e29f10dabaab34f041beafb6894d4fd64eeda589ef61bc305c45b
+192.168.100.30:5000/api1-202300476  1.0         8d78c2b09d1e  36 minutes ago  14.1 MB
+docker.io/library/api3-202300476    1.0         f207578f2716  54 minutes ago  14.1 MB
+192.168.100.30:5000/api3-202300476  1.0         f207578f2716  54 minutes ago  14.1 MB

@@ -1,0 +1,5 @@
+CAPTURA: pull API3 en VM1 (containerd)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.10 'ctr -n default images pull --plain-http 192.168.100.30:5000/api3-202300476:1.0 2>&1 | tail -n1'
+Fecha: vie 21 ago 2026 00:41:35 CST
+----
+done: 12.706524ms	
