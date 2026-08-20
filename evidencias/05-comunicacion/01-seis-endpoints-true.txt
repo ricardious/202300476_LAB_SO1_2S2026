@@ -1,0 +1,52 @@
+CAPTURA: 6 endpoints (connection=true)
+Comando: bash -c for u in http://192.168.100.10:8081/api1/202300476/call-api2 http://192.168.100.10:8081/api1/202300476/call-api3 http://192.168.100.10:8082/api2/202300476/call-api1 http://192.168.100.10:8082/api2/202300476/call-api3 http://192.168.100.20:8083/api3/202300476/call-api1 http://192.168.100.20:8083/api3/202300476/call-api2; do echo "$u"; curl -s "$u" | jq .; echo; done
+Fecha: vie 21 ago 2026 00:41:36 CST
+----
+http://192.168.100.10:8081/api1/202300476/call-api2
+{
+  "apiname": "API2",
+  "message": "The API2 located on the VM1 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+
+http://192.168.100.10:8081/api1/202300476/call-api3
+{
+  "apiname": "API3",
+  "message": "The API3 located on the VM2 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+
+http://192.168.100.10:8082/api2/202300476/call-api1
+{
+  "apiname": "API1",
+  "message": "The API1 located on the VM1 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+
+http://192.168.100.10:8082/api2/202300476/call-api3
+{
+  "apiname": "API3",
+  "message": "The API3 located on the VM2 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+
+http://192.168.100.20:8083/api3/202300476/call-api1
+{
+  "apiname": "API1",
+  "message": "The API1 located on the VM1 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+
+http://192.168.100.20:8083/api3/202300476/call-api2
+{
+  "apiname": "API2",
+  "message": "The API2 located on the VM1 is working",
+  "connection": true,
+  "carnet": "202300476"
+}
+

@@ -1,0 +1,10 @@
+CAPTURA: recuperacion - API3 levantada (connection=true)
+Fecha: vie 21 ago 2026 00:41:39 CST
+----
+== API1 -> call-api3 (API3 levantada) ==
+{
+  "apiname": "API3",
+  "message": "The API3 located on the VM2 is working",
+  "connection": true,
+  "carnet": "202300476"
+}

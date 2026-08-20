@@ -1,0 +1,10 @@
+CAPTURA: prueba de error - API3 detenida (connection=false)
+Fecha: vie 21 ago 2026 00:41:36 CST
+----
+== API1 -> call-api3 (API3 detenida) ==
+{
+  "apiname": "API3",
+  "message": "ERROR: The API3 located on the VM2 is not working",
+  "connection": false,
+  "carnet": "202300476"
+}
