@@ -1,0 +1,7 @@
+CAPTURA: Docker info VM3
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.30 'docker info 2>&1 | grep -E "Server Version|Storage Driver|Containers:"'
+Fecha: vie 21 ago 2026 00:41:31 CST
+----
+ Containers: 1
+ Server Version: 20.10.24+dfsg1
+ Storage Driver: overlay2

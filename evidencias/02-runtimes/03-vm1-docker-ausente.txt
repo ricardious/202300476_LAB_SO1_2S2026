@@ -1,0 +1,5 @@
+CAPTURA: Docker AUSENTE en VM1
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.10 'docker info 2>&1 | head -n1'
+Fecha: vie 21 ago 2026 00:41:29 CST
+----
+bash: line 1: docker: command not found

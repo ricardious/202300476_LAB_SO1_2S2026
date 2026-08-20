@@ -1,0 +1,5 @@
+CAPTURA: Docker version VM3
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.30 'docker -v'
+Fecha: vie 21 ago 2026 00:41:32 CST
+----
+Docker version 20.10.24+dfsg1, build 297e128

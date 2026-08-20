@@ -1,0 +1,9 @@
+CAPTURA: Podman info VM2
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.20 'podman info 2>&1 | grep -E "arch|cgroupVersion|hostname|os"'
+Fecha: vie 21 ago 2026 00:41:29 CST
+----
+host:
+  arch: amd64
+  cgroupVersion: v2
+  hostname: so1-vm2
+  os: linux

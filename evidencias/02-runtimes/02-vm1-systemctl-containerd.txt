@@ -1,0 +1,9 @@
+CAPTURA: servicio Containerd VM1
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.10 'sudo systemctl status containerd --no-pager | head -n5'
+Fecha: vie 21 ago 2026 00:41:29 CST
+----
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2026-08-21 05:44:38 UTC; 56min ago
+       Docs: https://containerd.io
+    Process: 369 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/SUCCESS)
