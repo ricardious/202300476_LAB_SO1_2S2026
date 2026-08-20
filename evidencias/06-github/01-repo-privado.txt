@@ -1,0 +1,5 @@
+CAPTURA: repositorio privado GitHub
+Comando: bash -c gh repo view ricardious/202300476_LAB_SO1_2S2026 --json name,visibility -q '"Repo: \(.name)  Visibilidad: \(.visibility)"'
+Fecha: vie 21 ago 2026 00:41:42 CST
+----
+Repo: 202300476_LAB_SO1_2S2026  Visibilidad: PRIVATE

@@ -1,0 +1,8 @@
+CAPTURA: colaboradores
+Comando: bash -c gh api repos/ricardious/202300476_LAB_SO1_2S2026/collaborators --jq '.[] | .login'; echo '== invitaciones =='; gh api repos/ricardious/202300476_LAB_SO1_2S2026/invitations --jq '.[] | .invitee.login'
+Fecha: vie 21 ago 2026 00:41:43 CST
+----
+ricardious
+== invitaciones ==
+KINGR0X
+JoseLorenzana272
