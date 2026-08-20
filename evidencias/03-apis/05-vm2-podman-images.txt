@@ -1,0 +1,9 @@
+CAPTURA: imagenes VM2 (podman)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.20 'podman images'
+Fecha: vie 21 ago 2026 00:41:33 CST
+----
+REPOSITORY                          TAG         IMAGE ID      CREATED         SIZE
+192.168.100.30:5000/api1-202300476  1.0         8d78c2b09d1e  36 minutes ago  14.1 MB
+docker.io/library/api3-202300476    1.0         f207578f2716  54 minutes ago  14.1 MB
+192.168.100.30:5000/api3-202300476  1.0         f207578f2716  54 minutes ago  14.1 MB
+<none>                              <none>      d447824411f8  10 hours ago    14.1 MB

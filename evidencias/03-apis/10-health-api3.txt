@@ -1,0 +1,11 @@
+CAPTURA: /health API3
+Comando: bash -c curl -s http://192.168.100.20:8083/health | jq .
+Fecha: vie 21 ago 2026 00:41:34 CST
+----
+{
+  "status": "UP",
+  "message": "API3 is Ready",
+  "timestamp": "2026-08-21T06:41:34Z",
+  "VM": "VM2",
+  "carnet": "202300476"
+}

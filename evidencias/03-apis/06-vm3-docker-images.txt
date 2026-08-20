@@ -1,0 +1,6 @@
+CAPTURA: imagenes VM3 (docker)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.30 'docker images'
+Fecha: vie 21 ago 2026 00:41:33 CST
+----
+REPOSITORY                TAG       IMAGE ID       CREATED       SIZE
+ghcr.io/project-zot/zot   latest    2d7fee5603df   2 weeks ago   240MB

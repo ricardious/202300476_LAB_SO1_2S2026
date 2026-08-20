@@ -1,0 +1,10 @@
+CAPTURA: imagenes VM1 (containerd)
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.10 'sudo ctr -n default images ls'
+Fecha: vie 21 ago 2026 00:41:33 CST
+----
+REF                                    TYPE                                       DIGEST                                                                  SIZE     PLATFORMS   LABELS 
+192.168.100.30:5000/api1-202300476:1.0 application/vnd.oci.image.manifest.v1+json sha256:966a7983d22e7824baafcb8a427419184a4bc993a9eca944ba635423732f6892 13.5 MiB linux/amd64 -      
+192.168.100.30:5000/api2-202300476:1.0 application/vnd.oci.image.manifest.v1+json sha256:8f837299f325b89c49ae7e3c1ebcf3199cad1c21bcd412bea61331e1f51766c1 13.5 MiB linux/amd64 -      
+192.168.100.30:5000/api3-202300476:1.0 application/vnd.oci.image.manifest.v1+json sha256:01766a168b6977692caf3324900f9a6ebfee93efe311f934c398c0f13c57b16e 10.7 MiB linux/amd64 -      
+docker.io/library/api1-202300476:1.0   application/vnd.oci.image.manifest.v1+json sha256:966a7983d22e7824baafcb8a427419184a4bc993a9eca944ba635423732f6892 13.5 MiB linux/amd64 -      
+docker.io/library/api2-202300476:1.0   application/vnd.oci.image.manifest.v1+json sha256:8f837299f325b89c49ae7e3c1ebcf3199cad1c21bcd412bea61331e1f51766c1 13.5 MiB linux/amd64 -      

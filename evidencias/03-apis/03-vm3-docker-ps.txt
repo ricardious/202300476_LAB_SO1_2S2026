@@ -1,0 +1,6 @@
+CAPTURA: contenedores VM3 (docker) - solo zot
+Comando: bash -c ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /home/ricardious/.ssh/id_ed25519 root@192.168.100.30 'docker ps'
+Fecha: vie 21 ago 2026 00:41:32 CST
+----
+CONTAINER ID   IMAGE                            COMMAND                  CREATED        STATUS          PORTS                                       NAMES
+46a40975fdfa   ghcr.io/project-zot/zot:latest   "/usr/local/bin/zot-…"   10 hours ago   Up 56 minutes   0.0.0.0:5000->5000/tcp, :::5000->5000/tcp   zot
