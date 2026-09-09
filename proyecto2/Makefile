@@ -10,6 +10,8 @@
 #   make run     # ejecuta el daemon en el HOST (lee .env)
 #   make doctor  # diagnóstico del entorno
 #   make demo    # demo de punta a punta
+#   make evidence          # captura automática de evidencias (evidencias/)
+#   make verify-delivery   # preentrega estricta (0 sin fallos, 1 fallos, 2 uso)
 #   make clean   # limpia artefactos de build (NO borra contenedores/volúmenes)
 #
 # Decision de despliegue: el daemon corre en el HOST (acceso a /proc del módulo
@@ -32,7 +34,7 @@ GENERATOR   := /usr/local/bin/so1-p2-generate-containers.sh
 
 .PHONY: all build test up down install run doctor demo clean \
         ebpf module module-load module-unload install-cron remove-cron \
-        lint vet fmt smoke purge
+        lint vet fmt smoke purge evidence verify-delivery
 
 all: build
 
@@ -95,6 +97,15 @@ doctor:
 
 demo:
 	bash $(SCRIPTS_DIR)/demo.sh
+
+# --------------------------------------------------------------------------
+# evidencia / preentrega
+# --------------------------------------------------------------------------
+evidence:
+	bash $(SCRIPTS_DIR)/capture-evidence.sh
+
+verify-delivery:
+	bash $(SCRIPTS_DIR)/verify-delivery.sh
 
 # --------------------------------------------------------------------------
 # frente eBPF y módulo de kernel

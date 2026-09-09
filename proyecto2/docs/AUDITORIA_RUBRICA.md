@@ -1,6 +1,7 @@
 # Auditoría final contra la rúbrica — Proyecto 2 SO1 (202300476)
 
-**Rama auditada:** `ricardious/p2-integration` · **Fecha:** 2026-09-09
+**Rama auditada:** `ricardious/p2-integration` (contenido ya integrado en la
+rama de entrega `ricardious/p2-delivery`) · **Fecha:** 2026-09-09
 **Criterio de terminado:** cero brechas críticas conocidas sin documentar,
 árbol listo para commit, reporte exacto de cambios/pruebas/riesgos.
 
@@ -86,7 +87,13 @@ no está evidenciada; una vez capturadas las evidencias de §5, el techo es
 
 ---
 
-## 4. Cambios realizados en esta auditoría (sin commit, listos para Muse)
+## 4. Cambios realizados en esta auditoría
+
+> Los cambios de esta auditoría **ya están commiteados** en
+> `ricardious/p2-delivery` (se listan aquí para trazabilidad). Sobre esa base,
+> la rama de entrega agrega el **paquete de defensa**: `evidencias/` por rubro,
+> `scripts/capture-evidence.sh`, `scripts/verify-delivery.sh` y
+> `docs/CHECKLIST_ENTREGA.md` (ver §6 y el checklist).
 
 | Archivo | Cambio |
 |---|---|
@@ -117,6 +124,12 @@ no está evidenciada; una vez capturadas las evidencias de §5, el techo es
 | `bash -n` de todos los scripts | OK |
 
 ## 6. Evidencias que el usuario debe capturar en la VM (checklist)
+
+> El **paquete de entrega** de la rama `ricardious/p2-delivery` automatiza esta
+> sección: `evidencias/` se organiza por rubro (mapeo en su `README.md`),
+> `scripts/capture-evidence.sh` (o `make evidence`) captura el texto
+> automáticamente y `docs/CHECKLIST_ENTREGA.md` tiene el orden exacto y la
+> lista de capturas (`NN-descripcion.{txt|png}`).
 
 Privilegiadas (con `sudo`), en orden de la rúbrica:
 
@@ -169,6 +182,8 @@ Privilegiadas (con `sudo`), en orden de la rúbrica:
 - Cero brechas críticas conocidas sin documentar: ✅ (las tres brechas
   encontradas se corrigieron; los ítems privilegiados están identificados y
   tienen evidencia asignada en §6).
-- Árbol listo para commit: ✅ (`git status` solo muestra los cambios
-  intencionados; sin commits realizados, listo para Muse).
+- Árbol listo para commit: ✅ (los cambios de la auditoría fueron commiteados
+  en `ricardious/p2-delivery`; el paquete de entrega —`evidencias/`,
+  `capture-evidence.sh`, `verify-delivery.sh`, `CHECKLIST_ENTREGA.md`— queda
+  en el árbol para que Muse los commitee).
 - Reporte exacto de cambios/pruebas/riesgos: ✅ (este documento).

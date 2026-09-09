@@ -34,6 +34,8 @@ make build                    # bin/so1-p2-daemon
 make up                       # Valkey + Grafana (Compose, proyecto so1-p2)
 make test                     # go test + pruebas shell/Compose sin privilegios
 make doctor                   # diagnóstico del entorno
+make evidence                 # captura automática de evidencias (evidencias/)
+make verify-delivery          # preentrega estricta (0=lista · 1=fallos · 2=uso)
 sudo make install             # daemon + generador en /usr/local/bin
 make run                      # daemon en el host (módulo + eBPF con root)
 ```
@@ -88,15 +90,19 @@ proyecto2/
 ├── daemon/    # cmd/daemon + internal/{config,procfs,docker,policy,valkey,ebpf,cron,lifecycle}
 ├── workloads/ # memory-high, cpu-high, low, intruder (4 imágenes)
 ├── deploy/    # docker-compose.yml + grafana/provisioning + dashboard
-├── scripts/   # bootstrap, doctor, demo, cleanup, load/unload-module, generate-containers, install/remove-cron
+├── scripts/   # bootstrap, doctor, demo, cleanup, load/unload-module, generate-containers,
+│              # install/remove-cron, capture-evidence (evidencias) y verify-delivery (preentrega)
 ├── tests/     # fixtures + kernel + integration/observability
-└── docs/      # enunciado y plan maestro
+├── evidencias/ # capturas por rubro (entorno, kernel, daemon-politica, cron-workloads,
+│              #  valkey-grafana, ebpf, documentacion-git) + README con el mapeo a la rúbrica
+└── docs/      # enunciado, plan maestro y checklist de entrega
 ```
 
 ## Pruebas
 
 ```bash
 make test                          # go test (con -race) + shell/Compose + kernel no privilegiado
+make verify-delivery               # preentrega estricta (manifest, JSON, shell, Go, kernel, observabilidad, secretos)
 SO1_SKIP_DOCKER=1 bash tests/integration/observability/run.sh
 sudo bash tests/kernel/test-module-lifecycle.sh    # prueba privilegiada (opt-in)
 sudo go test ./internal/ebpf/ -run Privilegiada -v # eBPF real (opt-in)
@@ -104,6 +110,16 @@ sudo go test ./internal/ebpf/ -run Privilegiada -v # eBPF real (opt-in)
 
 Las pruebas privilegiadas (módulo, eBPF real) se **omiten automáticamente**
 con mensajes claros cuando el host no tiene root/CAP_BPF o headers del kernel.
+
+## Evidencias y entrega
+
+- `bash scripts/capture-evidence.sh` (o `make evidence`) genera **automáticamente**
+  y sin secretos las evidencias de texto por rubro (entorno/doctor, módulo y
+  `/proc` exacto validado con `jq`, contenedores/etiquetas, cron, Valkey, salud
+  de Grafana y eventos). Las capturas visuales (Grafana/GitHub) son manuales:
+  ver `docs/CHECKLIST_ENTREGA.md` → *Lista exacta de capturas*.
+- `evidencias/` se organiza por rubro de la rúbrica (su `README.md` tiene el
+  mapeo criterio→carpeta). No se versionan datos generados en el desarrollo.
 
 ## Limpieza segura
 
@@ -115,5 +131,5 @@ bash scripts/cleanup.sh --no-confirm --module --purge
 Nunca elimina contenedores/volúmenes/redes ajenos.
 
 Documentación completa: `docs/MANUAL_TECNICO.md`, `docs/GUIA_INSTALACION.md`,
-`docs/GUIA_DEMO.md`, `docs/DEFENSA.md`, `docs/AUDITORIA_RUBRICA.md`,
-`docs/PLAN_PROYECTO2.md` y `ebpf/README.md`.
+`docs/GUIA_DEMO.md`, `docs/DEFENSA.md`, `docs/CHECKLIST_ENTREGA.md`,
+`docs/AUDITORIA_RUBRICA.md`, `docs/PLAN_PROYECTO2.md` y `ebpf/README.md`.
