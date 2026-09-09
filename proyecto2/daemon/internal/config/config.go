@@ -82,6 +82,34 @@ type Config struct {
 
 	// UnloadModuleOnStop indica si el daemon debe descargar el módulo al apagar.
 	UnloadModuleOnStop bool
+
+	// ModuleLoadScript es la ruta del script idempotente que compila/carga el módulo.
+	ModuleLoadScript string
+
+	// ModuleUnloadScript es la ruta del script idempotente que descarga el módulo.
+	ModuleUnloadScript string
+
+	// EBPFMode controla el consumidor de eventos kill:
+	//   - "auto"     (default) intenta cargar el puente CO-RE real; si el entorno
+	//                no concede privilegios (sin CAP_BPF/root) degrada a un
+	//                consumidor nulo con un mensaje explícito.
+	//   - "required" exige el puente real; sin privilegios el daemon NO arranca
+	//                y termina con un error accionable.
+	//   - "off"      desactiva eBPF explícitamente (consumidor nulo).
+	EBPFMode string
+
+	// ComposeFile es la ruta del archivo Compose que levanta Valkey/Grafana.
+	// Vacío desactiva el auto-arranque de Compose desde el daemon.
+	ComposeFile string
+
+	// ComposeDownOnStop retira los servicios de Compose del proyecto al apagar.
+	ComposeDownOnStop bool
+
+	// CronSchedule es la expresión crontab del generador de contenedores.
+	CronSchedule string
+
+	// CronCommand es el comando (ruta absoluta) que cron ejecutará.
+	CronCommand string
 }
 
 // Default devuelve una configuración con los valores por defecto del plan.
@@ -98,7 +126,7 @@ func Default() Config {
 		MinLow:              3,
 		MinHigh:             2,
 		ProtectedLabels:     []string{"so1.p2.protect=1"},
-		ProtectedNames:      []string{"grafana", "valkey"},
+		ProtectedNames:      []string{"so1-p2-grafana", "so1-p2-valkey", "grafana", "valkey"},
 		ManagedLabelKey:     "so1.p2.managed",
 		ManagedLabelValue:   "1",
 		KillSignal:          "SIGKILL",
@@ -106,6 +134,13 @@ func Default() Config {
 		ConfirmationTimeout: 30 * time.Second,
 		LoadModuleOnStart:   true,
 		UnloadModuleOnStop:  false,
+		ModuleLoadScript:    "scripts/load-module.sh",
+		ModuleUnloadScript:  "scripts/unload-module.sh",
+		EBPFMode:            "auto",
+		ComposeFile:         "deploy/docker-compose.yml",
+		ComposeDownOnStop:   false,
+		CronSchedule:        "*/2 * * * *",
+		CronCommand:         "/usr/local/bin/so1-p2-generate-containers.sh",
 	}
 }
 
@@ -173,6 +208,30 @@ func FromEnv() (Config, error) {
 	if v := os.Getenv("SO1_P2_UNLOAD_MODULE_ON_STOP"); v != "" {
 		cfg.UnloadModuleOnStop = parseBool(v)
 	}
+	if v := os.Getenv("SO1_P2_MODULE_LOAD_SCRIPT"); v != "" {
+		cfg.ModuleLoadScript = v
+	}
+	if v := os.Getenv("SO1_P2_MODULE_UNLOAD_SCRIPT"); v != "" {
+		cfg.ModuleUnloadScript = v
+	}
+	if v := os.Getenv("SO1_P2_EBPF_MODE"); v != "" {
+		cfg.EBPFMode = strings.ToLower(strings.TrimSpace(v))
+	}
+	// ComposeFile admite un valor VACÍO explícito para desactivar el
+	// auto-arranque de Compose desde el daemon (a diferencia de envOr, que
+	// ignora variables vacías y cae al default).
+	if v, set := os.LookupEnv("SO1_P2_COMPOSE_FILE"); set {
+		cfg.ComposeFile = v
+	}
+	if v := os.Getenv("SO1_P2_COMPOSE_DOWN_ON_STOP"); v != "" {
+		cfg.ComposeDownOnStop = parseBool(v)
+	}
+	if v := os.Getenv("SO1_P2_CRON_SCHEDULE"); v != "" {
+		cfg.CronSchedule = v
+	}
+	if v := os.Getenv("SO1_P2_CRON_COMMAND"); v != "" {
+		cfg.CronCommand = v
+	}
 
 	return cfg, nil
 }
@@ -202,6 +261,20 @@ func (c Config) Validate() error {
 	}
 	if c.ConfirmationTimeout <= 0 {
 		return fmt.Errorf("ConfirmationTimeout debe ser positivo")
+	}
+	switch c.EBPFMode {
+	case "auto", "required", "off":
+	default:
+		return fmt.Errorf("EBPFMode inválido %q (auto|required|off)", c.EBPFMode)
+	}
+	if c.CronSchedule == "" || c.CronCommand == "" {
+		return fmt.Errorf("CronSchedule y CronCommand no pueden estar vacíos")
+	}
+	if c.LoadModuleOnStart && c.ModuleLoadScript == "" {
+		return fmt.Errorf("ModuleLoadScript no puede estar vacío con LoadModuleOnStart")
+	}
+	if c.UnloadModuleOnStop && c.ModuleUnloadScript == "" {
+		return fmt.Errorf("ModuleUnloadScript no puede estar vacío con UnloadModuleOnStop")
 	}
 	return nil
 }
