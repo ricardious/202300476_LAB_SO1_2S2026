@@ -1,0 +1,131 @@
+# ================================================================
+# Proyecto 2 · SO1 (202300476) — Entorno / doctor
+# Fecha (UTC): 2026-09-09T20:41:26Z · Host: fedora
+# Generado por: scripts/capture-evidence.sh (solo lectura)
+# ================================================================
+
+== make doctor (scripts/doctor.sh) ==
+
+== Herramientas base ==
+  [OK]      binario bash
+  [OK]      binario make
+  [OK]      binario go
+  [OK]      binario docker
+  [OK]      binario git
+
+== Código y build ==
+  [OK]      go.mod del daemon
+  [OK]      daemon compilado (/home/ricardious/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/bin/so1-p2-daemon)
+  [OK]      código del módulo de kernel
+  [OK]      código eBPF
+  [OK]      objeto eBPF embebido
+
+== Docker / Compose ==
+  [OK]      daemon Docker responde
+  [OK]      docker compose disponible
+  [OK]      docker-compose.yml válido
+
+== Stack de observabilidad (Valkey / Grafana) ==
+  [OK]      contenedor so1-p2-valkey arriba
+  [OK]      Valkey responde al ping
+  [OK]      contenedor so1-p2-grafana arriba
+  [OK]      Grafana responde en /api/health
+  [OK]      dashboard JSON válido
+
+== Módulo de kernel (/proc) ==
+  [OK]      /proc/continfo_pr2_so1_202300476 existe y es legible
+  [OK]      salida en vivo cumple el esquema JSON
+  [OK]      módulo continfo en /proc/modules
+  [OK]      headers del kernel presentes
+
+== eBPF ==
+  [OK]      BTF del kernel disponible (CO-RE)
+  [OK]      root disponible: se puede cargar eBPF
+
+== Cron ==
+  [OK]      cronjob del proyecto instalado
+  [OK]      generador instalado en /usr/local/bin/so1-p2-generate-containers.sh
+
+== RESUMEN ==
+  OK: 26   AVISOS: 0   PENDIENTES: 0   FALLOS: 0
+  Entorno apto para el Proyecto 2 (los pendientes son opcionales o requieren root).
+
+== Sistema operativo ==
+Linux fedora 6.19.14-108.fc42.x86_64 #1 SMP PREEMPT_DYNAMIC Thu May 21 18:06:59 UTC 2026 x86_64 GNU/Linux
+Linux version 6.19.14-108.fc42.x86_64 (mockbuild@14c6e9dc78654ab2b36007daa300f51f) (gcc (GCC) 15.2.1 20260123 (Red Hat 15.2.1-7), GNU ld version 2.44-12.fc42) #1 SMP PREEMPT_DYNAMIC Thu May 21 18:06:59 UTC 2026
+
+== Herramientas ==
+/usr/bin/bash  —  GNU bash, versión 5.2.37(1)-release (x86_64-redhat-linux-gnu)
+/usr/bin/make  —  GNU Make 4.4.1
+/usr/bin/go  —  flag provided but not defined: -version
+/usr/local/bin/docker  —  Docker version 29.5.3, build d1c06ef
+/usr/bin/git  —  git version 2.54.0
+/usr/bin/python3  —  Python 3.13.13
+/usr/bin/jq  —  jq-1.7.1
+/usr/bin/crontab  —  crontab: opción inválida -- '-'
+/usr/bin/gcc  —  gcc (GCC) 15.2.1 20260123 (Red Hat 15.2.1-7)
+/usr/bin/clang  —  clang version 20.1.8 (Fedora 20.1.8-4.fc42)
+
+== Headers del kernel y BTF (prerequisitos módulo/eBPF) ==
+
+== lsmod (estado de módulos) ==
+Module                  Size  Used by
+continfo               16384  0
+xt_nat                 12288  31
+nf_conntrack_netlink    65536  0
+veth                   45056  0
+uinput                 28672  0
+rfcomm                118784  4
+snd_seq_dummy          12288  0
+snd_hrtimer            12288  1
+xt_conntrack           12288  3
+xt_MASQUERADE          16384  3
+bridge                479232  0
+stp                    12288  1 bridge
+llc                    16384  2 bridge,stp
+xt_set                 24576  0
+ip_set                 69632  1 xt_set
+xt_addrtype            12288  4
+nft_compat             24576  41
+overlay               258048  11
+nft_masq               12288  1
+nf_conntrack_netbios_ns    12288  1
+nf_conntrack_broadcast    12288  1 nf_conntrack_netbios_ns
+nft_fib_inet           12288  1
+nft_fib_ipv4           12288  1 nft_fib_inet
+nft_fib_ipv6           12288  1 nft_fib_inet
+nft_fib                12288  3 nft_fib_ipv6,nft_fib_ipv4,nft_fib_inet
+nft_reject_inet        12288  16
+nf_reject_ipv4         12288  1 nft_reject_inet
+nf_reject_ipv6         20480  1 nft_reject_inet
+nft_reject             12288  1 nft_reject_inet
+nft_ct                 32768  9
+nft_chain_nat          12288  20
+nf_nat                 65536  4 xt_nat,nft_masq,nft_chain_nat,xt_MASQUERADE
+nf_conntrack          212992  9 xt_conntrack,nf_nat,nft_ct,nf_conntrack_netbios_ns,xt_nat,nf_conntrack_broadcast,nf_conntrack_netlink,nft_masq,xt_MASQUERADE
+nf_defrag_ipv6         28672  1 nf_conntrack
+nf_defrag_ipv4         12288  1 nf_conntrack
+nf_tables             438272  1527 nft_ct,nft_compat,nft_reject_inet,nft_fib_ipv6,nft_fib_ipv4,nft_masq,nft_chain_nat,nft_reject,nft_fib,nft_fib_inet
+qrtr                   57344  2
+bnep                   36864  2
+sunrpc                933888  1
+binfmt_misc            28672  1
+snd_soc_acp6x_mach     45056  5
+snd_acp6x_pdm_dma      16384  1
+snd_soc_dmic           12288  1
+snd_sof_amd_acp70      16384  0
+snd_sof_amd_acp63      16384  0
+snd_sof_amd_vangogh    16384  0
+snd_sof_amd_rembrandt    16384  0
+snd_sof_amd_renoir     16384  0
+snd_sof_amd_acp        73728  5 snd_sof_amd_acp70,snd_sof_amd_rembrandt,snd_sof_amd_vangogh,snd_sof_amd_acp63,snd_sof_amd_renoir
+snd_sof_pci            24576  5 snd_sof_amd_acp70,snd_sof_amd_rembrandt,snd_sof_amd_vangogh,snd_sof_amd_acp63,snd_sof_amd_renoir
+snd_sof_xtensa_dsp     16384  1 snd_sof_amd_acp
+snd_sof               536576  2 snd_sof_amd_acp,snd_sof_pci
+snd_ctl_led            28672  0
+snd_hda_codec_alc269   159744  1
+snd_sof_utils          16384  1 snd_sof
+snd_pci_ps             36864  0
+snd_hda_scodec_component    20480  1 snd_hda_codec_alc269
+snd_soc_acpi_amd_match    16384  3 snd_sof_amd_acp70,snd_sof_amd_acp63,snd_pci_ps
+snd_hda_codec_realtek_lib    65536  1 snd_hda_codec_alc269
