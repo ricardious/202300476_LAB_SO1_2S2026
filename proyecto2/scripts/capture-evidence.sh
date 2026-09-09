@@ -324,12 +324,18 @@ capture_cron_workloads() {
   begin_file "cron-workloads" "$f" "Cron y generador de carga"
   section "Cronjob del proyecto (bloque delimitado)"
   if command -v crontab >/dev/null 2>&1; then
-    if crontab -l 2>/dev/null | grep -q "${MARKER_BEGIN}"; then
-      ok "sección del proyecto presente"
-      crontab -l 2>/dev/null | awk -v b="${MARKER_BEGIN}" -v e="${MARKER_END}" '
-        $0==b {p=1} p {print} $0==e {p=0}' >> "$CUR"
+    local cron_dump="" cron_owner="usuario actual"
+    cron_dump="$(crontab -l 2>/dev/null || true)"
+    if ! grep -qF "${MARKER_BEGIN}" <<< "$cron_dump" && [ "$PRIVILEGED" -eq 1 ]; then
+      cron_dump="$(sudo crontab -l 2>/dev/null || true)"
+      cron_owner="root"
+    fi
+    if grep -qF "${MARKER_BEGIN}" <<< "$cron_dump"; then
+      ok "sección del proyecto presente en crontab de ${cron_owner}"
+      awk -v b="${MARKER_BEGIN}" -v e="${MARKER_END}" '
+        $0==b {p=1} p {print} $0==e {p=0}' <<< "$cron_dump" >> "$CUR"
     else
-      skip "sin sección del proyecto en crontab (make install-cron)"
+      skip "sin sección del proyecto en crontab (use --privileged si fue instalado por root)"
     fi
   else
     skip "binario crontab ausente en este host"

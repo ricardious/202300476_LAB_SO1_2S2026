@@ -1,0 +1,29 @@
+# ================================================================
+# Proyecto 2 · SO1 (202300476) — Cron y generador de carga
+# Fecha (UTC): 2026-09-09T20:41:27Z · Host: fedora
+# Generado por: scripts/capture-evidence.sh (solo lectura)
+# ================================================================
+
+== Cronjob del proyecto (bloque delimitado) ==
+# >>> so1-p2-202300476:begin >>>
+*/2 * * * * /usr/local/bin/so1-p2-generate-containers.sh
+# <<< so1-p2-202300476:end <<<
+
+== Generador instalado ==
+lrwxrwxrwx. 1 root root 92 sep  9 13:07 /usr/local/bin/so1-p2-generate-containers.sh -> /mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/scripts/generate-containers.sh
+resuelve a: /mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/scripts/generate-containers.sh
+
+== Imágenes de carga (so1/load:202300476-*) ==
+so1/load:202300476-intruder
+so1/load:test-intruder
+so1/load:202300476-cpu-high
+so1/load:test-cpu-high
+so1/load:202300476-memory-high
+so1/load:test-memory-high
+so1/load:202300476-low
+so1/load:test-low
+
+== Carga acumulada (contenedores del proyecto) ==
+conteo actual: 107
+
+== Log del generador (cola) ==

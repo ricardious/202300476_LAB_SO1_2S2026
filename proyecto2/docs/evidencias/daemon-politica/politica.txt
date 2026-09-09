@@ -1,0 +1,124 @@
+# ================================================================
+# Proyecto 2 · SO1 (202300476) — Daemon Go y política de conservación
+# Fecha (UTC): 2026-09-09T20:37:54Z · Host: fedora
+# Generado por: scripts/capture-evidence.sh (solo lectura)
+# ================================================================
+
+== Daemon ==
+1157803 sudo ./bin/so1-p2-daemon
+1157916 sudo ./bin/so1-p2-daemon
+1157917 ./bin/so1-p2-daemon
+
+== Docker ==
+
+== Contenedores gestionados (etiqueta so1.p2.project=202300476) ==
+total: 97 · en ejecución: 7
+--- detalle (name, image, profile, status, mem) ---
+so1-load-intruder-1788986161-1198905-4	so1/load:202300476-intruder	Exited (137) About a minute ago
+so1-load-low-1788986161-1198905-3	so1/load:202300476-low	Exited (137) About a minute ago
+so1-load-low-1788986161-1198905-2	so1/load:202300476-low	Exited (137) About a minute ago
+so1-load-cpu-high-1788986160-1198905-1	so1/load:202300476-cpu-high	Exited (137) About a minute ago
+so1-load-memory-high-1788986160-1198905-0	so1/load:202300476-memory-high	Up About a minute
+so1-load-intruder-1788986042-1196631-4	so1/load:202300476-intruder	Exited (137) 3 minutes ago
+so1-load-memory-high-1788986042-1196631-3	so1/load:202300476-memory-high	Up 3 minutes
+so1-load-cpu-high-1788986041-1196631-2	so1/load:202300476-cpu-high	Exited (137) 3 minutes ago
+so1-load-intruder-1788986041-1196631-1	so1/load:202300476-intruder	Exited (137) 3 minutes ago
+so1-load-low-1788986041-1196631-0	so1/load:202300476-low	Exited (137) 3 minutes ago
+so1-load-low-1788985922-1194178-4	so1/load:202300476-low	Exited (137) 5 minutes ago
+so1-load-cpu-high-1788985921-1194178-3	so1/load:202300476-cpu-high	Up 5 minutes
+so1-load-memory-high-1788985921-1194178-2	so1/load:202300476-memory-high	Exited (137) About a minute ago
+so1-load-cpu-high-1788985921-1194178-1	so1/load:202300476-cpu-high	Up 5 minutes
+so1-load-memory-high-1788985920-1194178-0	so1/load:202300476-memory-high	Exited (137) 3 minutes ago
+so1-load-cpu-high-1788985802-1191621-4	so1/load:202300476-cpu-high	Exited (137) 7 minutes ago
+so1-load-low-1788985802-1191621-3	so1/load:202300476-low	Exited (137) 7 minutes ago
+so1-load-cpu-high-1788985801-1191621-2	so1/load:202300476-cpu-high	Exited (137) 7 minutes ago
+so1-load-cpu-high-1788985801-1191621-1	so1/load:202300476-cpu-high	Up 7 minutes
+so1-load-memory-high-1788985801-1191621-0	so1/load:202300476-memory-high	Exited (137) 5 minutes ago
+so1-load-intruder-1788985681-1189374-4	so1/load:202300476-intruder	Exited (137) 9 minutes ago
+so1-load-intruder-1788985681-1189374-3	so1/load:202300476-intruder	Exited (137) 9 minutes ago
+so1-load-intruder-1788985681-1189374-2	so1/load:202300476-intruder	Exited (137) 9 minutes ago
+so1-load-intruder-1788985680-1189374-1	so1/load:202300476-intruder	Exited (137) 9 minutes ago
+so1-load-memory-high-1788985680-1189374-0	so1/load:202300476-memory-high	Exited (137) 5 minutes ago
+so1-load-low-1788985562-1185485-4	so1/load:202300476-low	Exited (137) 11 minutes ago
+so1-load-low-1788985561-1185485-3	so1/load:202300476-low	Exited (137) 11 minutes ago
+so1-load-intruder-1788985561-1185485-2	so1/load:202300476-intruder	Exited (137) 11 minutes ago
+so1-load-cpu-high-1788985561-1185485-1	so1/load:202300476-cpu-high	Exited (137) 11 minutes ago
+so1-load-memory-high-1788985560-1185485-0	so1/load:202300476-memory-high	Exited (137) 7 minutes ago
+so1-load-intruder-1788985442-1183262-4	so1/load:202300476-intruder	Exited (137) 13 minutes ago
+so1-load-low-1788985441-1183262-3	so1/load:202300476-low	Exited (137) 13 minutes ago
+so1-load-memory-high-1788985441-1183262-2	so1/load:202300476-memory-high	Exited (137) 9 minutes ago
+so1-load-low-1788985440-1183262-1	so1/load:202300476-low	Exited (137) 13 minutes ago
+so1-load-memory-high-1788985440-1183262-0	so1/load:202300476-memory-high	Exited (137) 11 minutes ago
+so1-load-memory-high-1788985321-1181062-4	so1/load:202300476-memory-high	Exited (137) 13 minutes ago
+so1-load-intruder-1788985321-1181062-3	so1/load:202300476-intruder	Exited (137) 15 minutes ago
+so1-load-cpu-high-1788985321-1181062-2	so1/load:202300476-cpu-high	Exited (0) 5 minutes ago
+so1-load-cpu-high-1788985321-1181062-1	so1/load:202300476-cpu-high	Exited (0) 5 minutes ago
+so1-load-low-1788985320-1181062-0	so1/load:202300476-low	Exited (137) 15 minutes ago
+so1-load-low-1788985202-1178380-4	so1/load:202300476-low	Exited (137) 17 minutes ago
+so1-load-cpu-high-1788985201-1178380-3	so1/load:202300476-cpu-high	Exited (137) 17 minutes ago
+so1-load-cpu-high-1788985201-1178380-2	so1/load:202300476-cpu-high	Exited (0) 7 minutes ago
+so1-load-low-1788985200-1178380-1	so1/load:202300476-low	Exited (137) 17 minutes ago
+so1-load-memory-high-1788985200-1178380-0	so1/load:202300476-memory-high	Exited (137) 13 minutes ago
+so1-load-memory-high-1788985081-1175678-4	so1/load:202300476-memory-high	Exited (137) 17 minutes ago
+so1-load-low-1788985081-1175678-3	so1/load:202300476-low	Exited (137) 19 minutes ago
+so1-load-cpu-high-1788985081-1175678-2	so1/load:202300476-cpu-high	Exited (137) 19 minutes ago
+so1-load-memory-high-1788985080-1175678-1	so1/load:202300476-memory-high	Exited (137) 19 minutes ago
+so1-load-memory-high-1788985080-1175678-0	so1/load:202300476-memory-high	Exited (137) 15 minutes ago
+so1-load-intruder-1788984961-1173496-4	so1/load:202300476-intruder	Exited (137) 21 minutes ago
+so1-load-memory-high-1788984961-1173496-3	so1/load:202300476-memory-high	Exited (137) 19 minutes ago
+so1-load-intruder-1788984960-1173496-2	so1/load:202300476-intruder	Exited (137) 21 minutes ago
+so1-load-memory-high-1788984960-1173496-1	so1/load:202300476-memory-high	Exited (137) 19 minutes ago
+so1-load-memory-high-1788984960-1173496-0	so1/load:202300476-memory-high	Exited (137) 21 minutes ago
+so1-load-cpu-high-1788984841-1171202-4	so1/load:202300476-cpu-high	Exited (137) 23 minutes ago
+so1-load-low-1788984841-1171202-3	so1/load:202300476-low	Exited (137) 21 minutes ago
+so1-load-memory-high-1788984841-1171202-2	so1/load:202300476-memory-high	Exited (137) 21 minutes ago
+so1-load-intruder-1788984840-1171202-1	so1/load:202300476-intruder	Exited (137) 23 minutes ago
+so1-load-cpu-high-1788984840-1171202-0	so1/load:202300476-cpu-high	Exited (137) 23 minutes ago
+so1-load-low-1788984721-1168376-4	so1/load:202300476-low	Exited (137) 25 minutes ago
+so1-load-cpu-high-1788984720-1168376-3	so1/load:202300476-cpu-high	Exited (0) 15 minutes ago
+so1-load-low-1788984720-1168376-2	so1/load:202300476-low	Exited (137) 25 minutes ago
+so1-load-cpu-high-1788984720-1168376-1	so1/load:202300476-cpu-high	Exited (0) 15 minutes ago
+so1-load-low-1788984720-1168376-0	so1/load:202300476-low	Exited (137) 25 minutes ago
+so1-load-cpu-high-1788984601-1166264-4	so1/load:202300476-cpu-high	Exited (0) 17 minutes ago
+so1-load-intruder-1788984601-1166264-3	so1/load:202300476-intruder	Exited (137) 27 minutes ago
+so1-load-memory-high-1788984601-1166264-2	so1/load:202300476-memory-high	Exited (137) 23 minutes ago
+so1-load-low-1788984601-1166264-1	so1/load:202300476-low	Exited (137) 27 minutes ago
+so1-load-memory-high-1788984601-1166264-0	so1/load:202300476-memory-high	Exited (137) 27 minutes ago
+so1-load-memory-high-1788984481-1164213-4	so1/load:202300476-memory-high	Exited (137) 29 minutes ago
+so1-load-intruder-1788984481-1164213-3	so1/load:202300476-intruder	Exited (137) 29 minutes ago
+so1-load-intruder-1788984481-1164213-2	so1/load:202300476-intruder	Exited (137) 29 minutes ago
+so1-load-intruder-1788984481-1164213-1	so1/load:202300476-intruder	Exited (137) 29 minutes ago
+so1-load-low-1788984480-1164213-0	so1/load:202300476-low	Exited (137) 29 minutes ago
+so1-load-low-1788984361-1161665-4	so1/load:202300476-low	Exited (137) 31 minutes ago
+so1-load-low-1788984361-1161665-3	so1/load:202300476-low	Exited (137) 31 minutes ago
+so1-load-low-1788984361-1161665-2	so1/load:202300476-low	Exited (137) 31 minutes ago
+so1-load-cpu-high-1788984360-1161665-1	so1/load:202300476-cpu-high	Exited (137) 25 minutes ago
+so1-load-intruder-1788984360-1161665-0	so1/load:202300476-intruder	Exited (137) 27 minutes ago
+so1-load-intruder-1788984241-1159206-4	so1/load:202300476-intruder	Exited (137) 31 minutes ago
+so1-load-memory-high-1788984241-1159206-3	so1/load:202300476-memory-high	Exited (137) 33 minutes ago
+so1-load-memory-high-1788984240-1159206-2	so1/load:202300476-memory-high	Exited (137) 33 minutes ago
+so1-load-cpu-high-1788984240-1159206-1	so1/load:202300476-cpu-high	Exited (137) 25 minutes ago
+so1-load-intruder-1788984240-1159206-0	so1/load:202300476-intruder	Exited (137) 31 minutes ago
+so1-load-low-1788984221-1158425-4	so1/load:202300476-low	Exited (137) 33 minutes ago
+so1-load-low-1788984221-1158425-3	so1/load:202300476-low	Exited (137) 34 minutes ago
+so1-load-memory-high-1788984221-1158425-2	so1/load:202300476-memory-high	Exited (0) 24 minutes ago
+so1-load-low-1788984221-1158425-1	so1/load:202300476-low	Exited (137) 33 minutes ago
+so1-load-low-1788984220-1158425-0	so1/load:202300476-low	Exited (137) 33 minutes ago
+so1-load-low-1788984220-1157984-4	so1/load:202300476-low	Exited (137) 34 minutes ago
+so1-load-low-1788984220-1157984-3	so1/load:202300476-low	Exited (137) 34 minutes ago
+so1-load-memory-high-1788984220-1157984-2	so1/load:202300476-memory-high	Exited (137) 27 minutes ago
+so1-load-low-1788984220-1157984-1	so1/load:202300476-low	Exited (137) 34 minutes ago
+so1-load-low-1788984219-1157984-0	so1/load:202300476-low	Exited (137) 34 minutes ago
+so1-p2-grafana	so1/p2-grafana:202300476	Up 5 minutes (healthy)
+so1-p2-valkey	valkey/valkey:9.1.2-alpine	Up 2 hours (healthy)
+--- perfiles ---
+     20 cpu
+      1 grafana
+     20 intruder
+     30 low
+     25 memory
+      1 valkey
+
+== Protegidos (nunca candidatos) — Grafana y Valkey ==
+  labels: {"com.docker.compose.config-hash":"41490ca675e2eb640c8269cb98bd4570995c1fe1b3c62c9780cf280521cc79e8","com.docker.compose.container-number":"1","com.docker.compose.depends_on":"valkey:service_healthy:false","com.docker.compose.image":"sha256:ec81122d41affaa3a1c6cc34e8c2c0b5cb6af149b0fc4f0c40f052fb7319fd75","com.docker.compose.oneoff":"False","com.docker.compose.project":"so1-p2","com.docker.compose.project.config_files":"/mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/deploy/docker-compose.yml","com.docker.compose.project.working_dir":"/mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/deploy","com.docker.compose.service":"grafana","com.docker.compose.version":"5.1.4","maintainer":"Grafana Labs <hello@grafana.com>","org.opencontainers.image.source":"https://github.com/grafana/grafana","so1.p2.project":"202300476","so1.p2.protect":"1"}
+  labels: {"com.docker.compose.config-hash":"5abbb8ff5b7877a70635131a2dbda18a15b53351ccce103bfdc1a843360e7ecd","com.docker.compose.container-number":"1","com.docker.compose.depends_on":"","com.docker.compose.image":"sha256:3441308844bf0ce1382eadcde891fbb3f97db691b30d2e0402af3c99acc603ea","com.docker.compose.oneoff":"False","com.docker.compose.project":"so1-p2","com.docker.compose.project.config_files":"/mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/deploy/docker-compose.yml","com.docker.compose.project.working_dir":"/mnt/development/Proyectos/202300476_LAB_SO1_2S2026/proyecto2/deploy","com.docker.compose.service":"valkey","com.docker.compose.version":"5.1.4","org.opencontainers.image.source":"https://github.com/valkey-io/valkey","so1.p2.project":"202300476","so1.p2.protect":"1"}
