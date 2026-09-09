@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -19,6 +20,16 @@ var ErrNoCorrelation = errors.New("ebpf: evento sin correlación")
 
 // Signal de terminación usado por el daemon (valor IOS/syscall común).
 const SignalKill = "SIGKILL"
+
+// IsPrivilegeError indica si un error de carga/adjunto eBPF se debe a la falta
+// de privilegios del entorno (sin root / CAP_BPF) o a un kernel sin soporte.
+// Permite al daemon degradar explícitamente (EBPFMode=auto) en lugar de fallar
+// en entornos de desarrollo sin permisos.
+func IsPrivilegeError(err error) bool {
+	return errors.Is(err, syscall.EPERM) ||
+		errors.Is(err, syscall.EACCES) ||
+		errors.Is(err, syscall.EOPNOTSUPP)
+}
 
 // Event es un evento de syscall kill observado por eBPF.
 type Event struct {

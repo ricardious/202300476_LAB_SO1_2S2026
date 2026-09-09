@@ -51,5 +51,11 @@ int handle_kill(struct sys_enter_kill_ctx *ctx)
 SEC("tracepoint/syscalls/sys_enter_tgkill")
 int handle_tgkill(struct sys_enter_tgkill_ctx *ctx)
 {
-	return emit_event(ctx->pid, ctx->sig);
+	/*
+	 * tgkill(tgid, pid, sig) señala a un HILO (pid) dentro de un grupo
+	 * (tgid). El daemon correlaciona contra el PID de host del contenedor,
+	 * que es el TGID del proceso raíz; por eso se reporta ctx->tgid como
+	 * target y no ctx->pid (el tid del hilo específico).
+	 */
+	return emit_event(ctx->tgid, ctx->sig);
 }

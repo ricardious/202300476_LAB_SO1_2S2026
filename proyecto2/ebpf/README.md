@@ -22,8 +22,10 @@ syscalls:sys_enter_tgkill ┘                               (daemon/internal/ebp
 - El evento `kill_event` (24 bytes) transporta:
   - `timestamp_ns`: `bpf_ktime_get_ns()` del instante de la syscall.
   - `emitter_pid`: TGID del proceso que emite la señal.
-  - `target_pid`: argumento `pid` de la syscall (puede ser negativo en
-    `kill(-pgid)`).
+  - `target_pid`: para `kill()` es el argumento `pid` (puede ser negativo en
+    `kill(-pgid)`); para `tgkill()` es el TGID del grupo, porque el daemon
+    correlaciona contra el PID de host del contenedor (que es el TGID del
+    proceso raíz del contenedor), no contra el TID del hilo.
   - `signal`: número de señal (9 = SIGKILL).
 
 ## Dependencias de headers / vmlinux

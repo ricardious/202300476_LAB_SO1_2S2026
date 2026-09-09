@@ -1,9 +1,30 @@
 package ebpf
 
 import (
+	"errors"
+	"fmt"
+	"syscall"
 	"testing"
 	"time"
 )
+
+func TestIsPrivilegeError(t *testing.T) {
+	if !IsPrivilegeError(syscall.EPERM) {
+		t.Error("EPERM debe ser error de privilegios")
+	}
+	if !IsPrivilegeError(fmt.Errorf("ebpf: adjuntar: %w", syscall.EACCES)) {
+		t.Error("EACCES envuelto debe detectarse")
+	}
+	if !IsPrivilegeError(errors.Join(syscall.EPERM, errors.New("extra"))) {
+		t.Error("errors.Join con EPERM debe detectarse")
+	}
+	if IsPrivilegeError(errors.New("otra cosa")) {
+		t.Error("error no relacionado no debe ser de privilegios")
+	}
+	if IsPrivilegeError(nil) {
+		t.Error("nil no debe ser error de privilegios")
+	}
+}
 
 func TestCorrelatorConfirmsMatching(t *testing.T) {
 	c := NewCorrelator(time.Minute)
