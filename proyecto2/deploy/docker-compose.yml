@@ -1,0 +1,77 @@
+services:
+  valkey:
+    image: valkey/valkey:9.1.2-alpine
+    container_name: so1-p2-valkey
+    restart: unless-stopped
+    command:
+      - valkey-server
+      - --save
+      - "60 1"
+      - --appendonly
+      - "yes"
+    environment:
+      TZ: UTC
+    networks:
+      - so1-p2-net
+    ports:
+      - "${VALKEY_PORT:-6379}:6379"
+    volumes:
+      - valkey-data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+  grafana:
+    build:
+      context: ./grafana
+      args:
+        GRAFANA_VERSION: 13.2.1
+        REDIS_PLUGIN_VERSION: 2.2.0
+    image: so1/p2-grafana:202300476
+    container_name: so1-p2-grafana
+    restart: unless-stopped
+    environment:
+      TZ: UTC
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:-admin}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: "${GRAFANA_ROOT_URL:-http://localhost:3000}"
+      # Deshabilita actualizaciones automáticas de plugins/dashboards.
+      GF_PLUGINS_ENABLE_ALPHA: "false"
+    networks:
+      - so1-p2-net
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+networks:
+  so1-p2-net:
+    name: so1-p2-net
+    driver: bridge
+
+volumes:
+  valkey-data:
+    name: so1-p2-valkey-data
+  grafana-data:
+    name: so1-p2-grafana-data
