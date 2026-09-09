@@ -97,7 +97,8 @@ func TestBaseFromHostUnix(t *testing.T) {
 	if err != nil {
 		t.Fatalf("baseFromHost: %v", err)
 	}
-	if base != "http://docker/1.41" {
+	// Docker exige la ruta /v<version> (ej. /v1.41/_ping).
+	if base != "http://docker/v1.41" {
 		t.Errorf("base = %q", base)
 	}
 	if tr == nil {
@@ -110,8 +111,18 @@ func TestBaseFromHostHTTP(t *testing.T) {
 	if err != nil {
 		t.Fatalf("baseFromHost: %v", err)
 	}
-	if base != "http://localhost:2375/1.41" {
+	if base != "http://localhost:2375/v1.41" {
 		t.Errorf("base = %q", base)
+	}
+}
+
+func TestBaseFromHostVersionConVPrefijo(t *testing.T) {
+	base, _, err := baseFromHost("unix:///var/run/docker.sock", "v1.47")
+	if err != nil {
+		t.Fatalf("baseFromHost: %v", err)
+	}
+	if base != "http://docker/v1.47" {
+		t.Errorf("base = %q (no debe duplicar la v)", base)
 	}
 }
 

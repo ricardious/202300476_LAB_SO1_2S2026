@@ -91,6 +91,11 @@ func NewWithBase(base string) *Client {
 
 // baseFromHost resuelve el endpoint HTTP y el transporte a partir del host.
 func baseFromHost(host, apiVersion string) (string, *http.Transport, error) {
+	// Docker exige el prefijo /v<version> en la ruta (ej. /v1.41/_ping).
+	apiPrefix := apiVersion
+	if apiPrefix != "" && !strings.HasPrefix(apiPrefix, "v") {
+		apiPrefix = "v" + apiPrefix
+	}
 	switch {
 	case strings.HasPrefix(host, "unix://"):
 		sock := strings.TrimPrefix(host, "unix://")
@@ -100,11 +105,11 @@ func baseFromHost(host, apiVersion string) (string, *http.Transport, error) {
 				return d.DialContext(ctx, "unix", sock)
 			},
 		}
-		return "http://docker/" + apiVersion, tr, nil
+		return "http://docker/" + apiPrefix, tr, nil
 	case strings.HasPrefix(host, "http://"), strings.HasPrefix(host, "https://"):
 		base := strings.TrimRight(host, "/")
-		if !strings.Contains(base, apiVersion) {
-			base += "/" + apiVersion
+		if apiPrefix != "" && !strings.Contains(base, apiPrefix) {
+			base += "/" + apiPrefix
 		}
 		return base, &http.Transport{}, nil
 	default:
