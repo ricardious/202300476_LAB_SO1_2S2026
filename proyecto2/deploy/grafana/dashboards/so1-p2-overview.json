@@ -84,7 +84,7 @@
       "targets": [
         {
           "command": "hget",
-          "field": "total_kb",
+          "field": "mem_total_kb",
           "keyName": "so1:p2:system:latest",
           "query": "",
           "refId": "A",
@@ -144,7 +144,7 @@
       "targets": [
         {
           "command": "hget",
-          "field": "used_kb",
+          "field": "mem_used_kb",
           "keyName": "so1:p2:system:latest",
           "query": "",
           "refId": "A",
@@ -204,7 +204,7 @@
       "targets": [
         {
           "command": "hget",
-          "field": "free_kb",
+          "field": "mem_free_kb",
           "keyName": "so1:p2:system:latest",
           "query": "",
           "refId": "A",
@@ -299,8 +299,26 @@
           "type": "command"
         }
       ],
-      "title": "Evolución temporal de RAM",
-      "type": "timeseries"
+      "title": "Evoluci\u00f3n temporal de RAM",
+      "type": "timeseries",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "$streamId": true,
+              "ts": true,
+              "mem_total_kb": true,
+              "mem_free_kb": true,
+              "process_count": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "mem_used_kb": "RAM usada (KB)"
+            }
+          }
+        }
+      ]
     },
     {
       "collapsed": false,
@@ -518,7 +536,25 @@
         }
       ],
       "title": "Eliminaciones confirmadas a lo largo del tiempo",
-      "type": "timeseries"
+      "type": "timeseries",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "$streamId": true,
+              "container_id": true,
+              "host_pid": true,
+              "signal": true,
+              "ts": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "n": "Eliminaciones"
+            }
+          }
+        }
+      ]
     },
     {
       "datasource": {
@@ -600,7 +636,7 @@
         "y": 29
       },
       "id": 300,
-      "title": "Ranking histórico (top 5)",
+      "title": "Ranking hist\u00f3rico (top 5)",
       "type": "row"
     },
     {
@@ -665,7 +701,7 @@
           "zrangeQuery": "REV"
         }
       ],
-      "title": "Top 5 histórico por RAM (PID e ID)",
+      "title": "Top 5 hist\u00f3rico por RAM (PID e ID)",
       "type": "table"
     },
     {
@@ -730,7 +766,7 @@
           "zrangeQuery": "REV"
         }
       ],
-      "title": "Top 5 histórico por CPU (PID e ID)",
+      "title": "Top 5 hist\u00f3rico por CPU (PID e ID)",
       "type": "table"
     },
     {
@@ -817,7 +853,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "SO1 P2 · Observabilidad 202300476",
+  "title": "SO1 P2 \u00b7 Observabilidad 202300476",
   "uid": "so1-p2-observability",
   "version": 1,
   "weekStart": ""
