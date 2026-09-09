@@ -6,6 +6,7 @@ import (
 	"io"
 	"log/slog"
 	"sync"
+	"syscall"
 	"testing"
 	"time"
 
@@ -123,6 +124,15 @@ func buildDaemon(t *testing.T, cons ebpf.Consumer) (*Daemon, *fakeDocker, *fakeS
 	corr := ebpf.NewCorrelator(5 * time.Second)
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
 	d := New(cfg, fakeProc{data: procSnapshotJSON()}, fd, policy.New(cfg), fs, cons, corr, logger)
+	d.ProcessKill = func(pid int, _ syscall.Signal) error {
+		for id, c := range fd.byID {
+			if c.HostPID == pid {
+				fd.killed = append(fd.killed, id)
+				return nil
+			}
+		}
+		return errors.New("pid no existe")
+	}
 	return d, fd, fs
 }
 

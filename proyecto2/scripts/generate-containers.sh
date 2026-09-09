@@ -25,7 +25,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 readonly IMAGE_TAG="so1/load:202300476"
 readonly PROFILE_LABEL="so1.p2.profile"
-readonly MANAGED_LABEL="so1.p2.managed=true"
+readonly MANAGED_LABEL="so1.p2.managed=1"
 readonly PROJECT_LABEL="so1.p2.project=202300476"
 readonly DEFAULT_IMAGE_PREFIX="so1-load-"
 

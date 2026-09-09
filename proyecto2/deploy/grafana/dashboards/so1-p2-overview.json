@@ -17,22 +17,105 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
-  "links": [],
-  "liveNow": false,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Repositorio del curso",
+      "tooltip": "Abrir código y documentación",
+      "type": "link",
+      "url": "https://github.com/ricardious/202300476_LAB_SO1_2S2026"
+    }
+  ],
+  "liveNow": true,
   "panels": [
     {
-      "collapsed": false,
+      "id": 100,
+      "type": "text",
+      "title": "",
+      "transparent": true,
       "gridPos": {
-        "h": 1,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 100,
-      "title": "RAM del sistema",
-      "type": "row"
+      "options": {
+        "mode": "markdown",
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Kernel Operations Center\n**Sistemas Operativos 1 · Proyecto 2 · 202300476**\n\nTelemetría del host desde `/proc` · decisiones autónomas **3 LOW / 2 HIGH** · confirmación de señales con **eBPF** · persistencia en **Valkey**"
+      }
+    },
+    {
+      "datasource": {
+        "type": "redis-datasource",
+        "uid": "so1-valkey"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "id": 101,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.1",
+      "targets": [
+        {
+          "command": "hget",
+          "field": "mem_total_kb",
+          "keyName": "so1:p2:system:latest",
+          "query": "",
+          "refId": "A",
+          "type": "command"
+        }
+      ],
+      "title": "Capacidad RAM",
+      "type": "stat",
+      "description": "Memoria física total reportada por el módulo de kernel."
     },
     {
       "datasource": {
@@ -51,85 +134,33 @@
               {
                 "color": "green",
                 "value": null
-              }
-            ]
-          },
-          "unit": "KBs"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 1
-      },
-      "id": 101,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.2.1",
-      "targets": [
-        {
-          "command": "hget",
-          "field": "mem_total_kb",
-          "keyName": "so1:p2:system:latest",
-          "query": "",
-          "refId": "A",
-          "type": "command"
-        }
-      ],
-      "title": "RAM total",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "redis-datasource",
-        "uid": "so1-valkey"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+              },
               {
-                "color": "blue",
-                "value": null
+                "color": "orange",
+                "value": 5100000
+              },
+              {
+                "color": "red",
+                "value": 6200000
               }
             ]
           },
-          "unit": "KBs"
+          "unit": "kbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 1
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 4
       },
       "id": 102,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -137,7 +168,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "13.2.1",
@@ -151,8 +182,9 @@
           "type": "command"
         }
       ],
-      "title": "RAM usada",
-      "type": "stat"
+      "title": "RAM en uso",
+      "type": "stat",
+      "description": "Memoria ocupada en el snapshot más reciente de /proc."
     },
     {
       "datasource": {
@@ -169,27 +201,35 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "purple",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1100000
+              },
+              {
+                "color": "green",
+                "value": 2200000
               }
             ]
           },
-          "unit": "KBs"
+          "unit": "kbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 1
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 4
       },
       "id": 103,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -197,7 +237,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "13.2.1",
@@ -211,8 +251,74 @@
           "type": "command"
         }
       ],
-      "title": "RAM libre",
-      "type": "stat"
+      "title": "RAM disponible",
+      "type": "stat",
+      "description": "Memoria libre; cambia a verde al recuperar margen operativo."
+    },
+    {
+      "id": 105,
+      "type": "stat",
+      "title": "Procesos observados",
+      "description": "Procesos incluidos en el último snapshot del módulo /proc.",
+      "datasource": {
+        "type": "redis-datasource",
+        "uid": "so1-valkey"
+      },
+      "pluginVersion": "13.2.1",
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "purple",
+                "value": 500
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "command": "hget",
+          "field": "process_count",
+          "keyName": "so1:p2:system:latest",
+          "query": "",
+          "refId": "A",
+          "type": "command"
+        }
+      ]
     },
     {
       "datasource": {
@@ -228,26 +334,26 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "KB",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
+            "fillOpacity": 22,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 4,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -266,27 +372,70 @@
               }
             ]
           },
-          "unit": "KBs"
+          "unit": "kbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM usada"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 24
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM disponible"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 10
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
+        "h": 9,
+        "w": 16,
         "x": 0,
-        "y": 7
+        "y": 9
       },
       "id": 104,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
-          "sort": "none"
+          "sort": "desc"
         }
       },
       "pluginVersion": "13.2.1",
@@ -299,7 +448,7 @@
           "type": "command"
         }
       ],
-      "title": "Evoluci\u00f3n temporal de RAM",
+      "title": "Presión de memoria en el tiempo",
       "type": "timeseries",
       "transformations": [
         {
@@ -309,16 +458,85 @@
               "$streamId": true,
               "ts": true,
               "mem_total_kb": true,
-              "mem_free_kb": true,
               "process_count": true
             },
             "indexByName": {},
             "renameByName": {
-              "mem_used_kb": "RAM usada (KB)"
+              "mem_used_kb": "RAM usada",
+              "mem_free_kb": "RAM disponible"
             }
           }
         }
-      ]
+      ],
+      "description": "Memoria usada y disponible, derivadas de snapshots continuos del módulo."
+    },
+    {
+      "datasource": {
+        "type": "redis-datasource",
+        "uid": "so1-valkey"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 202,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.1",
+      "targets": [
+        {
+          "command": "get",
+          "keyName": "so1:p2:kills:count",
+          "query": "",
+          "refId": "A",
+          "type": "command"
+        }
+      ],
+      "title": "Kills confirmados",
+      "type": "stat",
+      "description": "Total persistido únicamente después de correlación eBPF."
     },
     {
       "collapsed": false,
@@ -326,10 +544,10 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 18
       },
       "id": 200,
-      "title": "Eliminaciones confirmadas (eBPF kill)",
+      "title": "eBPF · decisiones verificables",
       "type": "row"
     },
     {
@@ -347,8 +565,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
+                "color": "green",
                 "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
               }
             ]
           },
@@ -357,17 +579,17 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
+        "h": 8,
+        "w": 5,
         "x": 0,
-        "y": 16
+        "y": 19
       },
       "id": 201,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "justifyMode": "center",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -375,7 +597,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "13.2.1",
@@ -388,8 +610,9 @@
           "type": "command"
         }
       ],
-      "title": "Eliminaciones confirmadas (XLEN)",
-      "type": "stat"
+      "title": "Eventos en stream",
+      "type": "stat",
+      "description": "Longitud del stream so1:p2:kills; debe coincidir con el contador confirmado."
     },
     {
       "datasource": {
@@ -399,77 +622,19 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
-        "y": 16
-      },
-      "id": 202,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.2.1",
-      "targets": [
-        {
-          "command": "get",
-          "keyName": "so1:p2:kills:count",
-          "query": "",
-          "refId": "A",
-          "type": "command"
-        }
-      ],
-      "title": "Contador total de kills (GET)",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "redis-datasource",
-        "uid": "so1-valkey"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+            "mode": "fixed",
+            "fixedColor": "orange"
           },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "eventos confirmados",
+            "axisLabel": "Eventos",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
+            "drawStyle": "bars",
+            "fillOpacity": 75,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -477,12 +642,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
+            "lineWidth": 1,
+            "pointSize": 3,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -508,20 +673,22 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 16
+        "w": 19,
+        "x": 5,
+        "y": 19
       },
       "id": 203,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -535,7 +702,7 @@
           "type": "command"
         }
       ],
-      "title": "Eliminaciones confirmadas a lo largo del tiempo",
+      "title": "Actividad de eliminaciones confirmadas",
       "type": "timeseries",
       "transformations": [
         {
@@ -554,7 +721,8 @@
             }
           }
         }
-      ]
+      ],
+      "description": "Cada barra representa una terminación correlacionada con un evento real del kernel."
     },
     {
       "datasource": {
@@ -584,30 +752,104 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Evento"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hora"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Contenedor"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 520
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PID host"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Señal"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 9,
+        "w": 24,
         "x": 0,
-        "y": 21
+        "y": 27
       },
       "id": 204,
       "options": {
-        "cellHeight": "sm",
+        "cellHeight": "md",
         "footer": {
-          "countRows": false,
+          "countRows": true,
           "fields": "",
           "reducer": [
-            "sum"
+            "count"
           ],
-          "show": false
+          "show": true
         },
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "$streamId"
+            "displayName": "Evento"
           }
         ]
       },
@@ -624,8 +866,34 @@
           "type": "command"
         }
       ],
-      "title": "Tabla de eventos kill capturados por eBPF",
-      "type": "table"
+      "title": "Bitácora eBPF · señales confirmadas",
+      "type": "table",
+      "description": "Últimas diez señales correlacionadas entre el PID de host y el contenedor.",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ts": true,
+              "n": true
+            },
+            "indexByName": {
+              "$streamId": 0,
+              "$time": 1,
+              "container_id": 2,
+              "host_pid": 3,
+              "signal": 4
+            },
+            "renameByName": {
+              "$streamId": "Evento",
+              "$time": "Hora",
+              "container_id": "Contenedor",
+              "host_pid": "PID host",
+              "signal": "Señal"
+            }
+          }
+        }
+      ]
     },
     {
       "collapsed": false,
@@ -633,10 +901,10 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 36
       },
       "id": 300,
-      "title": "Ranking hist\u00f3rico (top 5)",
+      "title": "Histórico de carga · capacidad y comportamiento",
       "type": "row"
     },
     {
@@ -647,25 +915,28 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
+            "mode": "continuous-GrYlRd"
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "orange",
+                "value": 262144
+              },
+              {
+                "color": "red",
+                "value": 524288
               }
             ]
-          }
+          },
+          "unit": "kbytes"
         },
         "overrides": []
       },
@@ -673,20 +944,30 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 37
       },
       "id": 301,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "left",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
-          "show": false
+          "fields": "",
+          "values": true
         },
-        "showHeader": true
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 12,
+          "valueSize": 16
+        },
+        "valueMode": "color"
       },
       "pluginVersion": "13.2.1",
       "targets": [
@@ -701,8 +982,9 @@
           "zrangeQuery": "REV"
         }
       ],
-      "title": "Top 5 hist\u00f3rico por RAM (PID e ID)",
-      "type": "table"
+      "title": "Top 5 por RAM",
+      "type": "bargauge",
+      "description": "Mayor consumo histórico de memoria con PID e ID de contenedor."
     },
     {
       "datasource": {
@@ -712,25 +994,30 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-BlPu"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
+          "decimals": 1,
           "mappings": [],
+          "min": 0,
+          "max": 100,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
               }
             ]
-          }
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -738,20 +1025,30 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 30
+        "y": 37
       },
       "id": 302,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "left",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
-          "show": false
+          "fields": "",
+          "values": true
         },
-        "showHeader": true
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 12,
+          "valueSize": 16
+        },
+        "valueMode": "color"
       },
       "pluginVersion": "13.2.1",
       "targets": [
@@ -766,8 +1063,9 @@
           "zrangeQuery": "REV"
         }
       ],
-      "title": "Top 5 hist\u00f3rico por CPU (PID e ID)",
-      "type": "table"
+      "title": "Top 5 por CPU",
+      "type": "bargauge",
+      "description": "Procesos con mayor utilización histórica de CPU."
     },
     {
       "datasource": {
@@ -797,26 +1095,125 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Contenedor"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 360
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 420
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RSS"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VSZ"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kbytes"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 45
       },
       "id": 303,
       "options": {
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
+          "countRows": true,
           "fields": "",
           "reducer": [
-            "sum"
+            "count"
           ],
-          "show": false
+          "show": true
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Hora"
+          }
+        ]
       },
       "pluginVersion": "13.2.1",
       "targets": [
@@ -831,30 +1228,65 @@
           "type": "command"
         }
       ],
-      "title": "Timeline de contenedores (activos e inactivos)",
-      "type": "table"
+      "title": "Timeline de contenedores",
+      "type": "table",
+      "description": "Actividad reciente: identidad, PID y consumo observado por el módulo.",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ts": true
+            },
+            "indexByName": {
+              "$time": 0,
+              "name": 1,
+              "host_pid": 2,
+              "mem_percent": 3,
+              "rss_kb": 4,
+              "vsz_kb": 5,
+              "cpu": 6,
+              "container_id": 7,
+              "$streamId": 8
+            },
+            "renameByName": {
+              "$streamId": "Evento",
+              "$time": "Hora",
+              "name": "Contenedor",
+              "host_pid": "PID host",
+              "mem_percent": "RAM %",
+              "rss_kb": "RSS",
+              "vsz_kb": "VSZ",
+              "cpu": "CPU %",
+              "container_id": "ID"
+            }
+          }
+        }
+      ]
     }
   ],
-  "refresh": "10s",
-  "schemaVersion": 39,
+  "refresh": "5s",
+  "schemaVersion": 41,
   "tags": [
     "so1",
-    "p2",
-    "observability",
-    "valkey",
-    "grafana"
+    "proyecto-2",
+    "kernel",
+    "ebpf",
+    "containers",
+    "valkey"
   ],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "SO1 P2 \u00b7 Observabilidad 202300476",
+  "title": "SO1 P2 · Kernel Operations Center · 202300476",
   "uid": "so1-p2-observability",
   "version": 1,
-  "weekStart": ""
+  "weekStart": "",
+  "description": "Centro de observabilidad del módulo de kernel, política autónoma de contenedores y confirmaciones eBPF."
 }
