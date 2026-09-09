@@ -61,6 +61,11 @@ make demo                                             # demo de punta a punta
 El ranking histórico guarda el miembro `"<id>|pid=<pid>"` para que los paneles
 "Top 5 histórico por RAM/CPU" muestren PID e ID.
 
+> `make install` e `install-cron.sh` instalan el generador como **enlace
+> simbólico** al script del repositorio y la línea de cron exporta
+> `SO1_P2_PROJECT_DIR`, de modo que el generador encuentre `workloads/` aunque
+> cron lo invoque desde otro directorio de trabajo.
+
 ## eBPF y degradación
 
 El consumidor **CO-RE real** (`daemon/internal/ebpf`) se adjunta a
@@ -109,4 +114,6 @@ bash scripts/cleanup.sh --no-confirm --module --purge
 
 Nunca elimina contenedores/volúmenes/redes ajenos.
 
-Documentación completa: `docs/PLAN_PROYECTO2.md` y `ebpf/README.md`.
+Documentación completa: `docs/MANUAL_TECNICO.md`, `docs/GUIA_INSTALACION.md`,
+`docs/GUIA_DEMO.md`, `docs/DEFENSA.md`, `docs/AUDITORIA_RUBRICA.md`,
+`docs/PLAN_PROYECTO2.md` y `ebpf/README.md`.

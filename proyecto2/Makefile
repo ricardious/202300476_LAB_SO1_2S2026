@@ -71,12 +71,12 @@ install: build
 	@mkdir -p /usr/local/bin
 	@if [ -w /usr/local/bin ]; then \
 		install -m 0755 $(BIN) /usr/local/bin/so1-p2-daemon; \
-		install -m 0755 $(SCRIPTS_DIR)/generate-containers.sh $(GENERATOR); \
+		ln -sfn $(SCRIPTS_DIR)/generate-containers.sh $(GENERATOR); \
 	else \
 		sudo install -m 0755 $(BIN) /usr/local/bin/so1-p2-daemon; \
-		sudo install -m 0755 $(SCRIPTS_DIR)/generate-containers.sh $(GENERATOR); \
+		sudo ln -sfn $(SCRIPTS_DIR)/generate-containers.sh $(GENERATOR); \
 	fi
-	@echo ">> instalado: /usr/local/bin/so1-p2-daemon y $(GENERATOR)"
+	@echo ">> instalado: /usr/local/bin/so1-p2-daemon y $(GENERATOR) (symlink al repositorio)"
 
 # --------------------------------------------------------------------------
 # run (daemon en el HOST, con env de .env)

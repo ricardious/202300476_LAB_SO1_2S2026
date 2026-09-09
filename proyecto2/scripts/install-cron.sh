@@ -18,6 +18,11 @@ set -euo pipefail
 
 SCRIPT_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/generate-containers.sh"
 
+# Directorio raíz del proyecto (contiene workloads/): se embebe en la línea
+# de cron para que el generador instalado en /usr/local/bin resuelva las
+# imágenes aunque se invoque desde cualquier directorio de trabajo.
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # Marcadores (idempotencia y delimitación). Deben coincidir con los del daemon
 # Go (daemon/internal/cron) para que ambas vías operen sobre la misma entrada.
 readonly MARKER_BEGIN="# >>> so1-p2-202300476:begin >>>"
@@ -27,9 +32,10 @@ readonly MARKER_END="# <<< so1-p2-202300476:end <<<"
 # misma ruta en su entrada de cron (SO1_P2_CRON_COMMAND).
 readonly INSTALL_PREFIX="${SO1_P2_INSTALL_PREFIX:-/usr/local/bin}"
 
-# Comando que ejecuta cron. Redirige salida a un log del proyecto.
+# Comando que ejecuta cron. Redirige salida a un log del proyecto y exporta
+# SO1_P2_PROJECT_DIR para que el generador encuentre workloads/ siempre.
 readonly LOG_FILE="${SO1_P2_LOG_DIR:-${HOME}/.so1-p2/logs}/generate-containers.log"
-readonly CRON_LINE="*/2 * * * * ${INSTALL_PREFIX}/so1-p2-generate-containers.sh >> ${LOG_FILE} 2>&1"
+readonly CRON_LINE="*/2 * * * * cd ${PROJECT_ROOT} && SO1_P2_PROJECT_DIR=${PROJECT_ROOT} ${INSTALL_PREFIX}/so1-p2-generate-containers.sh >> ${LOG_FILE} 2>&1"
 
 log() {
   printf '[install-cron] %s\n' "$*" >&2
@@ -45,12 +51,17 @@ die() {
 # y la instalación de la entrada continúa (make install la resuelve con sudo).
 install_generator() {
   local dest="${INSTALL_PREFIX}/so1-p2-generate-containers.sh"
-  if [ -x "${dest}" ] && [ "$(readlink -f "${dest}")" = "$(readlink -f "${SCRIPT_SRC}")" ]; then
+  if [ -e "${dest}" ] && [ "$(readlink -f "${dest}" 2>/dev/null)" = "$(readlink -f "${SCRIPT_SRC}")" ]; then
     return 0
   fi
   log "installing generator to ${dest} (idempotente)..."
-  if ! install -m 0755 "${SCRIPT_SRC}" "${dest}" 2>/dev/null; then
-    log "no se pudo instalar en ${dest}; hágalo con: sudo make install (continuando)"
+  # Se instala como ENLACE simbólico al script del repositorio para que el
+  # generador resuelva su propio directorio (workloads/) aunque el cwd de cron
+  # no sea el del proyecto. Si el enlace no se puede crear, se copia (en ese
+  # caso la línea de cron ya exporta SO1_P2_PROJECT_DIR).
+  if ! ln -sfn "${SCRIPT_SRC}" "${dest}" 2>/dev/null; then
+    install -m 0755 "${SCRIPT_SRC}" "${dest}" 2>/dev/null || \
+      log "no se pudo instalar en ${dest}; hágalo con: sudo make install (continuando)"
   fi
 }
 

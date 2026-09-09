@@ -64,6 +64,39 @@ log() {
   printf '[generate-containers] %s\n' "$*" >&2
 }
 
+# ---------------------------------------------------------------------------
+# Resolución robusta del directorio del proyecto.
+#
+# El script puede invocarse:
+#   1) desde el repositorio (scripts/generate-containers.sh),
+#   2) desde una copia/enlace instalado en /usr/local/bin (cron/daemon).
+#
+# Orden de resolución:
+#   - SO1_P2_PROJECT_DIR (explícito, recomendado para cron/instalación).
+#   - El directorio padre del script REAL (readlink -f) si contiene workloads/.
+#   - El directorio de trabajo actual si contiene workloads/.
+# ---------------------------------------------------------------------------
+resolve_project_root() {
+  if [ -n "${SO1_P2_PROJECT_DIR:-}" ] && [ -d "${SO1_P2_PROJECT_DIR}/workloads" ]; then
+    printf '%s\n' "${SO1_P2_PROJECT_DIR}"
+    return 0
+  fi
+  local real_dir real
+  real="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || true)"
+  if [ -n "${real}" ]; then
+    real_dir="$(dirname "${real}")"
+    if [ -d "${real_dir}/../workloads" ]; then
+      printf '%s\n' "$(cd "${real_dir}/.." && pwd)"
+      return 0
+    fi
+  fi
+  if [ -d "$(pwd)/workloads" ]; then
+    printf '%s\n' "$(pwd)"
+    return 0
+  fi
+  return 1
+}
+
 die() {
   log "ERROR: $*"
   exit 1
@@ -92,7 +125,7 @@ ensure_image() {
   if ! docker image inspect "${IMAGE_TAG}-${image}" >/dev/null 2>&1; then
     log "image ${IMAGE_TAG}-${image} not found; building it..."
     docker build -t "${IMAGE_TAG}-${image}" \
-      "./workloads/${image}" >/dev/null
+      "${PROJECT_ROOT}/workloads/${image}" >/dev/null
   fi
 }
 
@@ -145,9 +178,11 @@ main() {
   acquire_lock
   require_docker
 
-  local script_dir
-  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  cd "${script_dir}/.."
+  if ! PROJECT_ROOT="$(resolve_project_root)"; then
+    die "no se pudo ubicar el directorio del proyecto (workloads/). Use SO1_P2_PROJECT_DIR."
+  fi
+  readonly PROJECT_ROOT
+  log "project root: ${PROJECT_ROOT}"
 
   local i=0
   while IFS= read -r profile; do
