@@ -88,7 +88,7 @@ if [[ "${SO1_SKIP_DOCKER:-0}" != "1" ]] && docker info >/dev/null 2>&1; then
   label_ok=1
   for c in "${managed[@]}"; do
     l=$(docker inspect "$c" --format '{{json .Config.Labels}}' 2>/dev/null || true)
-    if [[ "$l" != *'"so1.p2.project":"202300476"'* || "$l" != *'"so1.p2.managed":"true"'* || "$l" != *'"so1.p2.profile":'* ]]; then
+    if [[ "$l" != *'"so1.p2.project":"202300476"'* || "$l" != *'"so1.p2.managed":"1"'* || "$l" != *'"so1.p2.profile":'* ]]; then
       label_ok=0
     fi
   done
