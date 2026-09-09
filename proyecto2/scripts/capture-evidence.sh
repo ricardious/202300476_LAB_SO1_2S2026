@@ -38,7 +38,7 @@ MODNAME="continfo"
 MARKER_BEGIN="# >>> so1-p2-202300476:begin >>>"
 MARKER_END="# <<< so1-p2-202300476:end <<<"
 
-declare -a RUBROS=(entorno kernel daemon-politica cron-workloads valkey-grafana ebpf)
+declare -a RUBROS=(entorno kernel daemon-politica cron-workloads valkey-grafana ebpf rust-extra)
 
 usage() {
   sed -n '2,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
@@ -487,6 +487,50 @@ capture_ebpf() {
 }
 
 # ---------------------------------------------------------------------------
+# rubro: rust-extra — actividad adicional de módulo de kernel
+# ---------------------------------------------------------------------------
+capture_rust_extra() {
+  local f="rust-extra.txt"
+  local ko="${ROOT}/rust-module/hola_rust_202300476.ko"
+  begin_file "rust-extra" "$f" "Actividad extra: módulo de kernel en Rust"
+
+  section "Toolchain y soporte del kernel"
+  if command -v rustc >/dev/null 2>&1; then
+    dump "$(rustc --version)"
+    ok "compilador Rust disponible"
+  else
+    fail "rustc no está instalado"
+  fi
+  if grep -q '^CONFIG_RUST=y' "/lib/modules/$(uname -r)/build/.config" 2>/dev/null; then
+    ok "kernel $(uname -r) compilado con CONFIG_RUST=y"
+  else
+    warn "no se confirmó CONFIG_RUST=y para $(uname -r)"
+  fi
+
+  section "Artefacto y metadatos"
+  if [ -s "$ko" ]; then
+    dump "$(ls -lh "$ko")"
+    dump "$(modinfo "$ko" 2>/dev/null || true)"
+    ok "hola_rust_202300476.ko disponible"
+  else
+    skip "módulo no compilado (make rust-module)"
+  fi
+
+  section "Carga y mensajes del kernel"
+  if grep -qw hola_rust_202300476 /proc/modules 2>/dev/null; then
+    ok "hola_rust_202300476 cargado"
+  else
+    skip "módulo Rust no cargado (sudo make rust-module-load)"
+  fi
+  if [ "$PRIVILEGED" -eq 1 ]; then
+    dump "$(sudo dmesg | grep -E 'Hola Mundo 202300476|Modulo Rust 202300476' | tail -n 20 || true)"
+  else
+    dump "Ejecute con --privileged para capturar los mensajes de carga y descarga."
+  fi
+  end_file
+}
+
+# ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
 main() {
@@ -517,6 +561,7 @@ main() {
       cron-workloads)    capture_cron_workloads ;;
       valkey-grafana)    capture_valkey_grafana ;;
       ebpf)              capture_ebpf ;;
+      rust-extra)        capture_rust_extra ;;
     esac
   done
 
