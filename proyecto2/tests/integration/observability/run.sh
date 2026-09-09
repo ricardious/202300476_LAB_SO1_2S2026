@@ -56,6 +56,12 @@ done
 # ---------------------------------------------------------------------------
 if [[ "${SO1_SKIP_DOCKER:-0}" != "1" ]] && docker info >/dev/null 2>&1; then
   note "Imágenes de carga"
+
+  # Entorno hermético: se eliminan contenedores del proyecto que hayan quedado
+  # de corridas previas (etiquetados so1.p2.project=202300476) para que el
+  # conteo "exactamente 5" sea determinista. Solo toca recursos del proyecto.
+  docker ps -a -q --filter "label=so1.p2.project=202300476" | xargs -r docker rm -f >/dev/null 2>&1 || true
+
   for img in low memory-high cpu-high intruder; do
     if docker build -t "so1/load:test-${img}" "${WORKLOADS_DIR}/${img}" >/dev/null 2>&1; then
       ok "build ${img}"
@@ -110,8 +116,25 @@ if [[ "${SO1_SKIP_DOCKER:-0}" != "1" ]] && docker info >/dev/null 2>&1; then
   fi
   rmdir "$LOCKDIR" 2>/dev/null || true
 
+  # Generador instalado (symlink a /usr/local/bin, como hace make install):
+  # debe resolver workloads/ vía SO1_P2_PROJECT_DIR y crear 5 contenedores.
+  INSTALL_BIN="$(mktemp -d)"
+  GENERATOR_LINK="${INSTALL_BIN}/so1-p2-generate-containers.sh"
+  ln -sfn "${SCRIPTS_DIR}/generate-containers.sh" "${GENERATOR_LINK}"
+  SO1_SEED=3 SO1_P2_PROJECT_DIR="$ROOT" "${GENERATOR_LINK}" >/dev/null 2>&1 \
+    && ok "generador instalado (symlink + SO1_P2_PROJECT_DIR) crea contenedores" \
+    || ko "generador instalado no resolvió workloads/"
+  managed2=0
+  mapfile -t managed2 < <(docker ps -q --filter "label=so1.p2.project=202300476")
+  if [[ "${#managed2[@]}" -eq 10 ]]; then
+    ok "invocación desde instalación creó 5 contenedores adicionales"
+  else
+    ko "invocación desde instalación creó ${#managed2[@]} contenedores (esperado 10 en total)"
+  fi
+  rm -rf "$INSTALL_BIN"
+
   # Limpieza de los contenedores de prueba
-  docker rm -f "${managed[@]}" >/dev/null 2>&1 || true
+  docker rm -f "${managed[@]}" "${managed2[@]}" >/dev/null 2>&1 || true
   ok "limpieza de contenedores de prueba"
 else
   note "Contenedores de carga (omito por SO1_SKIP_DOCKER=1 o sin daemon)"
@@ -152,6 +175,13 @@ fi
 PATH="${MOCK_BIN}:${PATH}" "${SCRIPTS_DIR}/install-cron.sh" >/dev/null 2>&1 || true
 b=$(grep -c "$MARKER_BEGIN" "$MOCK_CRON" || true)
 [[ "$b" -eq 1 ]] && ok "reinstalación idempotente (1 sección)" || ko "reinstalación duplicó a $b secciones"
+
+# Caso B2: la línea de cron exporta SO1_P2_PROJECT_DIR para el generador instalado
+if grep -q 'SO1_P2_PROJECT_DIR' "$MOCK_CRON"; then
+  ok "línea cron exporta SO1_P2_PROJECT_DIR"
+else
+  ko "línea cron sin SO1_P2_PROJECT_DIR (el generador instalado no resolvería workloads/)"
+fi
 
 # Caso C: entrada ajena preservada
 printf '%s\n' "$USER_ENTRY" > "$MOCK_CRON"
@@ -206,6 +236,14 @@ for p in "${REQUIRED_PANELS[@]}"; do
     ko "panel faltante: $p"
   fi
 done
+
+# Los HGET de las tarjetas de RAM deben consultar los campos que el daemon
+# persiste en so1:p2:system:latest (mem_total_kb / mem_used_kb / mem_free_kb).
+if jq -e '[.panels[].targets[]? | select(.command=="hget") | .field] | index("total_kb") == null and index("used_kb") == null and index("free_kb") == null' "$DASHBOARD" >/dev/null 2>&1; then
+  ok "campos HGET del dashboard alineados con el hash so1:p2:system:latest"
+else
+  ko "el dashboard consulta campos HGET inexistentes (total_kb/used_kb/free_kb); el hash persiste mem_*_kb"
+fi
 
 # El datasource provisionado apunta a la misma uid que usan los paneles.
 DS_UID="$(grep -A1 'name: Valkey' "${DEPLOY_DIR}/grafana/provisioning/datasources/datasources.yaml" | grep -o 'uid: .*' | awk '{print $2}')"
