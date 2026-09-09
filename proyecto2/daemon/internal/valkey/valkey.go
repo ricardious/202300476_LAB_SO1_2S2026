@@ -191,6 +191,7 @@ func (s *ValkeyStore) RecordKill(ctx context.Context, ev KillEvent) error {
 			"host_pid":     ev.HostPID,
 			"signal":       ev.Signal,
 			"ts":           ev.TimestampUnixNS,
+			"n":            1, // 1 evento por eliminación: serie limpia para el panel temporal
 		},
 	})
 	pipe.Incr(ctx, s.key("kills:count"))

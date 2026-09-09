@@ -123,6 +123,31 @@ func TestRecordKillStreamFields(t *testing.T) {
 	if vals["signal"] != "SIGTERM" {
 		t.Errorf("signal = %q, esperaba SIGTERM", vals["signal"])
 	}
+	// Campo n=1: el panel temporal de eliminaciones lo grafica como serie limpia.
+	if vals["n"] != "1" {
+		t.Errorf("n = %q, esperaba 1 (serie de eliminaciones)", vals["n"])
+	}
+}
+
+func TestSystemLatestHashFieldsMatchDashboard(t *testing.T) {
+	// El dashboard HGET consulta mem_total_kb/mem_used_kb/mem_free_kb; el hash
+	// persistido debe usar esos EXACTOS nombres (regresión de la alineación).
+	store, srv := setup(t)
+	ctx := context.Background()
+	e := SnapshotEntry{TimestampUnixNS: 1, MemTotalKB: 1000, MemFreeKB: 400, MemUsedKB: 600, ProcessCount: 2}
+	if err := store.SaveSystemLatest(ctx, e); err != nil {
+		t.Fatalf("save system:latest: %v", err)
+	}
+	for _, f := range []string{"mem_total_kb", "mem_free_kb", "mem_used_kb"} {
+		if srv.HGet("so1:p2:system:latest", f) == "" {
+			t.Errorf("hash so1:p2:system:latest sin campo %q", f)
+		}
+	}
+	for _, f := range []string{"total_kb", "used_kb", "free_kb"} {
+		if srv.HGet("so1:p2:system:latest", f) != "" {
+			t.Errorf("hash so1:p2:system:latest no debe contener %q", f)
+		}
+	}
 }
 
 func TestAppendContainersEmpty(t *testing.T) {
