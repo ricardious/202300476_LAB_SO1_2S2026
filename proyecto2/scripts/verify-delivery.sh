@@ -107,9 +107,9 @@ REQUIRED=(
   tests/integration/observability/run.sh tests/integration/observability/test_containers.sh
   tests/integration/observability/test_cron.sh tests/integration/observability/test_deploy.sh
   tests/integration/observability/test_stack.sh
-  docs/AUDITORIA_RUBRICA.md docs/CHECKLIST_ENTREGA.md docs/DEFENSA.md docs/GUIA_DEMO.md
-  docs/GUIA_INSTALACION.md docs/INFORME_INTEGRACION.md docs/MANUAL_TECNICO.md docs/PLAN_PROYECTO2.md
-  evidencias/README.md
+  docs/AUDITORIA_RUBRICA.md docs/DEFENSA.md docs/GUIA_DEMO.md
+  docs/GUIA_INSTALACION.md docs/INFORME_INTEGRACION.md docs/MANUAL_TECNICO.md
+  docs/evidencias/README.md
 )
 MISSING=0
 for f in "${REQUIRED[@]}"; do
@@ -122,10 +122,10 @@ done
 
 section "Carpetas de evidencias por rubro"
 for d in entorno kernel daemon-politica cron-workloads valkey-grafana ebpf documentacion-git; do
-  if [ -d "$ROOT/evidencias/$d" ] && [ -f "$ROOT/evidencias/$d/.gitkeep" ]; then
-    ok "evidencias/$d/.gitkeep"
+  if [ -d "$ROOT/docs/evidencias/$d" ] && [ -f "$ROOT/docs/evidencias/$d/.gitkeep" ]; then
+    ok "docs/evidencias/$d/.gitkeep"
   else
-    fail "evidencias/$d/.gitkeep ausente"
+    fail "docs/evidencias/$d/.gitkeep ausente"
   fi
 done
 
@@ -393,5 +393,5 @@ if [ "$FAIL" -gt 0 ]; then
 fi
 echo
 echo "  VEREDICTO: preentrega OK (los SKIP son por entorno/privilegios y deben"
-echo "  ejecutarse en la VM según docs/CHECKLIST_ENTREGA.md)."
+echo "  ejecutarse en la VM según docs/GUIA_DEMO.md)."
 exit 0

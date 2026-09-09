@@ -1,7 +1,7 @@
 # Frente eBPF — monitor de la syscall `kill`
 
 Componente CO-RE (Compile Once, Run Everywhere) del plan maestro
-(`proyecto2/docs/PLAN_PROYECTO2.md`, sección 3.3 y criterio 3.1/3.2 de la
+(`proyecto2/docs/MANUAL_TECNICO.md` y criterio 3.1/3.2 de la
 rúbrica). Captura las syscalls `kill`/`tgkill`, emite eventos con timestamp,
 PID/TGID emisor, PID receptor y señal a través de un ring buffer, y los
 reenvía al daemon Go para correlacionar eliminaciones de contenedores.

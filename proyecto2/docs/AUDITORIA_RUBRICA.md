@@ -91,9 +91,8 @@ no está evidenciada; una vez capturadas las evidencias de §5, el techo es
 
 > Los cambios de esta auditoría **ya están commiteados** en
 > `ricardious/p2-delivery` (se listan aquí para trazabilidad). Sobre esa base,
-> la rama de entrega agrega el **paquete de defensa**: `evidencias/` por rubro,
-> `scripts/capture-evidence.sh`, `scripts/verify-delivery.sh` y
-> `docs/CHECKLIST_ENTREGA.md` (ver §6 y el checklist).
+> la rama de entrega agrega el **paquete de defensa**: `docs/evidencias/` por
+> rubro, `scripts/capture-evidence.sh` y `scripts/verify-delivery.sh` (ver §6).
 
 | Archivo | Cambio |
 |---|---|
@@ -123,13 +122,13 @@ no está evidenciada; una vez capturadas las evidencias de §5, el techo es
 | Grafana `/api/ds/query` contra Valkey real (todos los targets del dashboard) | Devuelve datos reales (hget/xlen/get/xrange/zrange) |
 | `bash -n` de todos los scripts | OK |
 
-## 6. Evidencias que el usuario debe capturar en la VM (checklist)
+## 6. Evidencias que el usuario debe capturar en la VM
 
 > El **paquete de entrega** de la rama `ricardious/p2-delivery` automatiza esta
-> sección: `evidencias/` se organiza por rubro (mapeo en su `README.md`),
+> sección: `docs/evidencias/` se organiza por rubro (mapeo en su `README.md`) y
 > `scripts/capture-evidence.sh` (o `make evidence`) captura el texto
-> automáticamente y `docs/CHECKLIST_ENTREGA.md` tiene el orden exacto y la
-> lista de capturas (`NN-descripcion.{txt|png}`).
+> automáticamente. `docs/GUIA_DEMO.md` define el orden de la demostración y
+> las capturas recomendadas (`NN-descripcion.{txt|png}`).
 
 Privilegiadas (con `sudo`), en orden de la rúbrica:
 
@@ -183,7 +182,6 @@ Privilegiadas (con `sudo`), en orden de la rúbrica:
   encontradas se corrigieron; los ítems privilegiados están identificados y
   tienen evidencia asignada en §6).
 - Árbol listo para commit: ✅ (los cambios de la auditoría fueron commiteados
-  en `ricardious/p2-delivery`; el paquete de entrega —`evidencias/`,
-  `capture-evidence.sh`, `verify-delivery.sh`, `CHECKLIST_ENTREGA.md`— queda
-  en el árbol para que Muse los commitee).
+  en `ricardious/p2-delivery`; el paquete de entrega —`docs/evidencias/`,
+  `capture-evidence.sh` y `verify-delivery.sh`— queda en el árbol).
 - Reporte exacto de cambios/pruebas/riesgos: ✅ (este documento).
