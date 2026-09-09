@@ -11,7 +11,7 @@ Uso:
 Sin privilegios: funciona sobre cualquier documento que cumpla el esquema
 (fixtures) y sobre la salida en vivo del módulo si este está cargado.
 
-Contrato (PLAN_PROYECTO2.md, sección 3.1):
+Contrato de la interfaz /proc:
   {
     "schema_version": 1,
     "timestamp_unix_ns": 0,

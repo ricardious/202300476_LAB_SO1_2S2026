@@ -3,7 +3,7 @@
 // Conecta configuración, lectura de /proc, Docker, política, Valkey, eBPF y
 // cron; controla señales SIGINT/SIGTERM para un apagado ordenado.
 //
-// Flujo de inicio (PLAN_PROYECTO2.md §3.2):
+// Flujo de inicio del daemon:
 //  1. Validar configuración y construir dependencias.
 //  2. Cargar el módulo /proc (script idempotente) si LoadModuleOnStart.
 //  3. Instalar el cronjob del proyecto (delimitado, sin tocar entradas ajenas).

@@ -274,63 +274,63 @@ responden `connection:true` si `status == "UP"`, o `connection:false` en caso de
 
 Virtual Machine Manager con las tres VMs en ejecución:
 
-![Virtual Machine Manager con SO1-VM1, SO1-VM2 y SO1-VM3](../evidencias/01-entorno/01-virt-manager-3vms.png)
+![Virtual Machine Manager con SO1-VM1, SO1-VM2 y SO1-VM3](evidencias/01-entorno/01-virt-manager-3vms.png)
 
 Listado de las máquinas virtuales administradas por libvirt/KVM:
 
-![Listado de máquinas virtuales con virsh](../evidencias/01-entorno/02-virsh-list-all.png)
+![Listado de máquinas virtuales con virsh](evidencias/01-entorno/02-virsh-list-all.png)
 
 #### Runtimes de contenedores
 
 Containerd activo en VM1:
 
-![Namespace y servicio Containerd en VM1](../evidencias/02-runtimes/01-vm1-containerd-namespace-servicio.png)
+![Namespace y servicio Containerd en VM1](evidencias/02-runtimes/01-vm1-containerd-namespace-servicio.png)
 
 Podman instalado en VM2:
 
-![Información de Podman en VM2](../evidencias/02-runtimes/04-vm2-podman-info.png)
+![Información de Podman en VM2](evidencias/02-runtimes/04-vm2-podman-info.png)
 
 Docker instalado en VM3:
 
-![Información de Docker en VM3](../evidencias/02-runtimes/07-vm3-docker-info.png)
+![Información de Docker en VM3](evidencias/02-runtimes/07-vm3-docker-info.png)
 
 #### Contenedores, imágenes y salud de las APIs
 
 Contenedores e imágenes administrados por Containerd en VM1:
 
-![Contenedores e imágenes de API1 y API2 en VM1](../evidencias/03-apis/01-vm1-containerd-contenedores-imagenes.png)
+![Contenedores e imágenes de API1 y API2 en VM1](evidencias/03-apis/01-vm1-containerd-contenedores-imagenes.png)
 
 Contenedor e imágenes administrados por Podman en VM2:
 
-![Contenedor e imágenes de API3 en VM2](../evidencias/03-apis/02-vm2-podman-contenedor-imagenes.png)
+![Contenedor e imágenes de API3 en VM2](evidencias/03-apis/02-vm2-podman-contenedor-imagenes.png)
 
 Contenedor Zot e imagen administrados por Docker en VM3:
 
-![Contenedor Zot e imagen Docker en VM3](../evidencias/03-apis/03-vm3-docker-zot-imagen.png)
+![Contenedor Zot e imagen Docker en VM3](evidencias/03-apis/03-vm3-docker-zot-imagen.png)
 
 Respuesta del endpoint `/health` de API1:
 
-![Endpoint health de API1](../evidencias/03-apis/08-health-api1.png)
+![Endpoint health de API1](evidencias/03-apis/08-health-api1.png)
 
 Respuesta del endpoint `/health` de API2:
 
-![Endpoint health de API2](../evidencias/03-apis/09-health-api2.png)
+![Endpoint health de API2](evidencias/03-apis/09-health-api2.png)
 
 Respuesta del endpoint `/health` de API3:
 
-![Endpoint health de API3](../evidencias/03-apis/10-health-api3.png)
+![Endpoint health de API3](evidencias/03-apis/10-health-api3.png)
 
 #### Registro privado Zot
 
 Catálogo con las imágenes de las tres APIs:
 
-![Catálogo del registro privado Zot](../evidencias/04-zot/02-zot-catalog.png)
+![Catálogo del registro privado Zot](evidencias/04-zot/02-zot-catalog.png)
 
 #### Comunicación cruzada
 
 Resultado exitoso de los seis endpoints de comunicación entre APIs:
 
-![Seis endpoints con connection true](../evidencias/05-comunicacion/01-seis-endpoints-true.png)
+![Seis endpoints con connection true](evidencias/05-comunicacion/01-seis-endpoints-true.png)
 
 ---
 

@@ -44,12 +44,12 @@ entre servicios mediante REST/HTTP con JSON.
 ## Estructura del repositorio
 
 ```
-202300476_LAB_SO1_2S2026/
+proyecto1/
 ├── api1/  api2/  api3/     # Proyectos Go independientes (código + Dockerfile + tests)
 ├── infra/                  # Red, VMs y networking
 ├── scripts/                # build-images.sh + validation/
-├── docs/                   # Manual, guía, requisitos, rúbrica, defensa, checklist
-├── evidencias/             # Capturas de prueba
+├── docs/                   # Manual, guía, requisitos y evidencias
+│   └── evidencias/         # Capturas y salidas de validación
 ├── README.md
 └── .gitignore
 ```

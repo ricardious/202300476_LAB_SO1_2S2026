@@ -10,7 +10,7 @@
 #   make run     # ejecuta el daemon en el HOST (lee .env)
 #   make doctor  # diagnóstico del entorno
 #   make demo    # demo de punta a punta
-#   make evidence          # captura automática de evidencias (evidencias/)
+#   make evidence          # captura automática de evidencias (docs/evidencias/)
 #   make verify-delivery   # preentrega estricta (0 sin fallos, 1 fallos, 2 uso)
 #   make clean   # limpia artefactos de build (NO borra contenedores/volúmenes)
 #
