@@ -4,7 +4,7 @@
 # (202300476). Rama de entrega: ricardious/p2-delivery
 #
 # Genera, con timestamp y SIN secretos, archivos de texto por rubro dentro de
-# proyecto2/evidencias/. Es SOLO LECTURA del entorno: nunca carga/descarga el
+# proyecto2/docs/evidencias/. Es SOLO LECTURA del entorno: nunca carga/descarga el
 # módulo, nunca toca cron, contenedores ajenos ni Compose, y jamás modifica
 # recursos del Proyecto 1.
 #
@@ -22,14 +22,14 @@
 #   bash proyecto2/scripts/capture-evidence.sh --out-dir /tmp/ev
 #
 # Los rubros y su mapeo con la rúbrica están documentados en
-# proyecto2/evidencias/README.md y docs/CHECKLIST_ENTREGA.md.
+# proyecto2/docs/evidencias/README.md y docs/GUIA_DEMO.md.
 # ============================================================================
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PRIVILEGED=0
 DRY_RUN=0
-OUT_DIR="${SO1_P2_EVIDENCIAS_DIR:-${ROOT}/evidencias}"
+OUT_DIR="${SO1_P2_EVIDENCIAS_DIR:-${ROOT}/docs/evidencias}"
 REQUESTED_RUBRO=""
 GRAFANA_PORT="${GRAFANA_PORT:-3000}"
 VALKEY_PORT="${VALKEY_PORT:-6379}"
@@ -429,7 +429,7 @@ capture_valkey_grafana() {
   section "Capturas visuales manuales"
   dump "Tome una captura por cada panel del dashboard (14 paneles) y guárdelas"
   dump "en valkey-grafana/ con nombres NN-grafana-<panel>.png. Lista en"
-  dump "docs/CHECKLIST_ENTREGA.md -> 'Lista exacta de capturas'."
+  dump "docs/GUIA_DEMO.md -> 'Evidencias a capturar'."
   end_file
 }
 
@@ -508,8 +508,8 @@ capture_documentacion_git() {
     find "${ROOT}/docs" -maxdepth 1 -type f -name '*.md' | sort | sed "s|${ROOT}/|proyecto2/|" >> "$CUR"
   fi
 
-  section "Árbol de evidencias (evidencias/)"
-  find "${ROOT}/evidencias" -maxdepth 2 | sort | sed "s|${ROOT}/|proyecto2/|" >> "$CUR"
+  section "Árbol de evidencias (docs/evidencias/)"
+  find "${ROOT}/docs/evidencias" -maxdepth 2 | sort | sed "s|${ROOT}/|proyecto2/|" >> "$CUR"
 
   section "Capturas visuales manuales (GitHub)"
   dump "Capture: página del repo, pestaña commits de la rama ricardious/p2-delivery"
@@ -529,7 +529,7 @@ main() {
       fi
     done
     echo
-    echo "Rúbrica y contenido de cada rubro: evidencias/README.md"
+    echo "Rúbrica y contenido de cada rubro: docs/evidencias/README.md"
     exit 0
   fi
 

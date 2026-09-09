@@ -1,13 +1,13 @@
 # Evidencias — Proyecto 2 de SO1 (202300476)
 
-Carpeta de evidencia del **Proyecto 2** (rama `ricardious/p2-delivery`). Toda
+Carpeta de evidencia del **Proyecto 2**. Toda
 captura se organiza **por rubro de la rúbrica** (criterios del
-`docs/AUDITORIA_RUBRICA.md`), siguiendo la misma convención que el Proyecto 1:
+`../AUDITORIA_RUBRICA.md`), siguiendo la misma convención que el Proyecto 1:
 archivos `NN-descripcion.txt` (texto/consola) y `NN-descripcion.png`
 (capturas de pantalla), con prefijo numérico de dos dígitos para el orden.
 
 > **No se inventan resultados**: cada archivo debe salir de una ejecución real
-> en la VM, con los comandos documentados en `docs/CHECKLIST_ENTREGA.md`. Las
+> en la VM, con los comandos documentados en `../GUIA_DEMO.md`. Las
 > carpetas solo se versionan con `.gitkeep`; las capturas las genera el
 > estudiante en la VM (manual o con `scripts/capture-evidence.sh`) y se
 > agregan a git al finalizar la entrega.
@@ -22,7 +22,7 @@ archivos `NN-descripcion.txt` (texto/consola) y `NN-descripcion.png`
 | `cron-workloads/` | carga y cron del enunciado | `crontab -l` (bloque delimitado), generador instalado, 4 imágenes, generación de contenedores y acumulación de carga |
 | `valkey-grafana/` | 1.5, 2.3, observabilidad | claves `so1:p2:*`, `system:latest`/timeline, rankings, salud de Grafana, capturas de **cada panel** del dashboard |
 | `ebpf/` | 3.1, 3.2 | prueba privilegiada `sudo go test ./internal/ebpf/ -run Privilegiada`, stream `so1:p2:kills`, `kills:count > 0` con timestamps coherentes |
-| `documentacion-git/` | 4.1, 4.2 y entrega Git | clon/checkout de la rama, `git log`, árbol de `docs/` y `evidencias/`, capturas del repositorio en GitHub |
+| `documentacion-git/` | 4.1, 4.2 y entrega Git | clon/checkout de la rama, `git log`, árbol de `docs/` y `docs/evidencias/`, capturas del repositorio en GitHub |
 
 ## Captura automática (texto)
 
@@ -53,8 +53,7 @@ ebpf/ebpf.txt                  documentacion-git/git.txt
 ## Capturas manuales (visuales)
 
 El texto automático se complementa con **capturas de pantalla** tomadas a mano
-(ver la tabla exacta de `docs/CHECKLIST_ENTREGA.md` → “Lista exacta de
-capturas”):
+(ver el guion de evidencias de `../GUIA_DEMO.md`):
 
 - **Grafana**: una captura por cada uno de los 14 paneles del dashboard
   `deploy/grafana/dashboards/so1-p2-overview.json` (RAM total/usada/libre,
@@ -71,6 +70,6 @@ capturas”):
    estudiante agrega las capturas reales de su VM antes de la entrega.
 2. No se incluyen secretos: el `.env` local nunca se copia aquí; las capturas
    automáticas ya lo filtran.
-3. Los `NN-` finales se renombran al criterio del checklist; si un archivo
+3. Los `NN-` finales se renombran según el criterio de la rúbrica; si un archivo
    automático no aplica (p. ej. módulo no cargado), se elimina antes del
    commit.

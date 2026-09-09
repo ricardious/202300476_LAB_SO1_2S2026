@@ -11,7 +11,7 @@
  *       pid, name, cmdline, container_id, vsz_kb, rss_kb,
  *       memory_percent, cpu_percent.
  *
- * Diseño (ver PLAN_PROYECTO2.md, sección 3.1):
+* Diseño del módulo:
  *   - Salida mediante seq_file (single_open) para una lectura consistente.
  *   - Se toman referencias (get_task_struct / get_task_mm) bajo RCU y se
  *     formatea la salida FUERA de cualquier bloqueo de tareas.

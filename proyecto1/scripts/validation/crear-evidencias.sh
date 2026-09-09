@@ -7,14 +7,14 @@
 #   bash scripts/validation/crear-evidencias.sh
 #
 # Genera salidas REALES de comandos como evidencia (archivos .txt) en las
-# carpetas evidencias/01-... hasta 07-.... Algunas capturas (virt-manager,
+# carpetas docs/evidencias/01-... hasta 07-.... Algunas capturas (virt-manager,
 # GitHub web) se toman manualmente; este script cubre todo lo que se puede
 # capturar por terminal.
 # ============================================================================
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-EV="$ROOT/evidencias"
+EV="$ROOT/docs/evidencias"
 CARNET="202300476"
 KEY="${HOME}/.ssh/id_ed25519"
 S="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $KEY"
@@ -89,4 +89,4 @@ cap "$EV/07-documentacion" 06-evidencias-carpeta.txt "estructura de evidencias" 
 
 echo
 echo "Total de capturas generadas: $(find "$EV" -name '*.txt' | wc -l)"
-echo "Listo. Revisa evidencias/ para las capturas."
+echo "Listo. Revisa docs/evidencias/ para las capturas."
