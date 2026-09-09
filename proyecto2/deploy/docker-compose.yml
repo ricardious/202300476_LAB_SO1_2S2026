@@ -1,3 +1,5 @@
+name: so1-p2
+
 services:
   valkey:
     image: valkey/valkey:9.1.2-alpine
@@ -11,6 +13,9 @@ services:
       - "yes"
     environment:
       TZ: UTC
+    labels:
+      - "so1.p2.protect=1"
+      - "so1.p2.project=202300476"
     networks:
       - so1-p2-net
     ports:
@@ -45,6 +50,9 @@ services:
       GF_SERVER_ROOT_URL: "${GRAFANA_ROOT_URL:-http://localhost:3000}"
       # Deshabilita actualizaciones automáticas de plugins/dashboards.
       GF_PLUGINS_ENABLE_ALPHA: "false"
+    labels:
+      - "so1.p2.protect=1"
+      - "so1.p2.project=202300476"
     networks:
       - so1-p2-net
     ports:

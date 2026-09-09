@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"sync/atomic"
 	"time"
 
 	"github.com/202300476/p2-daemon/internal/config"
@@ -41,14 +42,20 @@ type Result struct {
 
 // Daemon es la unidad de ejecución del ciclo. Agrupa todas las dependencias.
 type Daemon struct {
-	Cfg    config.Config
-	Proc   procfs.Reader
-	Docker docker.ContainerAPI
-	Policy policy.Policy
-	Store  valkey.Store
-	Events ebpf.Consumer
-	Corr   *ebpf.Correlator
-	Logger *slog.Logger
+	Cfg     config.Config
+	Proc    procfs.Reader
+	Docker  docker.ContainerAPI
+	Policy  policy.Policy
+	Store   valkey.Store
+	Events  ebpf.Consumer
+	Corr    *ebpf.Correlator
+	Logger  *slog.Logger
+	Compose ComposeRunner
+
+	// degraded indica que el consumidor eBPF real no pudo cargarse y se opera
+	// con un consumidor nulo (EBPFMode=auto). Ninguna eliminación se registrará
+	// como confirmada porque no hay eventos de kernel que la confirmen.
+	degraded atomic.Bool
 
 	// signalFunc traduce la señal del sistema (SIGKILL) al código de la
 	// syscall kill esperado por el correlator.
@@ -66,9 +73,13 @@ func New(cfg config.Config, proc procfs.Reader, dc docker.ContainerAPI, pol poli
 		Events:     cons,
 		Corr:       corr,
 		Logger:     logger,
+		Compose:    NewDockerComposeRunner(logger),
 		SignalFunc: signalNumber,
 	}
 }
+
+// Degraded indica si el daemon opera sin confirmación eBPF real.
+func (d *Daemon) Degraded() bool { return d.degraded.Load() }
 
 // Run valida el entorno y ejecuta el bucle de reconciliación hasta que se
 // cancela el contexto. Retorna nil en apagado ordenado.
@@ -76,11 +87,18 @@ func (d *Daemon) Run(ctx context.Context) error {
 	if err := d.Docker.Ping(ctx); err != nil {
 		return fmt.Errorf("lifecycle: docker no disponible: %w", err)
 	}
-	if err := d.Store.Ping(ctx); err != nil {
-		return fmt.Errorf("lifecycle: valkey no disponible: %w", err)
+	// Valkey/Grafana: si el stack Compose está configurado y Valkey no responde,
+	// se levanta el stack del proyecto (no toca servicios ajenos) y se reintenta.
+	if err := ComposeBootstrap(ctx, d.Cfg.ComposeFile, d.Compose, d.Store, d.Logger, 30*time.Second); err != nil {
+		if ctx.Err() != nil {
+			// Apagado ordenado recibido durante el bootstrap.
+			d.Logger.Info("apagado durante bootstrap de Compose")
+			return nil
+		}
+		return err
 	}
-	if err := d.Events.Start(ctx); err != nil {
-		return fmt.Errorf("%w: %v", ErrConsumerFailed, err)
+	if err := d.startConsumer(ctx); err != nil {
+		return err
 	}
 	defer func() { _ = d.Events.Close() }()
 
@@ -104,6 +122,33 @@ func (d *Daemon) Run(ctx context.Context) error {
 			}
 		}
 	}
+}
+
+// startConsumer arranca el consumidor eBPF según el modo configurado:
+//   - off:      consumidor nulo explícito (sin eventos).
+//   - required: el puente CO-RE real es obligatorio; sin privilegios el
+//     daemon falla con un error accionable.
+//   - auto:     intenta el puente real; si el entorno no concede privilegios,
+//     degrada a un consumidor nulo con un mensaje claro.
+func (d *Daemon) startConsumer(ctx context.Context) error {
+	if d.Cfg.EBPFMode == "off" {
+		d.Logger.Warn("eBPF desactivado por configuración (EBPFMode=off); no habrá confirmación de eliminaciones")
+		_ = d.Events.Close()
+		d.Events = ebpf.NewNullConsumer()
+		d.degraded.Store(true)
+		return nil
+	}
+	if err := d.Events.Start(ctx); err != nil {
+		if d.Cfg.EBPFMode == "auto" && ebpf.IsPrivilegeError(err) {
+			d.Logger.Warn("eBPF no disponible sin privilegios (root/CAP_BPF); degradando a consumidor nulo", "error", err)
+			_ = d.Events.Close()
+			d.Events = ebpf.NewNullConsumer()
+			d.degraded.Store(true)
+			return nil
+		}
+		return fmt.Errorf("%w: %v (requiere root/CAP_BPF; use SO1_P2_EBPF_MODE=off para degradar explícitamente)", ErrConsumerFailed, err)
+	}
+	return nil
 }
 
 // runEventConsumer lee el canal de eventos eBPF y confirma eliminaciones
