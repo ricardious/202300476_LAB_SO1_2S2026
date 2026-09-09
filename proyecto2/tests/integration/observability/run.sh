@@ -216,6 +216,17 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# 5. Smoke REAL del stack (opt-in: SO1_RUN_STACK=1)
+# ---------------------------------------------------------------------------
+if [[ "${SO1_RUN_STACK:-0}" == "1" ]]; then
+  note "Smoke del stack Valkey + Grafana (opt-in)"
+  "${ROOT}/tests/integration/observability/test_stack.sh" \
+    || { ko "smoke del stack"; }
+else
+  note "Smoke del stack (omitido; use SO1_RUN_STACK=1 para levantar Valkey+Grafana)"
+fi
+
+# ---------------------------------------------------------------------------
 # Resumen
 # ---------------------------------------------------------------------------
 note "RESULTADO"
