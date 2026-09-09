@@ -1,75 +1,116 @@
-# Evidencias — Proyecto 2 de SO1 (202300476)
+# Evidencias de funcionamiento — Proyecto 2
 
-Carpeta de evidencia del **Proyecto 2**. Toda
-captura se organiza **por rubro de la rúbrica** (criterios del
-`../AUDITORIA_RUBRICA.md`), siguiendo la misma convención que el Proyecto 1:
-archivos `NN-descripcion.txt` (texto/consola) y `NN-descripcion.png`
-(capturas de pantalla), con prefijo numérico de dos dígitos para el orden.
+Las siguientes capturas corresponden a ejecuciones reales del proyecto en
+Fedora Linux con kernel `6.19.14-108.fc42.x86_64`. Demuestran la compilación y
+el ciclo de vida del módulo, la ejecución del daemon, la generación de carga,
+la captura de señales mediante eBPF, la persistencia en Valkey y la
+visualización en Grafana.
 
-> **No se inventan resultados**: cada archivo debe salir de una ejecución real
-> en la VM, con los comandos documentados en `../GUIA_DEMO.md`. Las
-> carpetas solo se versionan con `.gitkeep`; las capturas las genera el
-> estudiante en la VM (manual o con `scripts/capture-evidence.sh`) y se
-> agregan a git al finalizar la entrega.
+## Módulo de kernel
 
-## Mapa de rubros → criterio → carpeta
+### Compilación
 
-| Rubro (carpeta) | Criterio de rúbrica | Qué contiene |
-|---|---|---|
-| `entorno/` | soporte transversal | `make doctor`, sistema operativo, versiones de herramientas, BTF/headers, `lsmod` del módulo, host de la VM |
-| `kernel/` | 1.1, 1.2, 1.3, 2.1, 2.2 | compilación del módulo, carga/descarga, `/proc/continfo_pr2_so1_202300476` (JSON exacto + validación con `jq`), contraste con `ps`/`free` |
-| `daemon-politica/` | 1.4, 1.5, 2.3 | `make build`, daemon en ejecución, interacción `/proc`→Valkey, política (conservar 3 low / 2 high), protegidos intactos |
-| `cron-workloads/` | carga y cron del enunciado | `crontab -l` (bloque delimitado), generador instalado, 4 imágenes, generación de contenedores y acumulación de carga |
-| `valkey-grafana/` | 1.5, 2.3, observabilidad | claves `so1:p2:*`, `system:latest`/timeline, rankings, salud de Grafana, capturas de **cada panel** del dashboard |
-| `ebpf/` | 3.1, 3.2 | prueba privilegiada `sudo go test ./internal/ebpf/ -run Privilegiada`, stream `so1:p2:kills`, `kills:count > 0` con timestamps coherentes |
-| `documentacion-git/` | 4.1, 4.2 y entrega Git | clon/checkout de la rama, `git log`, árbol de `docs/` y `docs/evidencias/`, capturas del repositorio en GitHub |
+El módulo `continfo.ko` se compiló contra los headers del kernel en ejecución.
 
-## Captura automática (texto)
+![Compilación del módulo de kernel](kernel/01-compilacion-modulo.png)
 
-`scripts/capture-evidence.sh` genera de forma **automática, idempotente y sin
-secretos** los archivos de texto de cada rubro (entorno/doctor, estado del
-módulo y `/proc` exacto validado con `jq`, contenedores/etiquetas, cron,
-Valkey, salud de Grafana y eventos relevantes). Uso:
+### Carga e interfaz `/proc`
 
-```bash
-cd proyecto2
-bash scripts/capture-evidence.sh                 # todo (solo lectura, sin sudo)
-bash scripts/capture-evidence.sh --rubro kernel  # solo un rubro
-bash scripts/capture-evidence.sh --privileged    # + lecturas con sudo (dmesg)
-bash scripts/capture-evidence.sh --dry-run       # lista lo que capturaría, sin escribir
-```
+Después de cargar el módulo aparece
+`/proc/continfo_pr2_so1_202300476` y `lsmod` confirma que `continfo` está activo.
 
-Cada corrida **sobrescribe** el archivo del rubro con un encabezado con la
-fecha/hora, de modo que re-ejecutarlo no acumula basura. Los archivos
-generados se llaman:
+![Carga del módulo e interfaz proc](kernel/02-carga-modulo-proc.png)
 
-```
-entorno/entorno.txt            kernel/kernel.txt
-daemon-politica/politica.txt   cron-workloads/cron.txt
-valkey-grafana/observabilidad.txt
-ebpf/ebpf.txt                  documentacion-git/git.txt
-```
+La interfaz entrega un documento JSON con memoria del sistema y datos de los
+procesos.
 
-## Capturas manuales (visuales)
+![JSON generado por el módulo](kernel/03-json-procesos.png)
 
-El texto automático se complementa con **capturas de pantalla** tomadas a mano
-(ver el guion de evidencias de `../GUIA_DEMO.md`):
+Los mensajes del kernel registran las operaciones de carga y descarga.
 
-- **Grafana**: una captura por cada uno de los 14 paneles del dashboard
-  `deploy/grafana/dashboards/so1-p2-overview.json` (RAM total/usada/libre,
-  evolución temporal, eliminaciones XLEN/GET/serie temporal, tabla eBPF,
-  top 5 RAM/CPU, timeline de contenedores). Las capturas se guardan en
-  `valkey-grafana/` con nombre `NN-grafana-<panel>.png`.
-- **GitHub**: página del repositorio, pestaña *commits* de la rama
-  `ricardious/p2-delivery` y *releases* (si aplica). Se guardan en
-  `documentacion-git/`.
+![Mensajes del módulo en dmesg](kernel/04-dmesg-modulo.png)
 
-## Reglas de esta carpeta
+Finalmente, la descarga elimina tanto el módulo como su archivo en `/proc`.
 
-1. No se versionan datos generados localmente en el desarrollo: solo el
-   estudiante agrega las capturas reales de su VM antes de la entrega.
-2. No se incluyen secretos: el `.env` local nunca se copia aquí; las capturas
-   automáticas ya lo filtran.
-3. Los `NN-` finales se renombran según el criterio de la rúbrica; si un archivo
-   automático no aplica (p. ej. módulo no cargado), se elimina antes del
-   commit.
+![Descarga correcta del módulo](kernel/05-descarga-modulo.png)
+
+## Daemon y política de contenedores
+
+El daemon inicia con el módulo disponible y mantiene activo el consumidor
+eBPF.
+
+![Daemon con eBPF activo](daemon-politica/01-daemon-ebpf-activo.png)
+
+La política reduce los contenedores gestionados y conserva los mínimos de tres
+perfiles de bajo consumo y dos de alto consumo. Grafana y Valkey permanecen
+protegidos.
+
+![Aplicación de la política antes y después](daemon-politica/02-politica-antes-despues.png)
+
+Detalle de la ejecución: [política y contenedores](daemon-politica/politica.txt).
+
+## Cron y generación de carga
+
+El cronjob de `root` ejecuta el generador cada dos minutos.
+
+![Cronjob instalado](cron-workloads/01-cron-instalado.png)
+
+Dos ejecuciones consecutivas generan diez contenedores con perfiles y límites
+de recursos distintos.
+
+![Generación de contenedores de carga](cron-workloads/02-generacion-diez-contenedores.png)
+
+Detalle de la instalación: [cron y cargas](cron-workloads/cron.txt).
+
+## Observabilidad eBPF
+
+El objeto eBPF y el daemon se compilan correctamente.
+
+![Compilación de eBPF y daemon](ebpf/01-compilacion-ebpf-daemon.png)
+
+La prueba privilegiada adjunta los tracepoints y recibe el evento real de
+`kill(2)`.
+
+![Prueba privilegiada de eBPF](ebpf/02-prueba-privilegiada-ebpf.png)
+
+Los eventos confirmados incrementan el contador y el stream de Valkey con PID,
+señal, timestamp e identificador de contenedor.
+
+![Correlación entre eBPF y Valkey](ebpf/03-correlacion-ebpf-valkey.png)
+
+Datos completos: [eventos eBPF](ebpf/ebpf.txt).
+
+## Valkey y Grafana
+
+Valkey y Grafana se ejecutan como contenedores saludables.
+
+![Servicios de Valkey y Grafana activos](valkey-grafana/01-stack-activo.png)
+
+Las claves `so1:p2:*` contienen telemetría del sistema, timelines, rankings y
+el historial de eliminaciones.
+
+![Métricas almacenadas en Valkey](valkey-grafana/02-metricas-valkey.png)
+
+### Kernel Operations Center
+
+La vista general presenta capacidad de memoria, RAM usada y disponible,
+procesos observados, presión de memoria y eliminaciones confirmadas.
+
+![Vista general del dashboard](valkey-grafana/03-dashboard-overview.png)
+
+La sección eBPF muestra el contador, la actividad en el tiempo y la bitácora de
+señales confirmadas.
+
+![Paneles de observabilidad eBPF](valkey-grafana/04-dashboard-ebpf.png)
+
+El dashboard completa la observabilidad con rankings históricos de RAM y CPU,
+además del timeline de contenedores activos e inactivos.
+
+![Rankings y timeline de contenedores](valkey-grafana/05-dashboard-ranking-timeline.png)
+
+Datos completos: [telemetría de Valkey y salud de Grafana](valkey-grafana/observabilidad.txt).
+
+## Entorno de prueba
+
+Las versiones de las herramientas, los headers del kernel y la disponibilidad
+de BTF están documentados en [entorno.txt](entorno/entorno.txt).
