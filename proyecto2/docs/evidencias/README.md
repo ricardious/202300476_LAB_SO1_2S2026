@@ -114,3 +114,13 @@ Datos completos: [telemetría de Valkey y salud de Grafana](valkey-grafana/obser
 
 Las versiones de las herramientas, los headers del kernel y la disponibilidad
 de BTF están documentados en [entorno.txt](entorno/entorno.txt).
+
+## Actividad extra en Rust
+
+La actividad adicional compila `hola_rust_202300476.ko` con la lógica del
+mensaje en Rust. La carga y descarga se validan en el mismo kernel usado para
+el resto del proyecto.
+
+Las capturas de compilación y ejecución se incorporarán en `rust-extra/` tras
+la prueba privilegiada. El reporte automático queda en
+[rust-extra.txt](rust-extra/rust-extra.txt).
