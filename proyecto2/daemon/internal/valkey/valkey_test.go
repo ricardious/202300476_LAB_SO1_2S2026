@@ -49,11 +49,16 @@ func TestContainersTimelineAndRankings(t *testing.T) {
 		t.Fatalf("add rankings: %v", err)
 	}
 
-	if got, err := srv.ZScore("so1:p2:rank:ram", "c1"); err != nil || got != 500 {
+	// El miembro del sorted set codifica ID y PID de host para el dashboard.
+	if got, err := srv.ZScore("so1:p2:rank:ram", rankMember("c1", 1)); err != nil || got != 500 {
 		t.Errorf("rank ram c1 = %v (%v), esperaba 500", got, err)
 	}
-	if got, err := srv.ZScore("so1:p2:rank:cpu", "c2"); err != nil || got != 5 {
+	if got, err := srv.ZScore("so1:p2:rank:cpu", rankMember("c2", 2)); err != nil || got != 5 {
 		t.Errorf("rank cpu c2 = %v (%v), esperaba 5", got, err)
+	}
+	// Sin PID no debe inventarse sufijo.
+	if got, err := srv.ZScore("so1:p2:rank:ram", "c1"); err != nil || got != 0 {
+		t.Errorf("miembro sin PID no esperado: %v (%v)", got, err)
 	}
 }
 

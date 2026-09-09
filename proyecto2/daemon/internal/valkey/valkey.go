@@ -151,20 +151,33 @@ func (s *ValkeyStore) AppendContainersTimeline(ctx context.Context, entries []Co
 }
 
 // AddRankings implementa Store.AddRankings.
+//
+// El miembro del sorted set codifica el ID del contenedor y su PID de host
+// ("<id>|pid=<pid>") para que los paneles "Top 5 histórico por RAM/CPU"
+// muestren PID e ID, como exige el dashboard de la rúbrica.
 func (s *ValkeyStore) AddRankings(ctx context.Context, entries []ContainerEntry) error {
 	if len(entries) == 0 {
 		return nil
 	}
 	pipe := s.rdb.Pipeline()
 	for _, e := range entries {
-		pipe.ZAdd(ctx, s.key("rank:ram"), redis.Z{Score: float64(e.RSSKB), Member: e.ContainerID})
-		pipe.ZAdd(ctx, s.key("rank:cpu"), redis.Z{Score: e.CPU, Member: e.ContainerID})
+		member := rankMember(e.ContainerID, e.HostPID)
+		pipe.ZAdd(ctx, s.key("rank:ram"), redis.Z{Score: float64(e.RSSKB), Member: member})
+		pipe.ZAdd(ctx, s.key("rank:cpu"), redis.Z{Score: e.CPU, Member: member})
 	}
 	_, err := pipe.Exec(ctx)
 	if err != nil {
 		return fmt.Errorf("valkey: add rankings: %w", err)
 	}
 	return nil
+}
+
+// rankMember formatea el miembro de un sorted set con ID y PID.
+func rankMember(containerID string, hostPID int) string {
+	if hostPID > 0 {
+		return fmt.Sprintf("%s|pid=%d", containerID, hostPID)
+	}
+	return containerID
 }
 
 // RecordKill implementa Store.RecordKill: registra la eliminación confirmada y
