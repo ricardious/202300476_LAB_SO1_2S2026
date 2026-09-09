@@ -70,7 +70,7 @@ func TestInstallAndIsInstalled(t *testing.T) {
 }
 
 func TestRemoveOnlyProjectBlock(t *testing.T) {
-	f := &fakeCrontab{writeOK: true, content: "# ajenos\n* * * * * /other.sh\n# BEGIN so1-p2-202300476\n*/2 * * * * /x.sh\n# END so1-p2-202300476\n"}
+	f := &fakeCrontab{writeOK: true, content: "# ajenos\n* * * * * /other.sh\n# >>> so1-p2-202300476:begin >>>\n*/2 * * * * /x.sh\n# <<< so1-p2-202300476:end <<<\n"}
 	m := newManager(f)
 
 	if err := m.Remove(context.Background()); err != nil {

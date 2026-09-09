@@ -18,17 +18,18 @@ set -euo pipefail
 
 SCRIPT_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/generate-containers.sh"
 
-# Marcadores (idempotencia y delimitación).
+# Marcadores (idempotencia y delimitación). Deben coincidir con los del daemon
+# Go (daemon/internal/cron) para que ambas vías operen sobre la misma entrada.
 readonly MARKER_BEGIN="# >>> so1-p2-202300476:begin >>>"
 readonly MARKER_END="# <<< so1-p2-202300476:end <<<"
 
-# Rutas absolutas: el directorio base es dos niveles arriba de scripts/.
-readonly BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-readonly GENERATOR="${BASE_DIR}/scripts/generate-containers.sh"
+# Ruta absoluta del generador instalado. El daemon Go usa exactamente esta
+# misma ruta en su entrada de cron (SO1_P2_CRON_COMMAND).
+readonly INSTALL_PREFIX="${SO1_P2_INSTALL_PREFIX:-/usr/local/bin}"
 
 # Comando que ejecuta cron. Redirige salida a un log del proyecto.
-readonly LOG_FILE="${BASE_DIR}/logs/generate-containers.log"
-readonly CRON_LINE="*/2 * * * * ${GENERATOR} >> ${LOG_FILE} 2>&1"
+readonly LOG_FILE="${SO1_P2_LOG_DIR:-${HOME}/.so1-p2/logs}/generate-containers.log"
+readonly CRON_LINE="*/2 * * * * ${INSTALL_PREFIX}/so1-p2-generate-containers.sh >> ${LOG_FILE} 2>&1"
 
 log() {
   printf '[install-cron] %s\n' "$*" >&2
@@ -37,6 +38,20 @@ log() {
 die() {
   log "ERROR: $*"
   exit 1
+}
+
+# Instala (o refresca) el generador en INSTALL_PREFIX para que cron y el daemon
+# Go usen la misma ruta absoluta. Best-effort: si no hay permisos, se advierte
+# y la instalación de la entrada continúa (make install la resuelve con sudo).
+install_generator() {
+  local dest="${INSTALL_PREFIX}/so1-p2-generate-containers.sh"
+  if [ -x "${dest}" ] && [ "$(readlink -f "${dest}")" = "$(readlink -f "${SCRIPT_SRC}")" ]; then
+    return 0
+  fi
+  log "installing generator to ${dest} (idempotente)..."
+  if ! install -m 0755 "${SCRIPT_SRC}" "${dest}" 2>/dev/null; then
+    log "no se pudo instalar en ${dest}; hágalo con: sudo make install (continuando)"
+  fi
 }
 
 backup_crontab() {
@@ -68,7 +83,11 @@ replace_delimited_entry() {
 }
 
 install_cron() {
-  mkdir -p "$(dirname "${LOG_FILE}")"
+  install_generator
+
+  # Log dir best-effort (en HOME no requiere root).
+  mkdir -p "$(dirname "${LOG_FILE}")" 2>/dev/null || \
+    log "no se pudo crear $(dirname "${LOG_FILE}"); el cron logueará a donde pueda"
 
   local tmp_backup tmp_new
   tmp_backup="$(backup_crontab)"
@@ -89,7 +108,7 @@ install_cron() {
   fi
 
   rm -f "${tmp_backup}" "${tmp_new}"
-  log "installed cron entry every 2 minutes (${GENERATOR})"
+  log "installed cron entry every 2 minutes (${INSTALL_PREFIX}/so1-p2-generate-containers.sh)"
 }
 
 install_cron

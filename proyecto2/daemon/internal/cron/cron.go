@@ -12,10 +12,13 @@ import (
 	"strings"
 )
 
-// Markers delimitan el bloque del cronjob del proyecto.
+// Markers delimitan el bloque del cronjob del proyecto. Deben coincidir
+// EXACTAMENTE con los marcadores de scripts/install-cron.sh y
+// scripts/remove-cron.sh para que el daemon Go y los scripts shell operen
+// sobre la misma entrada de forma intercambiable.
 const (
-	BeginMarker = "# BEGIN so1-p2-202300476"
-	EndMarker   = "# END so1-p2-202300476"
+	BeginMarker = "# >>> so1-p2-202300476:begin >>>"
+	EndMarker   = "# <<< so1-p2-202300476:end <<<"
 )
 
 // Entry describe un cronjob a instalar.
