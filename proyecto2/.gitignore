@@ -1,0 +1,23 @@
+# ============================================================================
+# .gitignore del Proyecto 2 — artefactos locales que NO se versionan.
+# ============================================================================
+
+# Binario del daemon compilado localmente.
+bin/
+
+# El .env local jamás se versiona; .env.example SÍ (contrato del proyecto).
+.env
+!.env.example
+
+# Logs generados por el generador/cron.
+logs/
+
+# Objetos intermedios del módulo de kernel y del frente eBPF de inspección.
+kernel/*.o
+kernel/*.ko
+kernel/*.mod
+kernel/*.mod.c
+kernel/*.order
+kernel/*.symvers
+kernel/.tmp_versions/
+ebpf/kill_monitor.o
