@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "timestamp_unix_ns": 1757100000000000000,
+  "memory": {
+    "total_kb": 8388608,
+    "free_kb": 4194304,
+    "used_kb": 4194304,
+    "cached_kb": 1048576
+  },
+  "processes": [
+    {
+      "pid": 120,
+      "name": "memory-high",
+      "cmdline": "/usr/bin/stress-ng --vm 1",
+      "container_id": "cont-mem-high",
+      "vsz_kb": 4096000,
+      "rss_kb": 3500000,
+      "memory_percent": 41.7,
+      "cpu_percent": 3.2,
+      "extra_field": "ignored",
+      "state": "R"
+    }
+  ],
+  "extra_root_field": true
+}

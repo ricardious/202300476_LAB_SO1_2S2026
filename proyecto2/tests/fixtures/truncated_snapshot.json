@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "timestamp_unix_ns": 1757100000000000000,
+  "memory": {
+    "total_kb": 8388608,
+    "free_kb": 4194304,
+    "used_kb": 4194304
+  },
+  "processes": [
+    {
+      "pid": 120,
+      "name": "memory-high",
+      "container_id": "cont-mem-high",
+      "vsz_kb": 4096000
