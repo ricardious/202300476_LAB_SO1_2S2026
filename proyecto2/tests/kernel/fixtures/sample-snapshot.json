@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "timestamp_unix_ns": 1720000000123456789,
+  "memory": {
+    "total_kb": 16000000,
+    "free_kb": 4000000,
+    "used_kb": 12000000
+  },
+  "processes": [
+    {
+      "pid": 1,
+      "name": "systemd",
+      "cmdline": "/usr/lib/systemd/systemd --switched-root --system --deserialize 31",
+      "container_id": "",
+      "vsz_kb": 1210000,
+      "rss_kb": 10240,
+      "memory_percent": 0.06,
+      "cpu_percent": 0.01
+    },
+    {
+      "pid": 1234,
+      "name": "bash",
+      "cmdline": "bash -c sleep 60",
+      "container_id": "",
+      "vsz_kb": 12352,
+      "rss_kb": 3200,
+      "memory_percent": 0.02,
+      "cpu_percent": 0.00
+    },
+    {
+      "pid": 4567,
+      "name": "go-client",
+      "cmdline": "/app/go-client --alloc 512",
+      "container_id": "0e7b3f2a1c9d4e8b5a6f7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f",
+      "vsz_kb": 1048576,
+      "rss_kb": 524288,
+      "memory_percent": 3.28,
+      "cpu_percent": 42.10
+    },
+    {
+      "pid": 7890,
+      "name": "alpine",
+      "cmdline": "sh -c while true; do echo 2^20 | bc > /dev/null; sleep 2; done",
+      "container_id": "3f6c9d0b1a2e4f7c8d9e0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c",
+      "vsz_kb": 1024,
+      "rss_kb": 512,
+      "memory_percent": 0.00,
+      "cpu_percent": 99.95
+    }
+  ]
+}

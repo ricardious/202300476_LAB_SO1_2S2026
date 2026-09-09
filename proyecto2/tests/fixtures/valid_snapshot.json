@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "timestamp_unix_ns": 1757100000000000000,
+  "memory": {
+    "total_kb": 8388608,
+    "free_kb": 4194304,
+    "used_kb": 4194304
+  },
+  "processes": [
+    {
+      "pid": 120,
+      "name": "memory-high",
+      "cmdline": "/usr/bin/stress-ng --vm 1",
+      "container_id": "cont-mem-high",
+      "vsz_kb": 4096000,
+      "rss_kb": 3500000,
+      "memory_percent": 41.7,
+      "cpu_percent": 3.2
+    },
+    {
+      "pid": 210,
+      "name": "cpu-high",
+      "cmdline": "/usr/bin/stress-ng --cpu 4",
+      "container_id": "cont-cpu-high",
+      "vsz_kb": 512000,
+      "rss_kb": 51200,
+      "memory_percent": 0.6,
+      "cpu_percent": 88.4
+    },
+    {
+      "pid": 305,
+      "name": "low-a",
+      "cmdline": "/bin/sleep 600",
+      "container_id": "cont-low-a",
+      "vsz_kb": 20480,
+      "rss_kb": 5120,
+      "memory_percent": 0.06,
+      "cpu_percent": 0.0
+    },
+    {
+      "pid": 312,
+      "name": "low-b",
+      "cmdline": "/bin/sleep 600",
+      "container_id": "cont-low-b",
+      "vsz_kb": 20480,
+      "rss_kb": 5120,
+      "memory_percent": 0.06,
+      "cpu_percent": 0.0
+    },
+    {
+      "pid": 318,
+      "name": "low-c",
+      "cmdline": "/bin/sleep 600",
+      "container_id": "cont-low-c",
+      "vsz_kb": 20480,
+      "rss_kb": 5120,
+      "memory_percent": 0.06,
+      "cpu_percent": 0.0
+    }
+  ]
+}
