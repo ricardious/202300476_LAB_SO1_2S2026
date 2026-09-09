@@ -17,7 +17,7 @@ Docker API <──────── daemon Go <────────┘
           └─ Valkey  <── Grafana (datasource + dashboard provisionados)
 ```
 
-## Despliegue (decisión)
+## Arquitectura de despliegue
 
 El **daemon corre en el HOST**, no en un contenedor: necesita leer
 `/proc/continfo_pr2_so1_202300476` (módulo) y cargar eBPF con privilegios.
@@ -91,10 +91,10 @@ proyecto2/
 ├── workloads/ # memory-high, cpu-high, low, intruder (4 imágenes)
 ├── deploy/    # docker-compose.yml + grafana/provisioning + dashboard
 ├── scripts/   # bootstrap, doctor, demo, cleanup, load/unload-module, generate-containers,
-│              # install/remove-cron, capture-evidence y verify-delivery (preentrega)
+│              # install/remove-cron, captura de evidencias y validación
 ├── tests/     # fixtures + kernel + integration/observability
-└── docs/      # enunciado, manuales, guías y auditoría
-    └── evidencias/ # capturas por rubro + README con el mapeo a la rúbrica
+└── docs/      # enunciado, manual técnico, guía de instalación y evidencias
+    └── evidencias/ # capturas y resultados de ejecuciones reales
 ```
 
 ## Pruebas
@@ -112,13 +112,10 @@ con mensajes claros cuando el host no tiene root/CAP_BPF o headers del kernel.
 
 ## Evidencias y entrega
 
-- `bash scripts/capture-evidence.sh` (o `make evidence`) genera **automáticamente**
-  y sin secretos las evidencias de texto por rubro (entorno/doctor, módulo y
-  `/proc` exacto validado con `jq`, contenedores/etiquetas, cron, Valkey, salud
-  de Grafana y eventos). Las capturas visuales de Grafana y GitHub son manuales;
-  el orden recomendado está en `docs/GUIA_DEMO.md`.
-- `docs/evidencias/` se organiza por rubro de la rúbrica (su `README.md` tiene el
-  mapeo criterio→carpeta). No se versionan datos generados en el desarrollo.
+- `bash scripts/capture-evidence.sh` (o `make evidence`) registra el entorno,
+  el módulo, los contenedores, el cron, Valkey y Grafana sin incluir secretos.
+- [`docs/evidencias/README.md`](docs/evidencias/README.md) presenta las capturas
+  reales junto con una explicación breve de cada prueba.
 
 ## Limpieza segura
 
@@ -129,6 +126,7 @@ bash scripts/cleanup.sh --no-confirm --module --purge
 
 Nunca elimina contenedores/volúmenes/redes ajenos.
 
-Documentación completa: `docs/MANUAL_TECNICO.md`, `docs/GUIA_INSTALACION.md`,
-`docs/GUIA_DEMO.md`, `docs/DEFENSA.md`, `docs/AUDITORIA_RUBRICA.md` y
-`ebpf/README.md`.
+Documentación: [`docs/MANUAL_TECNICO.md`](docs/MANUAL_TECNICO.md),
+[`docs/GUIA_INSTALACION.md`](docs/GUIA_INSTALACION.md),
+[`docs/evidencias/README.md`](docs/evidencias/README.md) y
+[`ebpf/README.md`](ebpf/README.md).

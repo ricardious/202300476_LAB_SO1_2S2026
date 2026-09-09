@@ -103,12 +103,10 @@ REQUIRED=(
   scripts/remove-cron.sh scripts/unload-module.sh scripts/verify-delivery.sh
   tests/kernel/test-all.sh tests/kernel/test-build.sh tests/kernel/test-module-lifecycle.sh
   tests/kernel/test-schema.sh tests/kernel/validate_schema.py tests/kernel/fixtures/sample-snapshot.json
-  tests/kernel/VERIFICACION.md
   tests/integration/observability/run.sh tests/integration/observability/test_containers.sh
   tests/integration/observability/test_cron.sh tests/integration/observability/test_deploy.sh
   tests/integration/observability/test_stack.sh
-  docs/AUDITORIA_RUBRICA.md docs/DEFENSA.md docs/GUIA_DEMO.md
-  docs/GUIA_INSTALACION.md docs/INFORME_INTEGRACION.md docs/MANUAL_TECNICO.md
+  docs/GUIA_INSTALACION.md docs/MANUAL_TECNICO.md
   docs/evidencias/README.md
 )
 MISSING=0
@@ -121,7 +119,7 @@ done
 [ "$MISSING" -eq 0 ] && ok "manifest completo (${#REQUIRED[@]} archivos)"
 
 section "Carpetas de evidencias por rubro"
-for d in entorno kernel daemon-politica cron-workloads valkey-grafana ebpf documentacion-git; do
+for d in entorno kernel daemon-politica cron-workloads valkey-grafana ebpf; do
   if [ -d "$ROOT/docs/evidencias/$d" ] && [ -f "$ROOT/docs/evidencias/$d/.gitkeep" ]; then
     ok "docs/evidencias/$d/.gitkeep"
   else
@@ -393,5 +391,5 @@ if [ "$FAIL" -gt 0 ]; then
 fi
 echo
 echo "  VEREDICTO: preentrega OK (los SKIP son por entorno/privilegios y deben"
-echo "  ejecutarse en la VM según docs/GUIA_DEMO.md)."
+echo "  ejecutarse en la máquina donde se demostrará el proyecto)."
 exit 0
