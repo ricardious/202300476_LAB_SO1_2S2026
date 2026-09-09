@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"log/slog"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	"github.com/202300476/p2-daemon/internal/config"
@@ -24,11 +25,6 @@ import (
 
 // ErrConsumerFailed indica que el consumidor eBPF no pudo arrancar.
 var ErrConsumerFailed = errors.New("lifecycle: consumidor eBPF falló")
-
-// Terminator solicita la terminación de un contenedor.
-type Terminator interface {
-	Kill(ctx context.Context, id, signal string) error
-}
 
 // Result resume el desenlace de un ciclo de reconciliación.
 type Result struct {
@@ -60,21 +56,27 @@ type Daemon struct {
 	// signalFunc traduce la señal del sistema (SIGKILL) al código de la
 	// syscall kill esperado por el correlator.
 	SignalFunc func(name string) int
+
+	// ProcessKill envía la señal directamente al PID de host. Esto garantiza
+	// que la terminación atraviese kill(2), el tracepoint exigido para la
+	// confirmación eBPF. Docker.Kill queda como respaldo si la syscall falla.
+	ProcessKill func(pid int, signal syscall.Signal) error
 }
 
 // New construye un Daemon con todas sus dependencias.
 func New(cfg config.Config, proc procfs.Reader, dc docker.ContainerAPI, pol policy.Policy, st valkey.Store, cons ebpf.Consumer, corr *ebpf.Correlator, logger *slog.Logger) *Daemon {
 	return &Daemon{
-		Cfg:        cfg,
-		Proc:       proc,
-		Docker:     dc,
-		Policy:     pol,
-		Store:      st,
-		Events:     cons,
-		Corr:       corr,
-		Logger:     logger,
-		Compose:    NewDockerComposeRunner(logger),
-		SignalFunc: signalNumber,
+		Cfg:         cfg,
+		Proc:        proc,
+		Docker:      dc,
+		Policy:      pol,
+		Store:       st,
+		Events:      cons,
+		Corr:        corr,
+		Logger:      logger,
+		Compose:     NewDockerComposeRunner(logger),
+		SignalFunc:  signalNumber,
+		ProcessKill: syscall.Kill,
 	}
 }
 
@@ -266,8 +268,11 @@ func (d *Daemon) reconcile(ctx context.Context) (Result, error) {
 	for _, c := range dec.RemovalCandidates {
 		d.Corr.Track(c.Container.ID, c.Container.HostPID, sigNum)
 		d.Logger.Info("solicitando terminación", "container", c.Container.DisplayName(), "host_pid", c.Container.HostPID)
-		if err := d.Docker.Kill(ctx, c.Container.ID, d.Cfg.KillSignal); err != nil {
-			d.Logger.Warn("falló la solicitud de terminación", "container", c.Container.ID, "error", err)
+		if err := d.ProcessKill(c.Container.HostPID, syscall.Signal(sigNum)); err != nil {
+			d.Logger.Warn("falló kill(2); usando respaldo de Docker", "container", c.Container.ID, "host_pid", c.Container.HostPID, "error", err)
+			if dockerErr := d.Docker.Kill(ctx, c.Container.ID, d.Cfg.KillSignal); dockerErr != nil {
+				d.Logger.Warn("falló la solicitud de terminación", "container", c.Container.ID, "error", dockerErr)
+			}
 		}
 	}
 
