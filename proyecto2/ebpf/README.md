@@ -34,8 +34,8 @@ syscalls:sys_enter_tgkill ┘                               (daemon/internal/ebp
   cargador (cilium/ebpf, `libbpf`) resuelve las relocalizaciones contra el
   BTF del kernel en ejecución (`/sys/kernel/btf/vmlinux`). No se compila
   contra headers del kernel.
-- El layout de `sys_enter_kill_ctx`/`sys_enter_tgkill_ctx` reproduce el
-  formato publicado por tracefs:
+- El layout común `sys_enter_ctx` reproduce `trace_entry`, el identificador
+  de syscall y el arreglo `args[6]` publicados por tracefs:
   `/sys/kernel/tracing/events/syscalls/sys_enter_kill/format` (y tgkill).
   Es ABI estable; si un kernel cambiara esos offsets, el verifier/loader lo
   detectará al cargar y el consumidor reportará el error.

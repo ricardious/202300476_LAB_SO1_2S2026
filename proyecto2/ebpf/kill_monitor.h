@@ -44,24 +44,17 @@ struct __bpf_trace_entry {
 };
 
 /*
- * Layout de syscalls:sys_enter_kill (formato de tracefs):
- *   common_* (8 bytes) | pid_t pid @8 | int sig @12
+ * Layout común de syscalls:sys_enter_* publicado por tracefs:
+ *   common_* (8 bytes) | long syscall_nr @8 | unsigned long args[6] @16
+ *
+ * Los argumentos no comienzan inmediatamente después de trace_entry: primero
+ * aparece el identificador de la syscall. Modelar pid/sig directamente en los
+ * offsets 8/12 leería syscall_nr y padding en kernels de 64 bits.
  */
-struct sys_enter_kill_ctx {
+struct sys_enter_ctx {
 	struct __bpf_trace_entry ent;
-	__s32 pid;
-	__s32 sig;
-};
-
-/*
- * Layout de syscalls:sys_enter_tgkill (formato de tracefs):
- *   common_* (8 bytes) | pid_t tgid @8 | pid_t pid @12 | int sig @16
- */
-struct sys_enter_tgkill_ctx {
-	struct __bpf_trace_entry ent;
-	__s32 tgid;
-	__s32 pid;
-	__s32 sig;
+	__s64 id;
+	__u64 args[6];
 };
 
 /*
