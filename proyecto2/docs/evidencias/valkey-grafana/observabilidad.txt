@@ -926,6 +926,5 @@ bec41f9947caa058c7977829367aa8fe533134881d79123cb96a8a5616a234fb|pid=1168697
 }
 
 == Capturas visuales manuales ==
-Tome una captura por cada panel del dashboard (14 paneles) y guárdelas
-en valkey-grafana/ con nombres NN-grafana-<panel>.png. Lista en
-docs/GUIA_DEMO.md -> 'Evidencias a capturar'.
+Las capturas del dashboard se encuentran en valkey-grafana/ y se presentan
+en docs/evidencias/README.md junto con su descripción.

@@ -138,16 +138,17 @@ bash scripts/cleanup.sh --no-confirm --module --purge
 `cleanup.sh` solo toca recursos con la etiqueta `so1.p2.project=202300476` y el
 proyecto Compose `so1-p2`; los recursos del Proyecto 1 quedan intactos.
 
-## 11. Checklist de verificación final
+## 11. Verificación final
 
-- [ ] `make build`, `make module`, `make up` sin errores.
-- [ ] `/proc/continfo_pr2_so1_202300476` existe tras cargar el módulo y
-      desaparece al descargarlo.
-- [ ] El JSON del `/proc` pasa `tests/kernel/validate_schema.py`.
-- [ ] Grafana muestra los paneles de la rúbrica con datos (no vacíos).
-- [ ] Tras ~10 min con el cron activo hay >5 contenedores y el daemon conserva
-      ≥3 low y ≥2 high.
-- [ ] `valkey-cli GET so1:p2:kills:count` crece solo con eliminaciones
-      confirmadas por eBPF.
-- [ ] `sudo bash tests/kernel/test-module-lifecycle.sh` y el test eBPF
-      privilegiado pasan.
+Una instalación correcta cumple estas condiciones:
+
+- `make build`, `make module` y `make up` terminan sin errores.
+- `/proc/continfo_pr2_so1_202300476` aparece al cargar el módulo y desaparece
+  al descargarlo.
+- El JSON de `/proc` pasa `tests/kernel/validate_schema.py`.
+- Grafana presenta datos en todos los paneles solicitados.
+- Con más de cinco contenedores, el daemon conserva al menos tres de bajo
+  consumo y dos de alto consumo.
+- `so1:p2:kills:count` aumenta únicamente después de una señal confirmada por
+  eBPF.
+- Las pruebas privilegiadas del módulo y de eBPF terminan correctamente.
