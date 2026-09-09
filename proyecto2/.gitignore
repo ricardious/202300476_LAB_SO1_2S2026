@@ -12,6 +12,10 @@ bin/
 # Logs generados por el generador/cron.
 logs/
 
+# Reportes completos del host generados al capturar evidencias localmente.
+docs/evidencias/kernel/kernel.txt
+docs/evidencias/kernel/proc-snapshot.json
+
 # Objetos intermedios del módulo de kernel y del frente eBPF de inspección.
 kernel/*.o
 kernel/*.ko

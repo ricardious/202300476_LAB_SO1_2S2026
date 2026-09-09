@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================================
 # capture-evidence.sh — Captura automática de evidencias del Proyecto 2 SO1
-# (202300476). Rama de entrega: ricardious/p2-delivery
+# (202300476).
 #
 # Genera, con timestamp y SIN secretos, archivos de texto por rubro dentro de
 # proyecto2/docs/evidencias/. Es SOLO LECTURA del entorno: nunca carga/descarga el
@@ -21,8 +21,7 @@
 #   bash proyecto2/scripts/capture-evidence.sh --dry-run        # lista sin escribir
 #   bash proyecto2/scripts/capture-evidence.sh --out-dir /tmp/ev
 #
-# Los rubros y su mapeo con la rúbrica están documentados en
-# proyecto2/docs/evidencias/README.md y docs/GUIA_DEMO.md.
+# Las capturas y los resultados se presentan en docs/evidencias/README.md.
 # ============================================================================
 set -uo pipefail
 
@@ -39,7 +38,7 @@ MODNAME="continfo"
 MARKER_BEGIN="# >>> so1-p2-202300476:begin >>>"
 MARKER_END="# <<< so1-p2-202300476:end <<<"
 
-declare -a RUBROS=(entorno kernel daemon-politica cron-workloads valkey-grafana ebpf documentacion-git)
+declare -a RUBROS=(entorno kernel daemon-politica cron-workloads valkey-grafana ebpf)
 
 usage() {
   sed -n '2,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
@@ -433,9 +432,8 @@ capture_valkey_grafana() {
   fi
 
   section "Capturas visuales manuales"
-  dump "Tome una captura por cada panel del dashboard (14 paneles) y guárdelas"
-  dump "en valkey-grafana/ con nombres NN-grafana-<panel>.png. Lista en"
-  dump "docs/GUIA_DEMO.md -> 'Evidencias a capturar'."
+  dump "Las capturas del dashboard se encuentran en valkey-grafana/."
+  dump "docs/evidencias/README.md las presenta junto con su descripción."
   end_file
 }
 
@@ -489,41 +487,6 @@ capture_ebpf() {
 }
 
 # ---------------------------------------------------------------------------
-# rubro: documentacion-git — estado git + docs + evidencias
-# ---------------------------------------------------------------------------
-capture_documentacion_git() {
-  local f="git.txt"
-  begin_file "documentacion-git" "$f" "Documentación y estado Git"
-  section "Repositorio"
-  if git rev-parse --show-toplevel >/dev/null 2>&1; then
-    dump "toplevel: $(git rev-parse --show-toplevel)"
-    dump "rama actual: $(git branch --show-current)"
-    dump "remotes:"
-    git remote -v >> "$CUR" 2>/dev/null
-    dump "--- últimos 15 commits ---"
-    git log --oneline -15 >> "$CUR" 2>/dev/null
-    dump "--- estado (archivos sin commitear) ---"
-    dump "archivos modificados/sin seguimiento: $(git status --porcelain | wc -l)"
-    git status --short >> "$CUR" 2>/dev/null
-  else
-    skip "no es un repositorio git en $ROOT"
-  fi
-
-  section "Documentación (docs/)"
-  if [ -d "${ROOT}/docs" ]; then
-    find "${ROOT}/docs" -maxdepth 1 -type f -name '*.md' | sort | sed "s|${ROOT}/|proyecto2/|" >> "$CUR"
-  fi
-
-  section "Árbol de evidencias (docs/evidencias/)"
-  find "${ROOT}/docs/evidencias" -maxdepth 2 | sort | sed "s|${ROOT}/|proyecto2/|" >> "$CUR"
-
-  section "Capturas visuales manuales (GitHub)"
-  dump "Capture: página del repo, pestaña commits de la rama ricardious/p2-delivery"
-  dump "y (si aplica) releases. Guárdelas en documentacion-git/."
-  end_file
-}
-
-# ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
 main() {
@@ -535,7 +498,7 @@ main() {
       fi
     done
     echo
-    echo "Rúbrica y contenido de cada rubro: docs/evidencias/README.md"
+    echo "Contenido de cada rubro: docs/evidencias/README.md"
     exit 0
   fi
 
@@ -554,7 +517,6 @@ main() {
       cron-workloads)    capture_cron_workloads ;;
       valkey-grafana)    capture_valkey_grafana ;;
       ebpf)              capture_ebpf ;;
-      documentacion-git) capture_documentacion_git ;;
     esac
   done
 
@@ -565,11 +527,7 @@ main() {
   echo "Archivos generados en ${OUT_DIR}:"
   find "${OUT_DIR}" -maxdepth 2 -name '*.txt' -o -maxdepth 2 -name '*.json' 2>/dev/null | sort
   echo
-  echo "Faltan por captura MANUAL (pantalla):"
-  echo "  - Grafana: 14 paneles del dashboard (valkey-grafana/NN-grafana-<panel>.png)."
-  echo "  - GitHub: repo, commits de la rama y releases (documentacion-git/)."
-  echo "  - Acciones privilegiadas del checklist (sudo make module-load, sudo go test eBPF,"
-  echo "    sudo bash tests/kernel/test-module-lifecycle.sh) en kernel/ y ebpf/."
+  echo "Consulte docs/evidencias/README.md para ver las capturas y resultados."
   exit 0
 }
 
