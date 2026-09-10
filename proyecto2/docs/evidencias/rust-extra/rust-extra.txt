@@ -1,0 +1,24 @@
+# ================================================================
+# Proyecto 2 · SO1 (202300476) — Actividad extra: módulo de kernel en Rust
+# Fecha (UTC): 2026-09-09T23:21:04Z · Host: fedora
+# Generado por: scripts/capture-evidence.sh (solo lectura)
+# ================================================================
+
+== Toolchain y soporte del kernel ==
+rustc 1.95.0 (59807616e 2026-04-14) (Fedora 1.95.0-5.fc42)
+
+== Artefacto y metadatos ==
+-rw-r--r--. 1 ricardious ricardious 178K Sep  9 17:20 /home/ricardious/orca/workspaces/202300476_LAB_SO1_2S2026/cockle/proyecto2/rust-module/hola_rust_202300476.ko
+filename:       /home/ricardious/orca/workspaces/202300476_LAB_SO1_2S2026/cockle/proyecto2/rust-module/hola_rust_202300476.ko
+version:        1.0.0
+description:    Modulo extra en Rust - SO1 Proyecto 2 - 202300476
+author:         Alex Ricardo Castaneda Rodriguez
+license:        GPL
+srcversion:     E0509FD44656FD46065A01A
+depends:        
+name:           hola_rust_202300476
+retpoline:      Y
+vermagic:       6.19.14-108.fc42.x86_64 SMP preempt mod_unload 
+
+== Carga y mensajes del kernel ==
+Ejecute con --privileged para capturar los mensajes de carga y descarga.

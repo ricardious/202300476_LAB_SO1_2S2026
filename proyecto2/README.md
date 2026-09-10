@@ -4,7 +4,8 @@ Sistema Linux de telemetría y gestión autónoma de contenedores: un **módulo 
 kernel C** expone métricas por `/proc`, una **sonda eBPF CO-RE** audita las
 syscalls `kill`/`tgkill`, un **daemon Go** decide qué contenedores eliminar
 (conservando 3 de bajo consumo y 2 de alto consumo), y **Valkey + Grafana**
-persisten y visualizan los datos.
+persisten y visualizan los datos. Como actividad adicional, incluye un módulo
+**Rust** que registra `Hola Mundo 202300476` en el log del kernel.
 
 ```
 Linux kernel
@@ -86,6 +87,7 @@ El consumidor **CO-RE real** (`daemon/internal/ebpf`) se adjunta a
 proyecto2/
 ├── Makefile  .env.example  README.md
 ├── kernel/    # continfo.c (módulo /proc) + Makefile
+├── rust-module/ # actividad extra: módulo Hola Mundo con lógica Rust
 ├── ebpf/      # kill_monitor.bpf.c + Makefile
 ├── daemon/    # cmd/daemon + internal/{config,procfs,docker,policy,valkey,ebpf,cron,lifecycle}
 ├── workloads/ # memory-high, cpu-high, low, intruder (4 imágenes)
@@ -105,10 +107,29 @@ make verify-delivery               # preentrega estricta (manifest, JSON, shell,
 SO1_SKIP_DOCKER=1 bash tests/integration/observability/run.sh
 sudo bash tests/kernel/test-module-lifecycle.sh    # prueba privilegiada (opt-in)
 sudo go test ./internal/ebpf/ -run Privilegiada -v # eBPF real (opt-in)
+make rust-module                   # compila la actividad extra en Rust
+sudo make rust-module-load         # carga y registra Hola Mundo 202300476
+sudo make rust-module-unload       # descarga el módulo extra
 ```
 
 Las pruebas privilegiadas (módulo, eBPF real) se **omiten automáticamente**
 con mensajes claros cuando el host no tiene root/CAP_BPF o headers del kernel.
+
+## Actividad extra en Rust
+
+`rust-module/hola_rust.rs` implementa el mensaje y el ciclo lógico de carga y
+descarga. Un adaptador C mínimo registra `module_init/module_exit`, porque el
+paquete `kernel-devel` de Fedora no distribuye el crate interno completo de
+Rust for Linux necesario para compilar un módulo externo puramente Rust. El
+resultado sigue siendo un único módulo cargable `hola_rust_202300476.ko` y la
+prueba automatizada valida nombre, `vermagic` y el mensaje con el carnet.
+
+```bash
+make rust-module
+sudo make rust-module-load
+sudo dmesg | grep -E 'Hola Mundo 202300476|Modulo Rust 202300476'
+sudo make rust-module-unload
+```
 
 ## Evidencias y entrega
 

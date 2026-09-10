@@ -128,7 +128,27 @@ make doctor               # checks no privilegiados
 sudo bash scripts/doctor.sh --privileged      # + módulo/eBPF
 ```
 
-## 10. Limpieza segura
+## 10. Actividad extra: módulo en Rust
+
+El kernel debe tener `CONFIG_RUST=y`, `rustc` debe coincidir con la versión
+esperada por el kernel y deben estar instalados sus headers de desarrollo.
+
+```bash
+make rust-module
+ls -lh rust-module/hola_rust_202300476.ko
+sudo make rust-module-load
+sudo dmesg | grep -E 'Hola Mundo 202300476|Modulo Rust 202300476'
+sudo make rust-module-unload
+```
+
+La prueba no privilegiada verifica el artefacto, el nombre, el `vermagic` y el
+mensaje obligatorio:
+
+```bash
+bash tests/rust/test-build.sh
+```
+
+## 11. Limpieza segura
 
 ```bash
 bash scripts/cleanup.sh                       # solo recursos del proyecto (pide confirmación)
@@ -138,7 +158,7 @@ bash scripts/cleanup.sh --no-confirm --module --purge
 `cleanup.sh` solo toca recursos con la etiqueta `so1.p2.project=202300476` y el
 proyecto Compose `so1-p2`; los recursos del Proyecto 1 quedan intactos.
 
-## 11. Verificación final
+## 12. Verificación final
 
 Una instalación correcta cumple estas condiciones:
 
@@ -152,3 +172,4 @@ Una instalación correcta cumple estas condiciones:
 - `so1:p2:kills:count` aumenta únicamente después de una señal confirmada por
   eBPF.
 - Las pruebas privilegiadas del módulo y de eBPF terminan correctamente.
+- El módulo extra `hola_rust_202300476.ko` registra `Hola Mundo 202300476`.

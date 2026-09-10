@@ -26,3 +26,10 @@ kernel/*.symvers
 kernel/.*.cmd
 kernel/.tmp_versions/
 ebpf/kill_monitor.o
+rust-module/*.o
+rust-module/*.ko
+rust-module/*.mod
+rust-module/*.mod.c
+rust-module/*.order
+rust-module/*.symvers
+rust-module/.*.cmd
