@@ -78,6 +78,7 @@ section "Archivos requeridos (manifest)"
 REQUIRED=(
   README.md Makefile .env.example .gitignore
   kernel/continfo.c kernel/Makefile
+  rust-module/hola_rust.rs rust-module/module.c rust-module/Makefile rust-module/README.md
   ebpf/kill_monitor.bpf.c ebpf/kill_monitor.h ebpf/Makefile ebpf/README.md
   daemon/go.mod daemon/go.sum daemon/cmd/daemon/main.go
   daemon/internal/config/config.go
@@ -103,6 +104,7 @@ REQUIRED=(
   scripts/remove-cron.sh scripts/unload-module.sh scripts/verify-delivery.sh
   tests/kernel/test-all.sh tests/kernel/test-build.sh tests/kernel/test-module-lifecycle.sh
   tests/kernel/test-schema.sh tests/kernel/validate_schema.py tests/kernel/fixtures/sample-snapshot.json
+  tests/rust/test-build.sh
   tests/integration/observability/run.sh tests/integration/observability/test_containers.sh
   tests/integration/observability/test_cron.sh tests/integration/observability/test_deploy.sh
   tests/integration/observability/test_stack.sh
@@ -119,7 +121,7 @@ done
 [ "$MISSING" -eq 0 ] && ok "manifest completo (${#REQUIRED[@]} archivos)"
 
 section "Carpetas de evidencias por rubro"
-for d in entorno kernel daemon-politica cron-workloads valkey-grafana ebpf; do
+for d in entorno kernel daemon-politica cron-workloads valkey-grafana ebpf rust-extra; do
   if [ -d "$ROOT/docs/evidencias/$d" ] && [ -f "$ROOT/docs/evidencias/$d/.gitkeep" ]; then
     ok "docs/evidencias/$d/.gitkeep"
   else
@@ -257,7 +259,17 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 6. Observabilidad (suite integración, hermética)
+# 6. Actividad extra en Rust
+# ---------------------------------------------------------------------------
+section "Actividad extra: módulo de kernel en Rust"
+if bash "$ROOT/tests/rust/test-build.sh"; then
+  ok "módulo Rust compilado y metadatos verificados"
+else
+  fail "compilación del módulo Rust falló"
+fi
+
+# ---------------------------------------------------------------------------
+# 7. Observabilidad (suite integración, hermética)
 # ---------------------------------------------------------------------------
 section "Observabilidad (run.sh)"
 if [ "$NO_DOCKER" -eq 1 ] || [ "$DOCKER_OK" -eq 0 ]; then
@@ -274,7 +286,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 7. Compose / estado operativo (doctor.sh)
+# 8. Compose / estado operativo (doctor.sh)
 # ---------------------------------------------------------------------------
 section "Estado operativo (doctor.sh)"
 if [ "$NO_DOCKER" -eq 1 ] || [ "$DOCKER_OK" -eq 0 ]; then

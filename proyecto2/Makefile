@@ -12,6 +12,7 @@
 #   make demo    # demo de punta a punta
 #   make evidence          # captura automática de evidencias (docs/evidencias/)
 #   make verify-delivery   # preentrega estricta (0 sin fallos, 1 fallos, 2 uso)
+#   make rust-module       # actividad extra: módulo Hola Mundo en Rust
 #   make clean   # limpia artefactos de build (NO borra contenedores/volúmenes)
 #
 # Decision de despliegue: el daemon corre en el HOST (acceso a /proc del módulo
@@ -24,6 +25,7 @@ SHELL := /usr/bin/env bash
 DAEMON_DIR  := $(CURDIR)/daemon
 EBPF_DIR    := $(CURDIR)/ebpf
 KERNEL_DIR  := $(CURDIR)/kernel
+RUST_MODULE_DIR := $(CURDIR)/rust-module
 DEPLOY_DIR  := $(CURDIR)/deploy
 SCRIPTS_DIR := $(CURDIR)/scripts
 BIN_DIR     := $(CURDIR)/bin
@@ -34,6 +36,7 @@ GENERATOR   := /usr/local/bin/so1-p2-generate-containers.sh
 
 .PHONY: all build test up down install run doctor demo clean \
         ebpf module module-load module-unload install-cron remove-cron \
+        rust-module rust-module-load rust-module-unload rust-module-verify \
         lint vet fmt smoke purge evidence verify-delivery
 
 all: build
@@ -54,6 +57,7 @@ test:
 	cd $(DAEMON_DIR) && go test -race ./...
 	bash $(SCRIPTS_DIR)/../tests/integration/observability/run.sh
 	bash $(SCRIPTS_DIR)/../tests/kernel/test-all.sh
+	bash $(SCRIPTS_DIR)/../tests/rust/test-build.sh
 
 # --------------------------------------------------------------------------
 # up / down (Compose del proyecto; jamás toca recursos ajenos)
@@ -123,6 +127,19 @@ module-load:
 module-unload:
 	bash $(SCRIPTS_DIR)/unload-module.sh
 
+# Actividad extra: módulo de kernel cuyo mensaje se implementa en Rust.
+rust-module:
+	$(MAKE) -C $(RUST_MODULE_DIR)
+
+rust-module-load:
+	$(MAKE) -C $(RUST_MODULE_DIR) load
+
+rust-module-unload:
+	$(MAKE) -C $(RUST_MODULE_DIR) unload
+
+rust-module-verify:
+	$(MAKE) -C $(RUST_MODULE_DIR) verify
+
 install-cron:
 	bash $(SCRIPTS_DIR)/install-cron.sh
 
@@ -149,6 +166,7 @@ clean:
 	cd $(DAEMON_DIR) && go clean ./...
 	$(MAKE) -C $(EBPF_DIR) clean
 	$(MAKE) -C $(KERNEL_DIR) clean
+	$(MAKE) -C $(RUST_MODULE_DIR) clean
 	@echo ">> artefactos de build eliminados (recursos desplegados intactos)"
 
 # --------------------------------------------------------------------------

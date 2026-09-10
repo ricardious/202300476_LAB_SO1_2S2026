@@ -346,3 +346,27 @@ Los paneles temporales usan transformaciones de organización para graficar
   VM objetivo.
 - El datasource de Grafana usa Redis/Valkey vía plugin; la primera vez requiere
   red para instalar el plugin en el build de la imagen.
+
+---
+
+## 10. Actividad extra: módulo de kernel en Rust
+
+El directorio `rust-module/` produce `hola_rust_202300476.ko`. La función que
+emite `Hola Mundo 202300476` y la lógica de salida están escritas en Rust
+`no_std`; `module.c` se limita a registrar los callbacks de carga y descarga.
+Esta separación permite compilar con los headers `kernel-devel` de Fedora,
+que habilitan Rust en el kernel pero no incluyen el crate interno completo de
+Rust for Linux para módulos externos.
+
+El Makefile usa el `rustc` compatible con el kernel, genera un objeto ELF con
+las opciones de ABI del kernel y deja que Kbuild enlace y genere los metadatos
+del `.ko`. La validación automatizada comprueba el nombre del módulo, su
+`vermagic` y la presencia del mensaje con el carnet.
+
+```bash
+make rust-module
+bash tests/rust/test-build.sh
+sudo make rust-module-load
+sudo dmesg | grep -E 'Hola Mundo 202300476|Modulo Rust 202300476'
+sudo make rust-module-unload
+```
