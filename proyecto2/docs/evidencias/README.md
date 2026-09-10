@@ -121,6 +121,15 @@ La actividad adicional compila `hola_rust_202300476.ko` con la lógica del
 mensaje en Rust. La carga y descarga se validan en el mismo kernel usado para
 el resto del proyecto.
 
-Las capturas de compilación y ejecución se incorporarán en `rust-extra/` tras
-la prueba privilegiada. El reporte automático queda en
+La compilación confirma Rust `1.95.0`, `CONFIG_RUST=y`, el artefacto cargable y
+un `vermagic` igual al kernel `6.19.14-108.fc42.x86_64`.
+
+![Compilación y metadatos del módulo Rust](rust-extra/01-compilacion-modulo-rust.png)
+
+La prueba privilegiada confirma el módulo en `lsmod`, el mensaje exacto
+`Hola Mundo 202300476` en `dmesg` y su descarga correcta.
+
+![Carga, mensaje y descarga del módulo Rust](rust-extra/02-carga-descarga-modulo-rust.png)
+
+El diagnóstico no privilegiado queda registrado en
 [rust-extra.txt](rust-extra/rust-extra.txt).
