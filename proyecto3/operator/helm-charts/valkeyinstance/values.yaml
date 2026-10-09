@@ -1,0 +1,12 @@
+image: localhost:5005/library/valkey:8.1.3-alpine
+storage: 256Mi
+maxmemory: 64mb
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 160Mi
+replica:
+  enabled: false

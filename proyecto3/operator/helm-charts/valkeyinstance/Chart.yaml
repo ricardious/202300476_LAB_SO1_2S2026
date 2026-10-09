@@ -1,0 +1,6 @@
+apiVersion: v2
+name: valkeyinstance
+description: SO1 Proyecto 3 recurso administrado por Helm Operator
+type: application
+version: 0.1.0
+appVersion: 1.0.0
