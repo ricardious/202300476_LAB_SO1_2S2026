@@ -1,0 +1,6 @@
+apiVersion: v2
+name: grafanainstance
+description: SO1 Proyecto 3 recurso administrado por Helm Operator
+type: application
+version: 0.1.1
+appVersion: 1.0.0

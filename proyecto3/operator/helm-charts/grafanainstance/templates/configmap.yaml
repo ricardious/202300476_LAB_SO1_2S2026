@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{ .Release.Name }}-provisioning'
+data:
+  datasource.yaml: "apiVersion: 1\ndatasources:\n- name: Prometheus\n  uid: so1-p3-prometheus\n\
+    \  type: prometheus\n  access: proxy\n  url: http://prometheus:9090\n  isDefault:\
+    \ true\n  editable: false\n"
+  provider.yaml: "apiVersion: 1\nproviders:\n- name: SO1\n  type: file\n  disableDeletion:\
+    \ true\n  options:\n    path: /etc/so1-dashboards\n"
+  dashboard.json: |-
+{{ .Files.Get "files/dashboard.json" | indent 4 }}

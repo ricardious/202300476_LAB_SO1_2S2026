@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Release.Name }}'
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: '{{ .Release.Name }}'
+  template:
+    metadata:
+      annotations:
+        checksum/provisioning: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        app: '{{ .Release.Name }}'
+    spec:
+      securityContext:
+        fsGroup: 472
+      containers:
+      - name: grafana
+        image: '{{ .Values.image }}'
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          value: so1
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: '{{ .Values.adminSecret }}'
+              key: grafana-password
+        - name: GF_ANALYTICS_REPORTING_ENABLED
+          value: 'false'
+        - name: GF_ANALYTICS_CHECK_FOR_UPDATES
+          value: 'false'
+        - name: GF_PLUGINS_PREINSTALL_DISABLED
+          value: 'true'
+        - name: GF_LOG_LEVEL
+          value: warn
+        - name: GOMEMLIMIT
+          value: 192MiB
+        - name: GOMAXPROCS
+          value: '1'
+        ports:
+        - containerPort: 3000
+        resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/grafana
+        - name: config
+          mountPath: /etc/grafana/provisioning/datasources/p3.yaml
+          subPath: datasource.yaml
+        - name: config
+          mountPath: /etc/grafana/provisioning/dashboards/p3.yaml
+          subPath: provider.yaml
+        - name: config
+          mountPath: /etc/so1-dashboards/dashboard.json
+          subPath: dashboard.json
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: '{{ .Release.Name }}-data'
+      - name: config
+        configMap:
+          name: '{{ .Release.Name }}-provisioning'
