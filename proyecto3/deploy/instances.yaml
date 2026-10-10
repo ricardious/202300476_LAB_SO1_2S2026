@@ -1,0 +1,13 @@
+apiVersion: monitoring.so1.local/v1alpha1
+kind: ValkeyInstance
+metadata:
+  name: valkey
+  namespace: so1-p3
+spec: {}
+---
+apiVersion: monitoring.so1.local/v1alpha1
+kind: GrafanaInstance
+metadata:
+  name: grafana
+  namespace: so1-p3
+spec: {}

@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: p3-operator
+  namespace: so1-p3
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: p3-operator
+  namespace: so1-p3
+rules:
+- apiGroups:
+  - monitoring.so1.local
+  resources:
+  - valkeyinstances
+  - valkeyinstances/status
+  - valkeyinstances/finalizers
+  - grafanainstances
+  - grafanainstances/status
+  - grafanainstances/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  - services
+  - persistentvolumeclaims
+  - configmaps
+  - secrets
+  - events
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  - replicasets
+  verbs:
+  - '*'
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: p3-operator
+  namespace: so1-p3
+subjects:
+- kind: ServiceAccount
+  name: p3-operator
+  namespace: so1-p3
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: p3-operator
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p3-operator
+  namespace: so1-p3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p3-operator
+  template:
+    metadata:
+      labels:
+        app: p3-operator
+    spec:
+      serviceAccountName: p3-operator
+      containers:
+      - name: manager
+        image: localhost:5005/so1/operator:1.0.0
+        args:
+        - --max-concurrent-reconciles=1
+        - --reconcile-period=1m
+        - --leader-elect=false
+        env:
+        - name: WATCH_NAMESPACE
+          value: so1-p3
+        - name: GOMAXPROCS
+          value: '1'
+        - name: GOMEMLIMIT
+          value: 160MiB
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        imagePullPolicy: Always
