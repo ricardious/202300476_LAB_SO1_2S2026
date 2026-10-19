@@ -1,0 +1,4 @@
+Capturado 2026-10-19T19:51:58.248509+00:00
+k3d-so1-p3-server-0 1.527GiB / 3.5GiB 25.62%
+postgresql-17 14.97MiB / 6.993GiB 0.00%
+proyecto_1_smartegg-broker-1 1.602MiB / 6.993GiB 0.03%

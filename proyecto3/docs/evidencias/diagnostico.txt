@@ -1,0 +1,23 @@
+make: Entering directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+               total        used        free      shared  buff/cache   available
+Mem:           7.0Gi       5.2Gi       231Mi        60Mi       1.9Gi       1.8Gi
+Swap:          7.0Gi       3.5Gi       3.5Gi
+k3d-so1-p3-server-0 1.356GiB / 3.5GiB 49.71%
+postgresql-17 6.332MiB / 6.993GiB 0.00%
+proyecto_1_smartegg-broker-1 1.676MiB / 6.993GiB 0.02%
+/ libre GiB 3.51
+/mnt/development libre GiB 2.29
+/mnt/fedora-extra/so1-proyecto3 libre GiB 7.64
+docker /usr/local/bin/docker
+podman /usr/bin/podman
+go /usr/bin/go
+rustc /usr/bin/rustc
+cargo /mnt/fedora-extra/so1-proyecto3/bin/cargo
+kubectl /mnt/fedora-extra/so1-proyecto3/bin/kubectl
+helm /mnt/fedora-extra/so1-proyecto3/bin/helm
+k3d /mnt/fedora-extra/so1-proyecto3/bin/k3d
+oras /mnt/fedora-extra/so1-proyecto3/bin/oras
+zot /mnt/fedora-extra/so1-proyecto3/bin/zot
+operator-sdk /mnt/fedora-extra/so1-proyecto3/bin/operator-sdk
+La instalación es local y no requiere cuentas ni recursos de Google Cloud.
+make: Leaving directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
