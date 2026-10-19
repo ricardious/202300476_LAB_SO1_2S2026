@@ -1,0 +1,118 @@
+make: Entering directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+[36mINFO[0m[0000] Stopping cluster 'so1-p3'                    
+[36mINFO[0m[0010] Stopped cluster 'so1-p3'                     
+Proyecto detenido; datos persistentes conservados
+make: Leaving directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+make: Entering directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+Herramientas verificadas
+[36mINFO[0m[0000] Using the k3d-tools node to gather environment information 
+[36mINFO[0m[0000] Starting new tools node...                   
+[36mINFO[0m[0000] Starting node 'k3d-so1-p3-tools'             
+[36mINFO[0m[0000] HostIP: using network gateway 172.22.0.1 address 
+[36mINFO[0m[0000] Starting cluster 'so1-p3'                    
+[36mINFO[0m[0000] Starting servers...                          
+[36mINFO[0m[0000] Starting node 'k3d-so1-p3-server-0'          
+[36mINFO[0m[0008] All agents already running.                  
+[36mINFO[0m[0008] All helpers already running.                 
+[36mINFO[0m[0008] Injecting records for hostAliases (incl. host.k3d.internal) and for 1 network members into CoreDNS configmap... 
+[36mINFO[0m[0010] Started cluster 'so1-p3'                     
+node/k3d-so1-p3-server-0 condition met
+Zot listo en https://localhost:5005
+namespace/so1-p3 unchanged
+secret/p3-auth configured
+customresourcedefinition.apiextensions.k8s.io/grafanainstances.monitoring.so1.local unchanged
+customresourcedefinition.apiextensions.k8s.io/valkeyinstances.monitoring.so1.local unchanged
+serviceaccount/p3-operator unchanged
+role.rbac.authorization.k8s.io/p3-operator unchanged
+rolebinding.rbac.authorization.k8s.io/p3-operator unchanged
+deployment.apps/p3-operator unchanged
+valkeyinstance.monitoring.so1.local/valkey unchanged
+grafanainstance.monitoring.so1.local/grafana unchanged
+service/api-rust unchanged
+deployment.apps/api-rust unchanged
+service/go-ingest unchanged
+deployment.apps/go-ingest unchanged
+service/go-writer unchanged
+deployment.apps/go-writer unchanged
+service/consumer unchanged
+deployment.apps/consumer unchanged
+service/rabbitmq unchanged
+persistentvolumeclaim/rabbitmq-data unchanged
+deployment.apps/rabbitmq unchanged
+configmap/prometheus-config unchanged
+service/prometheus unchanged
+persistentvolumeclaim/prometheus-data unchanged
+deployment.apps/prometheus unchanged
+horizontalpodautoscaler.autoscaling/api-rust unchanged
+Release "eg" has been upgraded. Happy Helming!
+NAME: eg
+LAST DEPLOYED: Mon Oct 19 13:45:57 2026
+NAMESPACE: envoy-gateway-system
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
+NOTES:
+**************************************************************************
+*** PLEASE BE PATIENT: Envoy Gateway may take a few minutes to install ***
+**************************************************************************
+
+Envoy Gateway is an open source project for managing Envoy Proxy as a standalone or Kubernetes-based application gateway.
+
+Thank you for installing Envoy Gateway! 🎉
+
+Your release is named: eg. 🎉
+
+Your release is in namespace: envoy-gateway-system. 🎉
+
+To learn more about the release, try:
+
+  $ helm status eg -n envoy-gateway-system
+  $ helm get all eg -n envoy-gateway-system
+
+To have a quickstart of Envoy Gateway, please refer to https://gateway.envoyproxy.io/latest/tasks/quickstart.
+
+To get more details, please visit https://gateway.envoyproxy.io and https://github.com/envoyproxy/gateway.
+gatewayclass.gateway.networking.k8s.io/so1-envoy unchanged
+envoyproxy.gateway.envoyproxy.io/small unchanged
+gateway.gateway.networking.k8s.io/military configured
+httproute.gateway.networking.k8s.io/reports configured
+Release "falco" has been upgraded. Happy Helming!
+NAME: falco
+LAST DEPLOYED: Mon Oct 19 13:46:04 2026
+NAMESPACE: so1-p3
+STATUS: deployed
+REVISION: 5
+TEST SUITE: None
+NOTES:
+Falco agents are spinning up on each node in your cluster. After a few
+seconds, they are going to start monitoring your containers looking for
+security issues.
+
+TIP:
+You can easily forward Falco events to Slack, Kafka, AWS Lambda and more with falcosidekick.
+Full list of outputs: https://github.com/falcosecurity/charts/tree/master/charts/falcosidekick.
+You can enable its deployment with `--set falcosidekick.enabled=true` or in your values.yaml.
+See: https://github.com/falcosecurity/charts/blob/master/charts/falcosidekick/values.yaml for configuration values.
+deployment.apps/api-rust restarted
+deployment.apps/go-ingest restarted
+deployment.apps/go-writer restarted
+deployment.apps/consumer restarted
+deployment.apps/p3-operator restarted
+Waiting for deployment "api-rust" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "api-rust" rollout to finish: 1 old replicas are pending termination...
+deployment "api-rust" successfully rolled out
+Waiting for deployment "go-ingest" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "go-ingest" rollout to finish: 1 old replicas are pending termination...
+deployment "go-ingest" successfully rolled out
+deployment "go-writer" successfully rolled out
+Waiting for deployment "consumer" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "consumer" rollout to finish: 1 old replicas are pending termination...
+deployment "consumer" successfully rolled out
+deployment "rabbitmq" successfully rolled out
+deployment "prometheus" successfully rolled out
+deployment "p3-operator" successfully rolled out
+deployment "grafana" successfully rolled out
+partitioned roll out complete: 1 new pods have been updated...
+Gateway http://127.0.0.1:8088/grpc-202300476 — Grafana http://127.0.0.1:3003
+Locust listo en http://127.0.0.1:8089; no se inicia tráfico automáticamente
+make: Leaving directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
