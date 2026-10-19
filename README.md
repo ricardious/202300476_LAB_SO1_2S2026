@@ -12,7 +12,7 @@ de Guatemala.
 |---|---|---|
 | [Proyecto 1](proyecto1/) | Infraestructura virtualizada con KVM, tres APIs en Go, distintos runtimes de contenedores y registro privado Zot. | [README](proyecto1/README.md) |
 | [Proyecto 2](proyecto2/) | Telemetría de procesos con un módulo de kernel y eBPF, daemon en Go, Valkey y Grafana. | [README](proyecto2/README.md) |
-| [Proyecto 3](proyecto3/) | Reportes militares con Kubernetes local, Gateway API, Rust, gRPC en Go, RabbitMQ, Helm Operator, Valkey, Grafana, Zot y Falco. | [README](proyecto3/README.md) |
+| [Proyecto 3](proyecto3/) | Reportes militares con Kubernetes local, Gateway API, Rust, gRPC y Dapr en Go, RabbitMQ, Helm Operator, Valkey, Grafana, Zot y Falco. | [README](proyecto3/README.md) |
 
 Cada proyecto mantiene su código, documentación, scripts y evidencias dentro
 de su propia carpeta.

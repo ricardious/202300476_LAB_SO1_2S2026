@@ -303,7 +303,9 @@ func main() {
 		writer(ctx)
 	case "consumer":
 		consumer(ctx)
+	case "dapr":
+		daprFlow(ctx)
 	default:
-		log.Fatal("ROLE must be api/client/server/writer/consumer")
+		log.Fatal("ROLE must be api/client/server/writer/consumer/dapr")
 	}
 }

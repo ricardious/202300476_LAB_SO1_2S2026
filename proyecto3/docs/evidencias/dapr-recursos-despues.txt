@@ -1,0 +1,31 @@
+2026-10-19T17:51:20-06:00
+NAME                           READY   STATUS    RESTARTS       AGE
+api-rust-85f779ff8f-zf4mw      1/1     Running   0              58s
+consumer-5fb7696d94-zc2t7      1/1     Running   0              4m27s
+falco-c92gn                    1/1     Running   1 (4h5m ago)   4h24m
+go-dapr-cbb895674-hzpmx        2/2     Running   0              2m39s
+go-ingest-5f9c94d6c9-bp9cj     2/2     Running   0              4m27s
+go-writer-5866767b9f-x2qtz     2/2     Running   0              4m27s
+grafana-6ddb8c56b7-4frx7       1/1     Running   0              4h5m
+p3-operator-8547959c5f-llzjm   1/1     Running   0              4m27s
+prometheus-6664b96f48-gdvnk    1/1     Running   0              4h5m
+rabbitmq-85dfcb9c49-6jctc      1/1     Running   0              4h5m
+valkey-0                       1/1     Running   0              2m32s
+POD                            NAME         CPU(cores)   MEMORY(bytes)   
+api-rust-85f779ff8f-zf4mw      api-rust     1m           0Mi             
+consumer-5fb7696d94-zc2t7      consumer     3m           4Mi             
+falco-c92gn                    falco        45m          23Mi            
+go-dapr-cbb895674-hzpmx        app          3m           8Mi             
+go-dapr-cbb895674-hzpmx        daprd        2m           28Mi            
+go-ingest-5f9c94d6c9-bp9cj     api          3m           4Mi             
+go-ingest-5f9c94d6c9-bp9cj     client       3m           3Mi             
+go-writer-5866767b9f-x2qtz     server       3m           5Mi             
+go-writer-5866767b9f-x2qtz     writer       3m           3Mi             
+grafana-6ddb8c56b7-4frx7       grafana      9m           203Mi           
+p3-operator-8547959c5f-llzjm   manager      62m          37Mi            
+prometheus-6664b96f48-gdvnk    prometheus   1m           18Mi            
+rabbitmq-85dfcb9c49-6jctc      rabbitmq     185m         75Mi            
+valkey-0                       valkey       9m           6Mi             
+NAME                  CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+k3d-so1-p3-server-0   263m         3%       1505Mi          41%         
+k3d-so1-p3-server-0 1.441GiB / 3.5GiB 26.70%

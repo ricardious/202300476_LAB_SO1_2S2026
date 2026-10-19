@@ -20,6 +20,7 @@ make build
 make up
 make test
 make e2e
+make dapr-test
 make load USERS=5 DURATION=30s
 ```
 
@@ -42,6 +43,8 @@ Las credenciales y claves quedan en `runtime/` y `certs/` del directorio externo
 `make up` abre dos túneles en localhost: Gateway en 8088 y Grafana en 3003. `make up` también deja preparada la interfaz de Locust en 8089, sin iniciar tráfico. `make load-ui` permite abrirla por separado. Empezar con 1–5 usuarios y aumentar gradualmente.
 
 El perfil de carga se publica como `localhost:5005/so1/input:1.0.0` y se descarga antes de ejecutar Locust con `make load` o `make load-ui`. El archivo descargado se compara con el original. La semilla y los rangos se encuentran en `load/load-profile.json`.
+
+El flujo extra Dapr queda disponible en `/dapr-202300476`. `make up` habilita su pod con dos contenedores. `make dapr-off` permite pausarlo conservando el flujo principal; `make dapr-on` lo reactiva. No requiere instalar el CLI ni el plano de control de Dapr. Ver [configuración, credenciales y pruebas](DAPR.md).
 
 ## Diagnóstico
 

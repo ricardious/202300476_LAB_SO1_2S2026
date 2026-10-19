@@ -1,0 +1,1 @@
+[{"pubsubname":"military-pubsub","topic":"military-reports-dapr","route":"/events/reports","deadLetterTopic":""}]
