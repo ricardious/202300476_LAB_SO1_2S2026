@@ -1,0 +1,19 @@
+make: Entering directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+Preparing load-profile.json
+Uploading 44136fa355b3 application/vnd.oci.empty.v1+json
+Uploading 480805f05e89 load-profile.json
+Uploaded  480805f05e89 load-profile.json
+Uploaded  44136fa355b3 application/vnd.oci.empty.v1+json
+Uploading d50c83df1f06 application/vnd.oci.image.manifest.v1+json
+Uploaded  d50c83df1f06 application/vnd.oci.image.manifest.v1+json
+Pushed [registry] localhost:5005/so1/input:1.0.0
+ArtifactType: application/vnd.so1.load-profile.v1+json
+Digest: sha256:d50c83df1f06b8169bb9d13e9014a397c5494d58547f7a10caec23d0d9c934d2
+Downloading d50c83df1f06 application/vnd.oci.image.manifest.v1+json
+Processing  d50c83df1f06 application/vnd.oci.image.manifest.v1+json
+Downloading 480805f05e89 load-profile.json
+Downloaded  480805f05e89 load-profile.json
+Downloaded  d50c83df1f06 application/vnd.oci.image.manifest.v1+json
+Pulled [registry] localhost:5005/so1/input:1.0.0
+Digest: sha256:d50c83df1f06b8169bb9d13e9014a397c5494d58547f7a10caec23d0d9c934d2
+make: Leaving directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'

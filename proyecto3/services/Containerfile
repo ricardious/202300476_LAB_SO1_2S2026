@@ -1,0 +1,6 @@
+FROM docker.io/library/busybox:1.37.0
+WORKDIR /app
+COPY so1-go /app/so1-go
+COPY test-secret.txt /app/secretos/prueba.txt
+USER 10001:10001
+ENTRYPOINT ["/app/so1-go"]

@@ -1,0 +1,9 @@
+image: localhost:5005/library/grafana:13.2.1
+adminSecret: p3-auth
+resources:
+  requests:
+    cpu: 50m
+    memory: 96Mi
+  limits:
+    cpu: 350m
+    memory: 320Mi

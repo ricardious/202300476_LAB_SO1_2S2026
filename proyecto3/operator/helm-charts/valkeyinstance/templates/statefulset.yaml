@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: '{{ .Release.Name }}'
+spec:
+  replicas: 1
+  serviceName: '{{ .Release.Name }}'
+  selector:
+    matchLabels:
+      app: '{{ .Release.Name }}'
+  template:
+    metadata:
+      labels:
+        app: '{{ .Release.Name }}'
+    spec:
+      containers:
+      - name: valkey
+        image: '{{ .Values.image }}'
+        args:
+        - valkey-server
+        - --appendonly
+        - 'yes'
+        - --appendfsync
+        - everysec
+        - --maxmemory
+        - '{{ .Values.maxmemory }}'
+        - --maxmemory-policy
+        - noeviction
+        - --save
+        - ''
+        ports:
+        - containerPort: 6379
+        resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        readinessProbe:
+          exec:
+            command:
+            - valkey-cli
+            - ping
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: '{{ .Values.storage }}'

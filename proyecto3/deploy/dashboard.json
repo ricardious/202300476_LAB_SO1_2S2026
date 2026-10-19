@@ -1,0 +1,470 @@
+{
+  "uid": "so1-p3-202300476",
+  "title": "Proyecto 3 — M.U.M.N.K8s — 202300476",
+  "schemaVersion": 40,
+  "version": 1,
+  "refresh": "10s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "tags": [
+    "SO1",
+    "202300476"
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Máximo de aviones",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_planes_max",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Mínimo de aviones",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_planes_min",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Máximo de barcos",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_ships_max",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Mínimo de barcos",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_ships_min",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Moda de aviones",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_planes_mode",
+          "instant": true,
+          "legendFormat": "Modas: {{ties}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "textMode": "value_and_name"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Moda de barcos",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_ships_mode",
+          "instant": true,
+          "legendFormat": "Modas: {{ties}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "textMode": "value_and_name"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Top 5 países por aviones",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "topk(5,so1_planes_sum)",
+          "instant": true,
+          "legendFormat": "{{country}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos."
+    },
+    {
+      "id": 8,
+      "title": "Top 5 países por barcos",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 18,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "topk(5,so1_ships_sum)",
+          "instant": true,
+          "legendFormat": "{{country}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos."
+    },
+    {
+      "id": 9,
+      "title": "España ESP — reportes recibidos",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_country_reports_total{country=\"ESP\"}",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "España ESP — evolución de aviones",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 8,
+        "y": 8,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_planes_latest{country=\"ESP\"}",
+          "instant": false,
+          "legendFormat": "Aviones ESP"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "España ESP — evolución de barcos",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 16,
+        "y": 8,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "so1-p3-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "so1_ships_latest{country=\"ESP\"}",
+          "instant": false,
+          "legendFormat": "Barcos ESP"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    }
+  ],
+  "description": "Estadísticas acumuladas desde la creación del conjunto de datos. Series temporales muestreadas cada 5 segundos, con retención local de 2 horas. País asignado ESP. Los Top 5 suman unidades reportadas, no unidades únicas."
+}

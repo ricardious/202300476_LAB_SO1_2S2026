@@ -1,0 +1,17 @@
+Capturado 2026-10-19T19:51:55.265610+00:00
+NAMESPACE              NAME                                              CPU(cores)   MEMORY(bytes)   
+envoy-gateway-system   envoy-gateway-57bd96c8d5-qxn6z                    2m           79Mi            
+envoy-gateway-system   envoy-so1-p3-military-ac210d13-78d4988f49-4glm6   3m           42Mi            
+kube-system            coredns-b644fd95b-6nrxx                           4m           23Mi            
+kube-system            local-path-provisioner-d9d8769b6-lnvgr            1m           17Mi            
+kube-system            metrics-server-7f4b6d9bd7-vldzl                   7m           28Mi            
+so1-p3                 api-rust-54b89b8c48-wmqzc                         1m           1Mi             
+so1-p3                 consumer-8689fb6fcd-f279t                         3m           3Mi             
+so1-p3                 falco-c92gn                                       40m          28Mi            
+so1-p3                 go-ingest-76d7f95799-sxs2h                        5m           6Mi             
+so1-p3                 go-writer-5bd59dc995-kxl5v                        5m           8Mi             
+so1-p3                 grafana-6ddb8c56b7-4frx7                          8m           253Mi           
+so1-p3                 p3-operator-7d885b648c-5bsqq                      1m           37Mi            
+so1-p3                 prometheus-6664b96f48-gdvnk                       1m           18Mi            
+so1-p3                 rabbitmq-85dfcb9c49-6jctc                         115m         109Mi           
+so1-p3                 valkey-0                                          10m          8Mi             

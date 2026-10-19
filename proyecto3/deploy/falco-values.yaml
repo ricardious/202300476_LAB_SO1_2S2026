@@ -1,0 +1,41 @@
+driver:
+  kind: modern_ebpf
+  modernEbpf:
+    bufSizePreset: 1
+    cpusForEachBuffer: 8
+resources:
+  requests:
+    cpu: 25m
+    memory: 128Mi
+  limits:
+    cpu: '1'
+    memory: 768Mi
+falcoctl:
+  artifact:
+    install:
+      enabled: false
+    follow:
+      enabled: false
+collectors:
+  containerEngine:
+    enabled: false
+falco:
+  json_output: true
+  log_level: warning
+  rules_files:
+  - /etc/falco/rules.d
+  falco_libs:
+    thread_table_size: 8192
+  syslog_output:
+    enabled: false
+  webserver:
+    threadiness: 1
+customRules:
+  so1.yaml: "- rule: SO1 Sensitive File Read\n  desc: Lectura del archivo de prueba\
+    \ de Proyecto 3\n  condition: evt.type in (open,openat,openat2) and evt.is_open_read=true\
+    \ and fd.name=/app/secretos/prueba.txt\n  output: \"SO1 lectura sensible archivo=%fd.name\
+    \ comando=%proc.cmdline pid=%proc.pid\"\n  priority: WARNING\n  tags: [so1, proyecto3]\n"
+image:
+  registry: localhost:5005
+  repository: falcosecurity/falco
+  tag: 0.45.0

@@ -1,0 +1,6 @@
+FROM registry.fedoraproject.org/fedora-minimal:42
+WORKDIR /app
+COPY so1-rust /app/so1-rust
+COPY test-secret.txt /app/secretos/prueba.txt
+USER 10001:10001
+ENTRYPOINT ["/app/so1-rust"]

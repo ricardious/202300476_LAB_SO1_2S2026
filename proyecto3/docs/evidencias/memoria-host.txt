@@ -1,0 +1,4 @@
+Capturado 2026-10-19T19:51:56.162443+00:00
+               total        used        free      shared  buff/cache   available
+Mem:           7.0Gi       5.1Gi       319Mi        31Mi       1.9Gi       1.9Gi
+Swap:          7.0Gi       3.3Gi       3.7Gi

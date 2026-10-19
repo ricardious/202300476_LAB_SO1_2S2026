@@ -1,0 +1,5 @@
+Capturado 2026-10-19T19:51:56.167992+00:00
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p7   78G   70G  3.6G  96% /
+/dev/nvme0n1p8   15G   11G  3.8G  74% /mnt/development
+/dev/nvme0n1p4   20G   11G  8.2G  56% /mnt/fedora-extra

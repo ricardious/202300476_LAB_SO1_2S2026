@@ -1,0 +1,722 @@
+Capturado 2026-10-19T19:51:55.588063+00:00
+apiVersion: v1
+items:
+- apiVersion: monitoring.so1.local/v1alpha1
+  kind: ValkeyInstance
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"monitoring.so1.local/v1alpha1","kind":"ValkeyInstance","metadata":{"annotations":{},"name":"valkey","namespace":"so1-p3"},"spec":{}}
+    creationTimestamp: "2026-10-19T19:20:01Z"
+    finalizers:
+    - helm.sdk.operatorframework.io/uninstall-release
+    generation: 3
+    name: valkey
+    namespace: so1-p3
+    resourceVersion: "2952"
+    uid: aa67d6ea-ff60-4c5c-aa9b-8d1ba2e3d944
+  spec:
+    replica:
+      enabled: false
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-19T19:22:24Z"
+      status: "True"
+      type: Initialized
+    - lastTransitionTime: "2026-10-19T19:22:25Z"
+      reason: UpgradeSuccessful
+      status: "True"
+      type: Deployed
+    deployedRelease:
+      manifest: |
+        ---
+        # Source: valkeyinstance/templates/service.yaml
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: 'valkey'
+        spec:
+          selector:
+            app: 'valkey'
+          ports:
+          - name: redis
+            port: 6379
+        ---
+        # Source: valkeyinstance/templates/statefulset.yaml
+        apiVersion: apps/v1
+        kind: StatefulSet
+        metadata:
+          name: 'valkey'
+        spec:
+          replicas: 1
+          serviceName: 'valkey'
+          selector:
+            matchLabels:
+              app: 'valkey'
+          template:
+            metadata:
+              labels:
+                app: 'valkey'
+            spec:
+              containers:
+              - name: valkey
+                image: 'localhost:5005/library/valkey:8.1.3-alpine'
+                args:
+                - valkey-server
+                - --appendonly
+                - 'yes'
+                - --appendfsync
+                - everysec
+                - --maxmemory
+                - '64mb'
+                - --maxmemory-policy
+                - noeviction
+                - --save
+                - ''
+                ports:
+                - containerPort: 6379
+                resources:
+                    limits:
+                      cpu: 250m
+                      memory: 160Mi
+                    requests:
+                      cpu: 25m
+                      memory: 64Mi
+                readinessProbe:
+                  exec:
+                    command:
+                    - valkey-cli
+                    - ping
+                  initialDelaySeconds: 3
+                  periodSeconds: 5
+                volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumeClaimTemplates:
+          - metadata:
+              name: data
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: '256Mi'
+      name: valkey
+- apiVersion: monitoring.so1.local/v1alpha1
+  kind: GrafanaInstance
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"monitoring.so1.local/v1alpha1","kind":"GrafanaInstance","metadata":{"annotations":{},"name":"grafana","namespace":"so1-p3"},"spec":{}}
+    creationTimestamp: "2026-10-19T19:20:02Z"
+    finalizers:
+    - helm.sdk.operatorframework.io/uninstall-release
+    generation: 1
+    name: grafana
+    namespace: so1-p3
+    resourceVersion: "3914"
+    uid: 1d564dc7-9d9a-490a-9998-cef5a3abca2f
+  spec: {}
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-19T19:22:24Z"
+      status: "True"
+      type: Initialized
+    - lastTransitionTime: "2026-10-19T19:22:25Z"
+      reason: UpgradeSuccessful
+      status: "True"
+      type: Deployed
+    deployedRelease:
+      manifest: |
+        ---
+        # Source: grafanainstance/templates/configmap.yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: 'grafana-provisioning'
+        data:
+          datasource.yaml: "apiVersion: 1\ndatasources:\n- name: Prometheus\n  uid: so1-p3-prometheus\n\
+            \  type: prometheus\n  access: proxy\n  url: http://prometheus:9090\n  isDefault:\
+            \ true\n  editable: false\n"
+          provider.yaml: "apiVersion: 1\nproviders:\n- name: SO1\n  type: file\n  disableDeletion:\
+            \ true\n  options:\n    path: /etc/so1-dashboards\n"
+          dashboard.json: |-
+            {
+              "uid": "so1-p3-202300476",
+              "title": "Proyecto 3 — M.U.M.N.K8s — 202300476",
+              "schemaVersion": 40,
+              "version": 1,
+              "refresh": "10s",
+              "time": {
+                "from": "now-15m",
+                "to": "now"
+              },
+              "tags": [
+                "SO1",
+                "202300476"
+              ],
+              "panels": [
+                {
+                  "id": 1,
+                  "title": "Máximo de aviones",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_planes_max",
+                      "instant": true
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 2,
+                  "title": "Mínimo de aviones",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 6,
+                    "y": 0,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_planes_min",
+                      "instant": true
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 3,
+                  "title": "Máximo de barcos",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 12,
+                    "y": 0,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_ships_max",
+                      "instant": true
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 4,
+                  "title": "Mínimo de barcos",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 18,
+                    "y": 0,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_ships_min",
+                      "instant": true
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 5,
+                  "title": "Moda de aviones",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 0,
+                    "y": 4,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_planes_mode",
+                      "instant": true,
+                      "legendFormat": "Modas: {{ties}}"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "textMode": "value_and_name"
+                  }
+                },
+                {
+                  "id": 6,
+                  "title": "Moda de barcos",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 6,
+                    "y": 4,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_ships_mode",
+                      "instant": true,
+                      "legendFormat": "Modas: {{ties}}"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "textMode": "value_and_name"
+                  }
+                },
+                {
+                  "id": 7,
+                  "title": "Top 5 países por aviones",
+                  "type": "bargauge",
+                  "gridPos": {
+                    "x": 12,
+                    "y": 4,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "topk(5,so1_planes_sum)",
+                      "instant": true,
+                      "legendFormat": "{{country}}"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0,
+                      "min": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  },
+                  "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos."
+                },
+                {
+                  "id": 8,
+                  "title": "Top 5 países por barcos",
+                  "type": "bargauge",
+                  "gridPos": {
+                    "x": 18,
+                    "y": 4,
+                    "w": 6,
+                    "h": 4
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "topk(5,so1_ships_sum)",
+                      "instant": true,
+                      "legendFormat": "{{country}}"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0,
+                      "min": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  },
+                  "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos."
+                },
+                {
+                  "id": 9,
+                  "title": "España ESP — reportes recibidos",
+                  "type": "stat",
+                  "gridPos": {
+                    "x": 0,
+                    "y": 8,
+                    "w": 8,
+                    "h": 7
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_country_reports_total{country=\"ESP\"}",
+                      "instant": true
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 10,
+                  "title": "España ESP — evolución de aviones",
+                  "type": "timeseries",
+                  "gridPos": {
+                    "x": 8,
+                    "y": 8,
+                    "w": 8,
+                    "h": 7
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_planes_latest{country=\"ESP\"}",
+                      "instant": false,
+                      "legendFormat": "Aviones ESP"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                },
+                {
+                  "id": 11,
+                  "title": "España ESP — evolución de barcos",
+                  "type": "timeseries",
+                  "gridPos": {
+                    "x": 16,
+                    "y": 8,
+                    "w": 8,
+                    "h": 7
+                  },
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "so1-p3-prometheus"
+                  },
+                  "targets": [
+                    {
+                      "refId": "A",
+                      "expr": "so1_ships_latest{country=\"ESP\"}",
+                      "instant": false,
+                      "legendFormat": "Barcos ESP"
+                    }
+                  ],
+                  "fieldConfig": {
+                    "defaults": {
+                      "decimals": 0
+                    },
+                    "overrides": []
+                  },
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "values": false
+                    },
+                    "legend": {
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    }
+                  }
+                }
+              ],
+              "description": "Estadísticas acumuladas desde la creación del conjunto de datos. Series temporales muestreadas cada 5 segundos, con retención local de 2 horas. País asignado ESP. Los Top 5 suman unidades reportadas, no unidades únicas."
+            }
+        ---
+        # Source: grafanainstance/templates/pvc.yaml
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: 'grafana-data'
+          annotations:
+            helm.sh/resource-policy: keep
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 256Mi
+        ---
+        # Source: grafanainstance/templates/service.yaml
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: 'grafana'
+        spec:
+          selector:
+            app: 'grafana'
+          ports:
+          - name: http
+            port: 3000
+        ---
+        # Source: grafanainstance/templates/deployment.yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: 'grafana'
+        spec:
+          replicas: 1
+          strategy:
+            type: Recreate
+          selector:
+            matchLabels:
+              app: 'grafana'
+          template:
+            metadata:
+              annotations:
+                checksum/provisioning: 45318b9fe41df78a13587faba23e7bf84e66f193dd0647e13cbe7b5dc4231693
+              labels:
+                app: 'grafana'
+            spec:
+              securityContext:
+                fsGroup: 472
+              containers:
+              - name: grafana
+                image: 'localhost:5005/library/grafana:13.2.1'
+                env:
+                - name: GF_SECURITY_ADMIN_USER
+                  value: so1
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: 'p3-auth'
+                      key: grafana-password
+                - name: GF_ANALYTICS_REPORTING_ENABLED
+                  value: 'false'
+                - name: GF_ANALYTICS_CHECK_FOR_UPDATES
+                  value: 'false'
+                - name: GF_PLUGINS_PREINSTALL_DISABLED
+                  value: 'true'
+                - name: GF_LOG_LEVEL
+                  value: warn
+                - name: GOMEMLIMIT
+                  value: 192MiB
+                - name: GOMAXPROCS
+                  value: '1'
+                ports:
+                - containerPort: 3000
+                resources:
+                    limits:
+                      cpu: 350m
+                      memory: 320Mi
+                    requests:
+                      cpu: 50m
+                      memory: 96Mi
+                readinessProbe:
+                  httpGet:
+                    path: /api/health
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                volumeMounts:
+                - name: data
+                  mountPath: /var/lib/grafana
+                - name: config
+                  mountPath: /etc/grafana/provisioning/datasources/p3.yaml
+                  subPath: datasource.yaml
+                - name: config
+                  mountPath: /etc/grafana/provisioning/dashboards/p3.yaml
+                  subPath: provider.yaml
+                - name: config
+                  mountPath: /etc/so1-dashboards/dashboard.json
+                  subPath: dashboard.json
+              volumes:
+              - name: data
+                persistentVolumeClaim:
+                  claimName: 'grafana-data'
+              - name: config
+                configMap:
+                  name: 'grafana-provisioning'
+      name: grafana
+kind: List
+metadata:
+  resourceVersion: ""

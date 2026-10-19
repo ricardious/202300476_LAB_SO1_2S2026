@@ -1,0 +1,13 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+evictionHard:
+  nodefs.available: 2Gi
+  imagefs.available: 2Gi
+  nodefs.inodesFree: 5%
+evictionMinimumReclaim:
+  nodefs.available: 512Mi
+  imagefs.available: 512Mi
+evictionPressureTransitionPeriod: 30s
+containerLogMaxSize: 5Mi
+containerLogMaxFiles: 2
+podLogsDir: /var/lib/rancher/k3s/podlogs

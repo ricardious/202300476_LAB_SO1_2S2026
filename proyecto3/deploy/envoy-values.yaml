@@ -1,0 +1,20 @@
+deployment:
+  envoyGateway:
+    extraEnv:
+    - name: GOMAXPROCS
+      value: '2'
+    - name: GOMEMLIMIT
+      value: 300MiB
+    resources:
+      limits:
+        cpu: 500m
+        memory: 384Mi
+      requests:
+        cpu: 50m
+        memory: 96Mi
+global:
+  images:
+    envoyGateway:
+      image: localhost:5005/envoyproxy/gateway:v1.9.2
+    envoyProxy:
+      image: localhost:5005/envoyproxy/envoy:distroless-v1.39.1
