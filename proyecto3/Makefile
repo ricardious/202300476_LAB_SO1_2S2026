@@ -3,10 +3,10 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 USERS ?= 5
 DURATION ?= 30s
-.PHONY: setup compare resilience setup-load help bootstrap mirror build up tunnels status doctor test e2e load load-ui artifact evidence down credentials proto
+.PHONY: setup compare resilience setup-load help bootstrap mirror build up tunnels status doctor test e2e load load-ui artifact evidence down credentials proto dapr-on dapr-off dapr-test compare-flows
 setup: bootstrap setup-load mirror build up
 help:
-	@echo 'setup | bootstrap | mirror | build | up | tunnels | status | doctor | test | e2e | load | load-ui | artifact | evidence | down'
+	@echo 'setup | bootstrap | mirror | build | up | tunnels | status | doctor | test | e2e | dapr-test | dapr-on | dapr-off | compare-flows | load | load-ui | artifact | evidence | down'
 setup-load:
 	@bash scripts/setup-load.sh
 bootstrap:
@@ -33,6 +33,14 @@ resilience:
 	@source scripts/env.sh; python3 tests/resilience.py
 e2e:
 	@source scripts/env.sh; python3 tests/e2e.py
+dapr-test:
+	@source scripts/env.sh; python3 tests/dapr_e2e.py
+dapr-on:
+	@source scripts/env.sh; kubectl apply -f deploy/dapr.yaml; k rollout restart deployment/go-dapr; k rollout status deployment/go-dapr --timeout=180s
+dapr-off:
+	@source scripts/env.sh; k scale deployment/go-dapr --replicas=0
+compare-flows: artifact
+	@bash scripts/compare-flows.sh
 artifact:
 	@source scripts/env.sh; bash scripts/artifact.sh
 load: artifact
