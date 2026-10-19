@@ -1,7 +1,7 @@
 use axum::{extract::{State, DefaultBodyLimit}, http::{StatusCode, HeaderMap}, routing::{get, post}, Json, Router};
 use serde::{Deserialize, Serialize};
 use std::{sync::Arc, time::Duration};
-#[derive(Clone)] struct App { http: reqwest::Client, upstream: String }
+#[derive(Clone)] struct App { http: reqwest::Client, upstream: String, dapr_upstream: String }
 #[derive(Deserialize, Serialize)] #[serde(deny_unknown_fields)]
 struct Report { country: String, warplanes_in_air: i32, warships_in_water: i32, timestamp: String }
 #[derive(Serialize)] struct Forward<'a> { #[serde(flatten)] report: &'a Report, report_id: String }
@@ -11,9 +11,17 @@ fn valid(r: &Report) -> bool {
     chrono::DateTime::parse_from_rfc3339(&r.timestamp).is_ok()
 }
 async fn receive(State(app): State<Arc<App>>, headers: HeaderMap, Json(r): Json<Report>) -> (StatusCode, Json<serde_json::Value>) {
+    let upstream = app.upstream.clone();
+    forward_report(&app, &upstream, headers, r).await
+}
+async fn receive_dapr(State(app): State<Arc<App>>, headers: HeaderMap, Json(r): Json<Report>) -> (StatusCode, Json<serde_json::Value>) {
+    let upstream = app.dapr_upstream.clone();
+    forward_report(&app, &upstream, headers, r).await
+}
+async fn forward_report(app: &App, upstream: &str, headers: HeaderMap, r: Report) -> (StatusCode, Json<serde_json::Value>) {
     if !valid(&r) { return (StatusCode::UNPROCESSABLE_ENTITY, Json(serde_json::json!({"error":"invalid_report"}))); }
     let id = headers.get("idempotency-key").and_then(|h|h.to_str().ok()).filter(|s|!s.is_empty() && s.len()<=128).map(str::to_owned).unwrap_or_else(||uuid::Uuid::new_v4().to_string());
-    match app.http.post(&app.upstream).json(&Forward{report:&r,report_id:id.clone()}).send().await {
+    match app.http.post(upstream).json(&Forward{report:&r,report_id:id.clone()}).send().await {
         Ok(response) if response.status().is_success() => {
             println!("report_id={} country={} status=queued", id, r.country);
             (StatusCode::ACCEPTED,Json(serde_json::json!({"status":"queued","report_id":id})))
@@ -25,8 +33,8 @@ async fn receive(State(app): State<Arc<App>>, headers: HeaderMap, Json(r): Json<
 #[tokio::main(flavor="multi_thread", worker_threads=2)]
 async fn main() {
     let http=reqwest::Client::builder().timeout(Duration::from_secs(5)).connect_timeout(Duration::from_secs(1)).pool_max_idle_per_host(8).build().unwrap();
-    let app=Arc::new(App{http,upstream:std::env::var("GO_API_URL").unwrap_or("http://go-ingest:8080/report".into())});
-    let router=Router::new().route("/healthz",get(||async{"ok"})).route("/grpc-202300476",post(receive)).layer(DefaultBodyLimit::max(4096)).with_state(app);
+    let app=Arc::new(App{http,upstream:std::env::var("GO_API_URL").unwrap_or("http://go-ingest:8080/report".into()),dapr_upstream:std::env::var("DAPR_API_URL").unwrap_or("http://go-dapr:8083/report".into())});
+    let router=Router::new().route("/healthz",get(||async{"ok"})).route("/grpc-202300476",post(receive)).route("/dapr-202300476",post(receive_dapr)).layer(DefaultBodyLimit::max(4096)).with_state(app);
     let listener=tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     axum::serve(listener,router).with_graceful_shutdown(async{let _=tokio::signal::ctrl_c().await;}).await.unwrap();
 }
