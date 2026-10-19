@@ -1,0 +1,24 @@
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 6%/30%   1         3         1          7m27s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m32s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m37s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m42s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m47s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m52s
+NAME       REFERENCE             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 2%/30%   1         3         1          7m57s
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 144%/30%   1         3         1          8m3s
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 144%/30%   1         3         1          8m8s
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 144%/30%   1         3         1          8m13s
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 128%/30%   1         3         3          8m18s
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-rust   Deployment/api-rust   cpu: 128%/30%   1         3         3          8m23s
