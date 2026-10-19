@@ -1,0 +1,5 @@
+2026-10-19T17:48:06-06:00
+ok  	so1/proyecto3/cmd/so1	0.511s
+ok  	so1/proyecto3/internal/report	(cached)
+ok  	so1/proyecto3/internal/store	(cached)
+?   	so1/proyecto3/proto	[no test files]

@@ -1,0 +1,19 @@
+Inicio UTC: 2026-10-19T23:48:36.663316+00:00
+PASS: SDK pub/sub, RabbitMQ, Valkey, validacion y deduplicacion entre ambos flujos
+deployment.apps/go-dapr scaled
+pod/go-dapr-cbb895674-t5rcn condition met
+PASS: Dapr apagado produce error y gRPC continua funcionando
+deployment.apps/go-dapr scaled
+Waiting for deployment "go-dapr" rollout to finish: 0 of 1 updated replicas are available...
+deployment "go-dapr" successfully rolled out
+statefulset.apps/valkey scaled
+pod/valkey-0 condition met
+PASS: publicacion confirmada durante indisponibilidad de Valkey
+statefulset.apps/valkey scaled
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+PASS: reentrega tras recuperar Valkey sin duplicar estadisticas
+Colas Dapr: [{"name": "military-dapr-military-reports-dapr", "durable": true, "auto_delete": false, "messages": 0, "arguments": [["x-max-length", "long", 10000], ["x-queue-type", "longstr", "classic"]]}]
+PASS: cola Dapr durable, sin auto-delete y drenada; sin tocar datos existentes
+PASS: Gateway real, REST, gRPC, publicación, consumo, validación y deduplicación
+PASS: Gateway real, REST, gRPC, publicación, consumo, validación y deduplicación
