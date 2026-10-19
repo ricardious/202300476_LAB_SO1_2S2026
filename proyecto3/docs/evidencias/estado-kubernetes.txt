@@ -1,0 +1,17 @@
+Capturado 2026-10-19T19:51:55.117560+00:00
+NAMESPACE              NAME                                              READY   STATUS    RESTARTS        AGE     IP           NODE                  NOMINATED NODE   READINESS GATES
+envoy-gateway-system   envoy-gateway-57bd96c8d5-qxn6z                    1/1     Running   0               6m35s   10.42.0.66   k3d-so1-p3-server-0   <none>           <none>
+envoy-gateway-system   envoy-so1-p3-military-ac210d13-78d4988f49-4glm6   2/2     Running   0               6m35s   10.42.0.67   k3d-so1-p3-server-0   <none>           <none>
+kube-system            coredns-b644fd95b-6nrxx                           1/1     Running   0               6m35s   10.42.0.65   k3d-so1-p3-server-0   <none>           <none>
+kube-system            local-path-provisioner-d9d8769b6-lnvgr            1/1     Running   0               6m35s   10.42.0.64   k3d-so1-p3-server-0   <none>           <none>
+kube-system            metrics-server-7f4b6d9bd7-vldzl                   1/1     Running   0               6m34s   10.42.0.71   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 api-rust-54b89b8c48-wmqzc                         1/1     Running   0               5m51s   10.42.0.75   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 consumer-8689fb6fcd-f279t                         1/1     Running   0               5m51s   10.42.0.78   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 falco-c92gn                                       1/1     Running   1 (6m15s ago)   24m     10.42.0.61   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 go-ingest-76d7f95799-sxs2h                        2/2     Running   0               5m51s   10.42.0.76   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 go-writer-5bd59dc995-kxl5v                        2/2     Running   0               5m50s   10.42.0.77   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 grafana-6ddb8c56b7-4frx7                          1/1     Running   0               6m34s   10.42.0.73   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 p3-operator-7d885b648c-5bsqq                      1/1     Running   0               5m50s   10.42.0.79   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 prometheus-6664b96f48-gdvnk                       1/1     Running   0               6m34s   10.42.0.68   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 rabbitmq-85dfcb9c49-6jctc                         1/1     Running   0               6m34s   10.42.0.69   k3d-so1-p3-server-0   <none>           <none>
+so1-p3                 valkey-0                                          1/1     Running   0               6m33s   10.42.0.72   k3d-so1-p3-server-0   <none>           <none>

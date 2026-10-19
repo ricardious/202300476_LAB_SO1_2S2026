@@ -1,0 +1,7 @@
+.env
+.local/
+__pycache__/
+*.pyc
+api-rust/target/
+services/bin/
+docs/evidencias/*.raw

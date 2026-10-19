@@ -1,0 +1,22 @@
+make: Entering directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'
+?   	so1/proyecto3/cmd/so1	[no test files]
+ok  	so1/proyecto3/internal/report	(cached)
+ok  	so1/proyecto3/internal/store	(cached)
+?   	so1/proyecto3/proto	[no test files]
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.29s
+     Running unittests src/main.rs (/mnt/fedora-extra/so1-proyecto3/build/rust/debug/deps/so1_p3_api-52099396fe0cde9f)
+
+running 1 test
+test tests::validates_boundaries_and_timestamp ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+==> Linting operator/helm-charts/valkeyinstance
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+==> Linting operator/helm-charts/grafanainstance
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+make: Leaving directory '/mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3'

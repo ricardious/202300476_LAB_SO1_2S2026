@@ -1,0 +1,5 @@
+deployment.apps/consumer scaled
+PASS: broker acepta reportes mientras Consumer está detenido
+deployment.apps/consumer scaled
+PASS: consumo recuperado sin perder ni duplicar reportes
+PASS: PVC y AOF conservaron los datos después de reemplazar el pod

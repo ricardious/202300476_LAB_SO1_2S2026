@@ -1,0 +1,19 @@
+Capturado 2026-10-19T19:51:55.935393+00:00
+Mon Oct 19 19:45:48 2026: [libs]: Trying to open the right engine!
+Mon Oct 19 19:45:48 2026: [libs]: libpman: disabled BPF iterators (not running in the root PID namespace, or failed to determine it)
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: failed to determine tracepoint 'syscalls/sys_enter_connect' perf event ID: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: prog 'connect_e': failed to create tracepoint 'syscalls/sys_enter_connect' perf event: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libpman: failure while attaching TOCTOU mitigation program for 'connect' system call. Detection will continue to work, but TOCTOU mitigation may not properly work (errno: 2 | message: No such file or director
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: failed to determine tracepoint 'syscalls/sys_enter_creat' perf event ID: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: prog 'creat_e': failed to create tracepoint 'syscalls/sys_enter_creat' perf event: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libpman: failure while attaching TOCTOU mitigation program for 'creat' system call. Detection will continue to work, but TOCTOU mitigation may not properly work (errno: 2 | message: No such file or directory)
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: failed to determine tracepoint 'syscalls/sys_enter_open' perf event ID: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: prog 'open_e': failed to create tracepoint 'syscalls/sys_enter_open' perf event: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libpman: failure while attaching TOCTOU mitigation program for 'open' system call. Detection will continue to work, but TOCTOU mitigation may not properly work (errno: 2 | message: No such file or directory)
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: failed to determine tracepoint 'syscalls/sys_enter_openat2' perf event ID: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: prog 'openat2_e': failed to create tracepoint 'syscalls/sys_enter_openat2' perf event: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libpman: failure while attaching TOCTOU mitigation program for 'openat2' system call. Detection will continue to work, but TOCTOU mitigation may not properly work (errno: 2 | message: No such file or director
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: failed to determine tracepoint 'syscalls/sys_enter_openat' perf event ID: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libbpf: prog 'openat_e': failed to create tracepoint 'syscalls/sys_enter_openat' perf event: No such file or directory
+Mon Oct 19 19:45:57 2026: [libs]: libpman: failure while attaching TOCTOU mitigation program for 'openat' system call. Detection will continue to work, but TOCTOU mitigation may not properly work (errno: 2 | message: No such file or directory
+{"hostname":"k3d-so1-p3-server-0","output":"19:47:53.102281927: Warning SO1 lectura sensible archivo=/app/secretos/prueba.txt comando=cat /app/secretos/prueba.txt pid=148454","output_fields":{"evt.time":1792439273102281927,"fd.name":"/app/secretos/prueba.txt","proc.cmdline":"cat /app/secretos/prueba.txt","proc.pid":148454},"priority":"Warning","rule":"SO1 Sensitive File Read","source":"syscall","tags":["proyecto3","so1"],"time":"2026-10-19T19:47:53.102281927Z"}

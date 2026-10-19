@@ -1,0 +1,68 @@
+{{- if .Values.replica.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: '{{ .Release.Name }}-read'
+spec:
+  selector:
+    app: '{{ .Release.Name }}-replica'
+  ports:
+  - name: redis
+    port: 6379
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: '{{ .Release.Name }}-replica'
+spec:
+  replicas: 1
+  serviceName: '{{ .Release.Name }}-read'
+  selector:
+    matchLabels:
+      app: '{{ .Release.Name }}-replica'
+  template:
+    metadata:
+      labels:
+        app: '{{ .Release.Name }}-replica'
+    spec:
+      containers:
+      - name: valkey
+        image: '{{ .Values.image }}'
+        args:
+        - valkey-server
+        - --replicaof
+        - '{{ .Release.Name }}'
+        - '6379'
+        - --appendonly
+        - 'yes'
+        - --maxmemory
+        - '{{ .Values.maxmemory }}'
+        - --maxmemory-policy
+        - noeviction
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 250m
+            memory: 160Mi
+        readinessProbe:
+          exec:
+            command:
+            - valkey-cli
+            - ping
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: '{{ .Values.storage }}'
+{{- end }}

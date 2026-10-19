@@ -1,0 +1,15 @@
+{
+  "repositories": [
+    "envoyproxy/envoy",
+    "envoyproxy/gateway",
+    "falcosecurity/falco",
+    "library/grafana",
+    "library/prometheus",
+    "library/rabbitmq",
+    "library/valkey",
+    "so1/go",
+    "so1/input",
+    "so1/operator",
+    "so1/rust"
+  ]
+}

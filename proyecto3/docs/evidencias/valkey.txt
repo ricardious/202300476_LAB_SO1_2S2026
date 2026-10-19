@@ -1,0 +1,21 @@
+Capturado 2026-10-19T19:51:56.156124+00:00
+planes_min
+0
+planes_max
+50
+ships_min
+0
+ships_max
+30
+total
+14068
+country:ESP
+2741
+country:RUS
+2765
+country:USA
+2859
+country:CHN
+2790
+country:GTM
+2913
