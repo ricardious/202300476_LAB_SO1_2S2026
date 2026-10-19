@@ -1,0 +1,4 @@
+2026-10-19T17:45:32-06:00
+NAME                  CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+k3d-so1-p3-server-0   322m         4%       1449Mi          39%         
+k3d-so1-p3-server-0 1.349GiB / 3.5GiB 13.99%

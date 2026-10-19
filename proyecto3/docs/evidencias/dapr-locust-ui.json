@@ -1,0 +1,53 @@
+{
+  "capturado_utc": "2026-10-19T23:50:45.232832+00:00",
+  "state": {
+    "current_fail_per_sec": 0.0,
+    "current_response_time_percentiles": {
+      "response_time_percentile_0.5": 11,
+      "response_time_percentile_0.95": 46
+    },
+    "current_rps": 1.0,
+    "errors": [],
+    "fail_ratio": 0.0,
+    "state": "stopped",
+    "stats": [
+      {
+        "avg_content_length": 70.0,
+        "avg_response_time": 21.474684750046436,
+        "current_fail_per_sec": 0.0,
+        "current_rps": 1.0,
+        "max_response_time": 46.0,
+        "median_response_time": 19,
+        "method": "POST",
+        "min_response_time": 10.0,
+        "name": "/dapr-202300476",
+        "num_failures": 0,
+        "num_requests": 4,
+        "response_time_percentile_0.95": 46,
+        "response_time_percentile_0.99": 46,
+        "total_fail_per_sec": 0.0,
+        "total_rps": 1.0881459514610266
+      },
+      {
+        "avg_content_length": 70.0,
+        "avg_response_time": 21.474684750046436,
+        "current_fail_per_sec": 0.0,
+        "current_rps": 1.0,
+        "max_response_time": 46.0,
+        "median_response_time": 19,
+        "method": "",
+        "min_response_time": 10.0,
+        "name": "Aggregated",
+        "num_failures": 0,
+        "num_requests": 4,
+        "response_time_percentile_0.95": 46,
+        "response_time_percentile_0.99": 46,
+        "total_fail_per_sec": 0.0,
+        "total_rps": 1.0881459514610266
+      }
+    ],
+    "total_fail_per_sec": 0.0,
+    "total_rps": 1.0881459514610266,
+    "user_count": 0
+  }
+}

@@ -36,18 +36,19 @@ def charts():
 
 def mirrors():
     items=[('docker.io/valkey/valkey:8.1.3-alpine','library/valkey:8.1.3-alpine'),('docker.io/library/rabbitmq:4.1.4-alpine','library/rabbitmq:4.1.4-alpine'),('docker.io/grafana/grafana:13.2.1','library/grafana:13.2.1'),('docker.io/prom/prometheus:v3.7.2','library/prometheus:v3.7.2'),('docker.io/envoyproxy/gateway:v1.9.2','envoyproxy/gateway:v1.9.2'),('docker.io/envoyproxy/envoy:distroless-v1.39.1','envoyproxy/envoy:distroless-v1.39.1'),('docker.io/falcosecurity/falco:0.45.0','falcosecurity/falco:0.45.0')]
+    items.append(('docker.io/daprio/daprd:1.18.7','daprio/daprd:1.18.7'))
     for src,dest in items:mirror(src,dest)
 
 def deploy():
     charts();s=ensure()
     for o in [{'apiVersion':'v1','kind':'Namespace','metadata':{'name':NS}},{'apiVersion':'v1','kind':'Secret','metadata':{'name':'p3-auth','namespace':NS},'type':'Opaque','stringData':{'rabbit-password':s['rabbit_password'],'grafana-password':s['grafana_password'],'amqp-url':'amqp://so1:'+s['rabbit_password']+'@rabbitmq:5672/'}}]:run(['kubectl','apply','-f','-'],input=json.dumps(o).encode())
     run(['kubectl','apply','-f',str(ROOT/'operator/config/crd/bases')])
-    for file in ['operator.yaml','instances.yaml','workloads.yaml']:run(['kubectl','apply','-f',str(ROOT/'deploy'/file)])
+    for file in ['operator.yaml','instances.yaml','workloads.yaml','dapr.yaml']:run(['kubectl','apply','-f',str(ROOT/'deploy'/file)])
     run(['helm','upgrade','--install','eg',str(DATA/'downloads/gateway-helm-v1.9.2.tgz'),'-n','envoy-gateway-system','--create-namespace','-f',str(ROOT/'deploy/envoy-values.yaml'),'--wait','--timeout','5m'])
     run(['kubectl','apply','-f',str(ROOT/'deploy/gateway.yaml')])
     run(['helm','upgrade','--install','falco',str(DATA/'downloads/falco-9.2.0.tgz'),'-n',NS,'-f',str(ROOT/'deploy/falco-values.yaml'),'--wait','--timeout','4m'])
-    run(kub('rollout','restart','deployment/api-rust','deployment/go-ingest','deployment/go-writer','deployment/consumer','deployment/p3-operator'))
-    for name in ['api-rust','go-ingest','go-writer','consumer','rabbitmq','prometheus','p3-operator','grafana']:run(kub('rollout','status','deployment/'+name,'--timeout=180s'))
+    run(kub('rollout','restart','deployment/api-rust','deployment/go-ingest','deployment/go-writer','deployment/consumer','deployment/p3-operator','deployment/go-dapr'))
+    for name in ['api-rust','go-ingest','go-writer','consumer','rabbitmq','prometheus','p3-operator','grafana','go-dapr']:run(kub('rollout','status','deployment/'+name,'--timeout=180s'))
     run(kub('rollout','status','statefulset/valkey','--timeout=120s'))
 
 def tunnel(name,resource,mapping,namespace=NS):

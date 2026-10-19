@@ -8,6 +8,8 @@ Los reportes entran por Gateway y HTTPRoute en `/grpc-202300476`. La API Rust va
 
 Un Consumer Go recibe mensajes con prefetch 16, valida, agrega en Valkey y confirma después de almacenar. Su endpoint `/metrics` consulta las estadísticas de Valkey y las expone en formato Prometheus. Prometheus muestrea cada cinco segundos; Grafana consulta ese datasource integrado. El dashboard se refresca cada diez segundos y no requiere plugins de terceros.
 
+El flujo opcional `/dapr-202300476` pasa por la misma API Rust hacia Go con el SDK oficial de Dapr, sidecar pub/sub RabbitMQ y suscriptor que almacena en Valkey. Comparte el modelo de datos y la deduplicación con el flujo gRPC. Se detalla su implementación compacta, garantías y pruebas en [Dapr](DAPR.md).
+
 Los diagramas y contratos se encuentran en el README, `proto/openapi.yaml` y `proto/reports.proto`. El campo interno `report_id` se añade sin cambiar los cuatro campos del JSON de entrada.
 
 ## Interfaz y validación
@@ -117,7 +119,7 @@ k logs daemonset/falco --tail=20
 
 El carnet es 202300476, por lo que el país asignado es ESP. Explicar la comunicación entre los dos contenedores de cada Deployment Go, el significado de 202, los ACK y confirmaciones, la deduplicación, el operador y las limitaciones del equipo.
 
-El repositorio debe permanecer privado y dar acceso a los auxiliares indicados por el enunciado. La entrega en UEDI y Classroom cuando corresponda es responsabilidad del estudiante; los scripts no envían mensajes ni publican el repositorio. Dapr es un extra pendiente y no forma parte de este perfil.
+El repositorio debe permanecer privado y dar acceso a los auxiliares indicados por el enunciado. La entrega en UEDI y Classroom cuando corresponda es responsabilidad del estudiante; los scripts no envían mensajes ni publican el repositorio. Dapr se incluye como extra y puede pausarse con `make dapr-off` para reducir el consumo diario.
 
 ## Referencias
 

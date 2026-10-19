@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: SO1 Proyecto 3 reportes militares
-  version: 1.0.0
+  version: 1.1.0
 servers:
 - url: http://127.0.0.1:8088
 paths:
@@ -58,6 +58,85 @@ paths:
         '202':
           description: RabbitMQ confirmó publicación persistente; el Consumer almacena
             de forma asíncrona.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - report_id
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - queued
+                  report_id:
+                    type: string
+        '400':
+          description: JSON mal formado
+        '413':
+          description: Cuerpo mayor de 4096 bytes
+        '415':
+          description: Se requiere application/json
+        '422':
+          description: Reporte inválido
+        '502':
+          description: Error en la cadena de servicios
+        '503':
+          description: Servicio siguiente no disponible o timeout
+  /dapr-202300476:
+    post:
+      summary: Publica un reporte mediante el SDK Dapr y pub/sub RabbitMQ
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 128
+        description: Identificador opcional para repetir la misma solicitud sin duplicar
+          sus estadísticas durante 24 horas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - country
+              - warplanes_in_air
+              - warships_in_water
+              - timestamp
+              properties:
+                country:
+                  type: string
+                  enum:
+                  - USA
+                  - RUS
+                  - CHN
+                  - ESP
+                  - GTM
+                warplanes_in_air:
+                  type: integer
+                  minimum: 0
+                  maximum: 50
+                warships_in_water:
+                  type: integer
+                  minimum: 0
+                  maximum: 30
+                timestamp:
+                  type: string
+                  format: date-time
+            example:
+              country: ESP
+              warplanes_in_air: 42
+              warships_in_water: 14
+              timestamp: '2026-10-19T19:25:00Z'
+      responses:
+        '202':
+          description: El sidecar Dapr confirma la publicacion en RabbitMQ; el suscriptor
+            almacena de forma asincrona.
           content:
             application/json:
               schema:

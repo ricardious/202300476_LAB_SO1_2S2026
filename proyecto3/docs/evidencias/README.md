@@ -57,3 +57,22 @@ El límite inicial de 256/384 MiB causaba OOM durante la carga de eBPF. Se dejó
 - `oci-artifact.txt`: publicación y descarga verificadas del perfil de carga desde Zot.
 
 Las cifras de consumo son muestras puntuales. No incluyen una garantía de memoria máxima del host; navegador, generador, Zot y compiladores se ejecutan fuera del nodo. Las pruebas iniciales mostraron alrededor de 1.5–1.6 GiB de uso del contenedor nodo en reposo, con los componentes del sistema activos.
+
+## Extra Dapr: implementación y comparación real
+
+El 19 de octubre se añadió y verificó `/dapr-202300476` con runtime Dapr 1.18.7 y SDK Go 1.13.0. `dapr-metadata.json` confirma el runtime, el componente RabbitMQ y la suscripción programática al topic `military-reports-dapr`; `dapr-suscripcion.json` contiene la respuesta del SDK a `/dapr/subscribe`.
+
+`dapr-unitarias.txt` registra pruebas del handler: ACK al almacenar o deduplicar, reintento ante indisponibilidad de almacenamiento y descarte de mensajes inválidos. `dapr-e2e.txt` verifica el recorrido por Gateway, deduplicación compartida entre ambas rutas, validación, continuidad del flujo gRPC con Dapr apagado y recuperación de un reporte aceptado mientras Valkey estaba detenido. Los recursos pausados se restauraron y la cola Dapr terminó vacía. `dapr-aplicacion.txt` conserva errores transitorios de almacenamiento, posterior `stored=true` y `stored=false` para la repetición del mismo identificador.
+
+La comparación de `dapr-comparacion.txt` usa **5 usuarios, 30 segundos por ruta**, rampa de un usuario por segundo, espera de 0.5–1.5 segundos y el mismo perfil OCI/semillas. Primero se ejecutó gRPC y después Dapr, sin generadores concurrentes.
+
+| Flujo | Solicitudes CSV | Fallos | Solicitudes/s | p50 ms | p95 ms | p99 ms |
+|---|---:|---:|---:|---:|---:|---:|
+| gRPC | 135 | 0 | 4.66 | 12 | 45 | 60 |
+| Dapr pub/sub | 132 | 0 | 4.55 | 11 | 50 | 57 |
+
+Son snapshots `compare-grpc_stats.csv` y `compare-dapr_stats.csv`; los resúmenes finales de consola pueden incluir solicitudes en vuelo adicionales. Esta prueba moderada demuestra funcionamiento sin errores, no capacidad máxima ni una ventaja de rendimiento de uno sobre otro. Las diferencias de milisegundos no son concluyentes en dos ejecuciones cortas sobre hardware compartido, con HPA y servicios persistentes activos.
+
+Al terminar la comparación, Kubernetes midió **8 MiB para Go y 25 MiB para daprd**, aproximadamente 33 MiB en el pod adicional. Una muestra posterior registró 8 + 28 MiB. Los archivos `dapr-recursos-antes.txt` y `dapr-recursos-despues.txt` conservan consumo y estado del nodo: no deben usarse como una resta exacta del coste de Dapr, porque también cambiaron cachés, actividad del broker y pods durante el despliegue. El límite del nodo continúa siendo 3.5 GiB.
+
+`dapr-locust-ui.json` verifica una prueba de cuatro solicitudes Dapr iniciada mediante el selector de ruta de la interfaz Locust y detenida sin errores. Al finalizar no queda carga activa. La arquitectura, las garantías y los comandos `dapr-on`/`dapr-off` se detallan en [Dapr](../DAPR.md).

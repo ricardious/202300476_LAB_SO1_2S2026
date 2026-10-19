@@ -1,0 +1,22 @@
+2026/10/19 23:48:42 role=dapr listening=:8083
+2026/10/19 23:48:44 report_id=d0ace15f-7431-4456-9ad9-d3796476427e country=ESP status=accepted
+redis: 2026/10/19 23:48:45 pool.go:422: redis: connection pool: failed to dial after 5 attempts: dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:46 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=context deadline exceeded
+redis: 2026/10/19 23:48:47 pool.go:422: redis: connection pool: failed to dial after 3 attempts: dial tcp 10.43.111.150:6379: i/o timeout
+2026/10/19 23:48:49 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=context deadline exceeded
+redis: 2026/10/19 23:48:49 pool.go:422: redis: connection pool: failed to dial after 3 attempts: dial tcp 10.43.111.150:6379: i/o timeout
+2026/10/19 23:48:51 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=context deadline exceeded
+redis: 2026/10/19 23:48:51 pool.go:422: redis: connection pool: failed to dial after 4 attempts: dial tcp 10.43.111.150:6379: i/o timeout
+2026/10/19 23:48:52 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:52 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:53 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:54 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:54 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:55 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:55 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:56 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:57 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:57 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e storage_error=dial tcp 10.43.111.150:6379: connect: connection refused
+2026/10/19 23:48:58 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e stored=true
+2026/10/19 23:48:59 report_id=d0ace15f-7431-4456-9ad9-d3796476427e country=ESP status=accepted
+2026/10/19 23:48:59 flow=dapr report_id=d0ace15f-7431-4456-9ad9-d3796476427e stored=false

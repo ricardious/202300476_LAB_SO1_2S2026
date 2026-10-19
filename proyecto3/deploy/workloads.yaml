@@ -32,6 +32,8 @@ spec:
         env:
         - name: GO_API_URL
           value: http://go-ingest:8080/report
+        - name: DAPR_API_URL
+          value: http://go-dapr:8083/report
         ports:
         - containerPort: 8080
         resources:

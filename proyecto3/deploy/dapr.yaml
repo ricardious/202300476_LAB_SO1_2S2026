@@ -1,0 +1,184 @@
+# Files consumed by the manually managed standalone sidecar, not Dapr CRDs.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dapr-local
+  namespace: so1-p3
+data:
+  env-secrets.yaml: |
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: env-secrets
+    spec:
+      type: secretstores.local.env
+      version: v1
+      metadata:
+      - name: prefix
+        value: SO1_SECRET_
+  rabbitmq.yaml: |
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: military-pubsub
+    spec:
+      type: pubsub.rabbitmq
+      version: v1
+      metadata:
+      - name: connectionString
+        secretKeyRef:
+          name: AMQP_URL
+          key: AMQP_URL
+      - name: consumerID
+        value: military-dapr
+      - name: durable
+        value: "true"
+      - name: deletedWhenUnused
+        value: "false"
+      - name: autoAck
+        value: "false"
+      - name: deliveryMode
+        value: "2"
+      - name: requeueInFailure
+        value: "true"
+      - name: publisherConfirm
+        value: "true"
+      - name: prefetchCount
+        value: "4"
+      - name: concurrencyMode
+        value: single
+      - name: maxLen
+        value: "10000"
+      - name: ttlInSeconds
+        value: "86400"
+    auth:
+      secretStore: env-secrets
+  config.yaml: |
+    apiVersion: dapr.io/v1alpha1
+    kind: Configuration
+    metadata:
+      name: local-small
+    spec:
+      tracing:
+        samplingRate: "0"
+      metric:
+        enabled: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-dapr
+  namespace: so1-p3
+spec:
+  selector:
+    app: go-dapr
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 8083
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-dapr
+  namespace: so1-p3
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: go-dapr
+  template:
+    metadata:
+      labels:
+        app: go-dapr
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 15
+      containers:
+      - name: app
+        image: localhost:5005/so1/go:1.0.0
+        imagePullPolicy: Always
+        env:
+        - name: ROLE
+          value: dapr
+        - name: GOMAXPROCS
+          value: "1"
+        - name: GOMEMLIMIT
+          value: 48MiB
+        resources:
+          requests:
+            cpu: 20m
+            memory: 16Mi
+          limits:
+            cpu: 500m
+            memory: 80Mi
+        ports:
+        - containerPort: 8083
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8083
+          periodSeconds: 5
+          timeoutSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8083
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+      - name: daprd
+        image: localhost:5005/daprio/daprd:1.18.7
+        imagePullPolicy: IfNotPresent
+        args:
+        - /daprd
+        - --mode=standalone
+        - --app-id=military-dapr
+        - --app-port=8084
+        - --app-protocol=http
+        - --app-channel-address=127.0.0.1
+        - --app-max-concurrency=4
+        - --dapr-listen-addresses=127.0.0.1
+        - --dapr-http-port=3500
+        - --dapr-grpc-port=50001
+        - --dapr-internal-grpc-port=50002
+        - --dapr-internal-grpc-listen-address=127.0.0.1
+        - --placement-host-address=
+        - --scheduler-host-address=
+        - --resources-path=/components
+        - --config=/components/config.yaml
+        - --enable-metrics=false
+        - --log-level=warn
+        env:
+        - name: GOMAXPROCS
+          value: "1"
+        - name: GOMEMLIMIT
+          value: 128MiB
+        - name: SO1_SECRET_AMQP_URL
+          valueFrom:
+            secretKeyRef:
+              name: p3-auth
+              key: amqp-url
+        resources:
+          requests:
+            cpu: 25m
+            memory: 48Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        volumeMounts:
+        - name: components
+          mountPath: /components
+          readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+      volumes:
+      - name: components
+        configMap:
+          name: dapr-local
