@@ -1,0 +1,50 @@
+{
+  "current_fail_per_sec": 0.0,
+  "current_response_time_percentiles": {
+    "response_time_percentile_0.5": null,
+    "response_time_percentile_0.95": null
+  },
+  "current_rps": 0.9,
+  "errors": [],
+  "fail_ratio": 0.0,
+  "state": "stopped",
+  "stats": [
+    {
+      "avg_content_length": 70.0,
+      "avg_response_time": 16.651278384555415,
+      "current_fail_per_sec": 0.0,
+      "current_rps": 0.9,
+      "max_response_time": 78.0,
+      "median_response_time": 12,
+      "method": "POST",
+      "min_response_time": 9.0,
+      "name": "military-report",
+      "num_failures": 0,
+      "num_requests": 78,
+      "response_time_percentile_0.95": 56,
+      "response_time_percentile_0.99": 78,
+      "total_fail_per_sec": 0.0,
+      "total_rps": 0.9954748690359514
+    },
+    {
+      "avg_content_length": 70.0,
+      "avg_response_time": 16.651278384555415,
+      "current_fail_per_sec": 0.0,
+      "current_rps": 0.9,
+      "max_response_time": 78.0,
+      "median_response_time": 12,
+      "method": "",
+      "min_response_time": 9.0,
+      "name": "Aggregated",
+      "num_failures": 0,
+      "num_requests": 78,
+      "response_time_percentile_0.95": 56,
+      "response_time_percentile_0.99": 78,
+      "total_fail_per_sec": 0.0,
+      "total_rps": 0.9954748690359514
+    }
+  ],
+  "total_fail_per_sec": 0.0,
+  "total_rps": 0.9954748690359514,
+  "user_count": 0
+}
