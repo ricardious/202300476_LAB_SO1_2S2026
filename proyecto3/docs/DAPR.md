@@ -4,16 +4,37 @@ La guía del proyecto, página 4, identifica Dapr como puntos extra. El enunciad
 
 ## Recorrido
 
-```text
-Locust → Envoy Gateway → API Rust /dapr-202300476
-                            ↓ REST /report
-                      Go Dapr (publicador SDK)
-                            ↓ SDK gRPC localhost:50001
-                          daprd → RabbitMQ (topic military-reports-dapr)
-                            ↓ suscripción y CloudEvent HTTP localhost:8084
-                      Go Dapr (suscriptor SDK) → Valkey
-                                                 ↓
-                                       exporter → Prometheus → Grafana
+```mermaid
+flowchart TB
+    R["API Rust<br/>/dapr-202300476"] -->|REST /report · 8083| PUB
+    subgraph POD["Pod go-dapr"]
+        subgraph GO["Contenedor Go · ROLE=dapr"]
+            PUB["Publicador SDK<br/>PublishEvent"]
+            SUB["Suscriptor SDK<br/>AddTopicEventHandler"]
+        end
+        subgraph SIDECAR["Contenedor daprd"]
+            API["API Dapr<br/>gRPC · 127.0.0.1:50001"]
+            DELIVERY["Entrega de eventos"]
+        end
+        PUB --> API
+        DELIVERY -->|CloudEvent HTTP · 127.0.0.1:8084| SUB
+    end
+    API -->|Publicación AMQP| MQ[("RabbitMQ<br/>military-reports-dapr")]
+    MQ -->|Suscripción AMQP| DELIVERY
+    SUB -->|Operación Lua idempotente| V[("Valkey")]
+    classDef entrada fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef servicio fill:#ccfbf1,stroke:#0f766e,color:#134e4a
+    classDef dapr fill:#ede9fe,stroke:#7c3aed,color:#3b0764
+    classDef broker fill:#fef3c7,stroke:#b45309,color:#78350f
+    classDef datos fill:#dcfce7,stroke:#15803d,color:#14532d
+    class R entrada
+    class PUB,SUB servicio
+    class API,DELIVERY dapr
+    class MQ broker
+    class V datos
+    style POD fill:transparent,stroke:#94a3b8
+    style GO fill:transparent,stroke:#0f766e
+    style SIDECAR fill:transparent,stroke:#7c3aed
 ```
 
 El Deployment adicional `go-dapr` tiene dos contenedores: el mismo binario Go del proyecto con `ROLE=dapr` y el runtime `daprd`. El publicador y el suscriptor comparten el proceso Go para ahorrar RAM, pero la entrega atraviesa RabbitMQ: el publicador llama `PublishEvent` del SDK; el suscriptor se registra mediante `AddTopicEventHandler`. No invoca directamente el almacenamiento al recibir el POST. El flujo original conserva sus servicios gRPC y su cola `reports`.
