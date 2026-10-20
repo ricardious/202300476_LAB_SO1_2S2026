@@ -8,6 +8,41 @@ La aplicación recibe reportes de cinco países, procesa los eventos mediante Ra
 
 ## Arquitectura
 
+```mermaid
+flowchart TB
+    L["Locust"] -->|HTTP| GW
+    subgraph K8S["Kubernetes local · K3s"]
+        GW["Envoy Gateway"] --> R["API Rust"]
+        R -->|/grpc-202300476| GI["Go Ingest<br/>API + cliente gRPC"]
+        GI -->|gRPC| WR["Go Writer<br/>Servidor gRPC + Writer"]
+        WR -->|Publicación AMQP| MQ[("RabbitMQ")]
+        MQ -->|Consumo AMQP| C["Consumer Go"]
+        C -->|Agregación y deduplicación| V[("Valkey")]
+        R -->|/dapr-202300476| D["Go SDK + sidecar Dapr"]
+        D -->|Publicación pub/sub| MQ
+        MQ -->|Suscripción pub/sub| D
+        D -->|Agregación y deduplicación| V
+        V -->|Estadísticas| E["Exporter Go"]
+        E -->|Métricas /metrics| P["Prometheus"]
+        P -->|Series temporales| G["Grafana"]
+    end
+    classDef entrada fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef servicio fill:#ccfbf1,stroke:#0f766e,color:#134e4a
+    classDef broker fill:#fef3c7,stroke:#b45309,color:#78350f
+    classDef datos fill:#dcfce7,stroke:#15803d,color:#14532d
+    classDef dapr fill:#ede9fe,stroke:#7c3aed,color:#3b0764
+    classDef observabilidad fill:#f1f5f9,stroke:#475569,color:#0f172a
+    class L,GW,R entrada
+    class GI,WR,C servicio
+    class MQ broker
+    class V datos
+    class D dapr
+    class E,P,G observabilidad
+    style K8S fill:transparent,stroke:#94a3b8
+```
+
+Los colores identifican entrada HTTP (azul), servicios Go (turquesa), mensajería (ámbar), almacenamiento (verde), Dapr (violeta) y observabilidad (gris). El exporter se ejecuta dentro del Consumer Go.
+
 El sistema dispone de dos rutas públicas, expuestas mediante Envoy Gateway:
 
 | Ruta | Procesamiento |

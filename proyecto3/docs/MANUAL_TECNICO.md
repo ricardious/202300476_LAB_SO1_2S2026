@@ -33,6 +33,46 @@ La ruta pública es HTTP REST aunque se llame `/grpc-202300476`; el transporte g
 
 ## RabbitMQ y garantías
 
+El flujo gRPC separa la confirmación de publicación del almacenamiento asíncrono:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    box rgba(37, 99, 235, 0.12) Entrada HTTP
+        participant L as Locust / Gateway
+        participant R as API Rust
+    end
+    box rgba(15, 118, 110, 0.12) Servicios Go
+        participant I as Go Ingest
+        participant W as Go Writer
+    end
+    participant Q as RabbitMQ
+    participant C as Consumer Go
+    participant V as Valkey
+    L->>R: POST /grpc-202300476
+    R->>R: Validar y asignar ID
+    R->>I: REST /report
+    I->>W: gRPC SendReport
+    W->>Q: Publicar mensaje persistente
+    par Confirmación de publicación
+        Q-->>W: Publisher confirm
+        W-->>I: gRPC: queued
+        I-->>R: HTTP 202
+        R-->>L: HTTP 202 y report_id
+    and Almacenamiento asíncrono
+        Q->>C: Entregar mensaje sin ACK automático
+        rect rgba(21, 128, 61, 0.12)
+            C->>V: Lua: deduplicar y agregar
+            V-->>C: Resultado de almacenamiento
+        end
+        alt Almacenado o duplicado
+            C-->>Q: ACK
+        else Error transitorio de almacenamiento
+            C-->>Q: NACK con reencolado
+        end
+    end
+```
+
 El broker utiliza almacenamiento persistente y un nombre de nodo estable. La cola `reports` es durable; los mensajes se publican con DeliveryMode persistente, identificador y confirmación. El Writer usa una conexión reutilizada y serializa la publicación por canal; al perder la conexión vuelve a declararla. Las devoluciones por publicaciones sin ruta se tratan como errores.
 
 El consumidor usa ACK manual después de completar la actualización de Valkey. Si Valkey falla se hace NACK con reencolado y una pausa para evitar un bucle de CPU. Un mensaje inválido se rechaza sin reencolar y pasa a `reports.dead` mediante `reports.dlx`. El Consumer se reconecta cuando RabbitMQ vuelve a estar disponible.

@@ -13,6 +13,31 @@ Las instancias utilizadas por el proyecto se llaman `valkey` y `grafana`. Cada r
 
 ## Reconciliación y persistencia
 
+```mermaid
+flowchart LR
+    subgraph CR["Recursos personalizados"]
+        VC["ValkeyInstance"]
+        GC["GrafanaInstance"]
+    end
+    VC -->|Estado deseado| OP["Helm Operator"]
+    GC -->|Estado deseado| OP
+    OP --> VH["Chart Valkey"]
+    OP --> GH["Chart Grafana"]
+    VH --> VR["StatefulSet, Service y PVC"]
+    GH --> GR["Deployment, Service, PVC<br/>y provisioning"]
+    VR -.->|Cambios observados| OP
+    GR -.->|Cambios observados| OP
+    classDef recurso fill:#ede9fe,stroke:#7c3aed,color:#3b0764
+    classDef controlador fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef chart fill:#f1f5f9,stroke:#475569,color:#0f172a
+    classDef despliegue fill:#dcfce7,stroke:#15803d,color:#14532d
+    class VC,GC recurso
+    class OP controlador
+    class VH,GH chart
+    class VR,GR despliegue
+    style CR fill:transparent,stroke:#94a3b8
+```
+
 El controlador observa los recursos personalizados y sus dependencias, instala o actualiza las releases Helm y registra las condiciones de estado en los CR. Además de las notificaciones de cambios, realiza una reconciliación periódica cada minuto.
 
 `ValkeyInstance.spec.replica.enabled: true` crea una réplica de lectura configurada mediante `--replicaof` y un Service `valkey-read`. Las escrituras se dirigen al primario. Al deshabilitar la réplica, su PVC se conserva conforme a la política del StatefulSet. El PVC de Grafana utiliza la política de retención `keep` de Helm.
