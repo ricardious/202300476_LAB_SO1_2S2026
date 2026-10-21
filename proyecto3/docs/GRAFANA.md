@@ -29,7 +29,7 @@ Las series de España muestran estados observados cada cinco segundos con línea
 
 ## Implementación y despliegue
 
-El plugin se mantiene en `operator/helm-charts/grafanainstance/files/console/`: `module.js`, `plugin.json`, `world.svg` y `logo.svg`. Es un módulo SystemJS legible que reutiliza React y `PanelPlugin` provistos por Grafana; no requiere un compilador, paquetes npm ni un backend adicional. Los estilos están limitados a `.so1-console`. No hay temporizadores de animación, tipografías remotas ni peticiones cartográficas externas.
+El plugin se mantiene en `operator/helm-charts/grafanainstance/files/console/`: `module.js`, `plugin.json`, `world.svg` y `logo.svg`. Es un módulo SystemJS legible que reutiliza React y `PanelPlugin` provistos por Grafana; no requiere un compilador, paquetes npm ni un backend adicional. Los estilos del panel están limitados a `.so1-console`. En modo kiosco se ajusta además el contenedor de desplazamiento de Grafana y su pie de página, únicamente cuando el dashboard contiene esta consola. Esto evita que el pie se superponga a la cuadrícula en ventanas bajas; se conserva la marca de Grafana. El ajuste usa el atributo `data-testid="public-dashboard-footer"` de Grafana 13 y debe revisarse al actualizar Grafana. No hay temporizadores de animación, tipografías remotas ni peticiones cartográficas externas.
 
 El chart monta los archivos de solo lectura mediante un ConfigMap. `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS` permite exclusivamente el ID del plugin local `so1-operations-panel`; no se desactiva el saneamiento de HTML. Grafana registra una advertencia esperada de plugin sin firma de catálogo. Su compatibilidad declarada se limita a Grafana 13.2.1–13.x; la versión comprobada es 13.2.1.
 
