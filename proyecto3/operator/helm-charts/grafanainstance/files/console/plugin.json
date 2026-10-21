@@ -1,0 +1,27 @@
+{
+  "type": "panel",
+  "name": "M.U.M.N. · Consola de operaciones",
+  "id": "so1-operations-panel",
+  "info": {
+    "description": "Consola local aérea y marítima del proyecto SO1 202300476.",
+    "author": {
+      "name": "Proyecto SO1 · 202300476"
+    },
+    "keywords": [
+      "operations",
+      "so1"
+    ],
+    "logos": {
+      "small": "logo.svg",
+      "large": "logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2026-10-19"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=13.2.1 <14.0.0",
+    "plugins": []
+  }
+}
