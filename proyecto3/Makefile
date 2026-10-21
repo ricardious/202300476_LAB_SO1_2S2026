@@ -55,3 +55,7 @@ credentials:
 	@source scripts/env.sh; python3 -c 'import json,os,pathlib; s=json.loads((pathlib.Path(os.environ["SO1_P3_DATA"])/"runtime/secrets.json").read_text()); print("Usuario: so1\nGrafana:",s["grafana_password"],"\nZot:",s["registry_password"])'
 proto:
 	@bash scripts/proto.sh
+
+.PHONY: test-console
+test-console:
+	node --test tests/console.test.cjs

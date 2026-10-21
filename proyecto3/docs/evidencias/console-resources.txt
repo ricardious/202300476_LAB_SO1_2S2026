@@ -1,0 +1,2 @@
+NAME                       CPU(cores)   MEMORY(bytes)   
+grafana-7d9485bbd4-cx2n6   24m          266Mi           

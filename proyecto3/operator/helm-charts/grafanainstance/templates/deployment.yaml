@@ -35,6 +35,8 @@ spec:
           value: 'false'
         - name: GF_PLUGINS_PREINSTALL_DISABLED
           value: 'true'
+        - name: GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS
+          value: so1-operations-panel
         - name: GF_USERS_DEFAULT_THEME
           value: dark
         - name: GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH
@@ -58,6 +60,22 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/grafana
+        - name: console-plugin
+          mountPath: /var/lib/grafana/plugins/so1-operations-panel/module.js
+          subPath: module.js
+          readOnly: true
+        - name: console-plugin
+          mountPath: /var/lib/grafana/plugins/so1-operations-panel/plugin.json
+          subPath: plugin.json
+          readOnly: true
+        - name: console-plugin
+          mountPath: /var/lib/grafana/plugins/so1-operations-panel/world.svg
+          subPath: world.svg
+          readOnly: true
+        - name: console-plugin
+          mountPath: /var/lib/grafana/plugins/so1-operations-panel/logo.svg
+          subPath: logo.svg
+          readOnly: true
         - name: config
           mountPath: /etc/grafana/provisioning/datasources/p3.yaml
           subPath: datasource.yaml
@@ -74,3 +92,6 @@ spec:
       - name: config
         configMap:
           name: '{{ .Release.Name }}-provisioning'
+      - name: console-plugin
+        configMap:
+          name: '{{ .Release.Name }}-console-plugin'
