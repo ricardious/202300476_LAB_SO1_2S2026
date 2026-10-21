@@ -170,6 +170,6 @@ El flujo Dapr utiliza un pod adicional con dos contenedores. Su arquitectura y l
 - [Contrato gRPC](proto/reports.proto)
 - [Evidencias y análisis de rendimiento](docs/evidencias/README.md)
 
-### Dashboard Atlas
+### Consola de operaciones
 
-[Atlas](http://127.0.0.1:3003/d/so1-p3-202300476?theme=dark&kiosk) organiza los indicadores globales, los rankings y el seguimiento de España en una vista de presentación. Consulta [diseño y lectura de indicadores](docs/GRAFANA.md).
+La [consola M.U.M.N.](http://127.0.0.1:3003/d/so1-p3-202300476?theme=dark&kiosk) integra un mapa interactivo, selección de país, instrumentos globales y rankings. Las series inferiores muestran el historial de España. Consulta [navegación, indicadores e implementación](docs/GRAFANA.md).

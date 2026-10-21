@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: zero is a measurement; absent, null and nonfinite samples are missing
+ok 1 - zero is a measurement; absent, null and nonfinite samples are missing
+  ---
+  duration_ms: 4.305696
+  type: 'test'
+  ...
+# Subtest: country values are isolated and modal ties retained
+ok 2 - country values are isolated and modal ties retained
+  ---
+  duration_ms: 0.792177
+  type: 'test'
+  ...
+# Subtest: ranking sorts descending, breaks ties by country and excludes missing values
+ok 3 - ranking sorts descending, breaks ties by country and excludes missing values
+  ---
+  duration_ms: 10.866253
+  type: 'test'
+  ...
+# Subtest: query failure never presents retained measurements as current
+ok 4 - query failure never presents retained measurements as current
+  ---
+  duration_ms: 3.645178
+  type: 'test'
+  ...
+# Subtest: empty data renders a meaningful state without throwing
+ok 5 - empty data renders a meaningful state without throwing
+  ---
+  duration_ms: 1.172155
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 470.966782
