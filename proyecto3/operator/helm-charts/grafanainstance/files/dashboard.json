@@ -1,8 +1,8 @@
 {
   "uid": "so1-p3-202300476",
-  "title": "Atlas · Observatorio aéreo y marítimo",
+  "title": "M.U.M.N. · Consola de operaciones",
   "schemaVersion": 40,
-  "version": 2,
+  "version": 3,
   "refresh": "10s",
   "time": {
     "from": "now-15m",
@@ -11,50 +11,19 @@
   "tags": [
     "SO1",
     "202300476",
-    "Atlas"
+    "Consola"
   ],
   "panels": [
     {
-      "id": 20,
+      "id": 30,
+      "type": "so1-operations-panel",
       "title": "",
-      "type": "text",
       "transparent": true,
       "gridPos": {
         "x": 0,
         "y": 0,
         "w": 24,
-        "h": 5
-      },
-      "options": {
-        "mode": "html",
-        "content": "<div style=\"display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 20px;background:#162B45;border-left:4px solid #7EB6FF;border-radius:8px;color:#EDF4FF\"><div><h1 style=\"margin:0;font-size:clamp(28px,3vw,38px);font-weight:650;letter-spacing:-1.5px\">Atlas <span style=\"font-size:clamp(14px,1.4vw,18px);font-weight:400;letter-spacing:0;color:#B9CDE5\">/ Observatorio aéreo y marítimo</span></h1><p style=\"margin:8px 0 0;color:#B9CDE5\">Cinco países. Dos medios de transporte. Una perspectiva global.</p></div><div style=\"font-size:13px;line-height:1.9;color:#B9CDE5\">M.U.M.N.K8s · 202300476<br><span style=\"color:#7EB6FF\">● Aviones</span> &nbsp; <span style=\"color:#62D4C5\">● Barcos</span> &nbsp; <span style=\"color:#F2C46D\">● España</span></div></div>"
-      }
-    },
-    {
-      "id": 21,
-      "title": "",
-      "type": "text",
-      "transparent": true,
-      "gridPos": {
-        "x": 0,
-        "y": 5,
-        "w": 24,
-        "h": 3
-      },
-      "options": {
-        "mode": "html",
-        "content": "<h3 style=\"margin:6px 0\">Panorama global</h3><p style=\"margin:0;font-size:13px;line-height:1.5;color:#AEBED0\">Extremos y modas por reporte. Acumulado histórico.</p>"
-      }
-    },
-    {
-      "id": 1,
-      "title": "Máximo de aviones",
-      "type": "stat",
-      "gridPos": {
-        "x": 0,
-        "y": 8,
-        "w": 4,
-        "h": 4
+        "h": 25
       },
       "datasource": {
         "type": "prometheus",
@@ -62,654 +31,82 @@
       },
       "targets": [
         {
-          "refId": "A",
-          "expr": "so1_planes_max",
-          "instant": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#7EB6FF"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Incluye todos los reportes almacenados, independientemente del intervalo visible."
-    },
-    {
-      "id": 2,
-      "title": "Mínimo de aviones",
-      "type": "stat",
-      "gridPos": {
-        "x": 4,
-        "y": 8,
-        "w": 4,
-        "h": 4
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
-        {
-          "refId": "A",
+          "refId": "planes_min",
           "expr": "so1_planes_min",
-          "instant": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#7EB6FF"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
+          "instant": true,
+          "format": "time_series"
         },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Incluye todos los reportes almacenados, independientemente del intervalo visible."
-    },
-    {
-      "id": 5,
-      "title": "Moda de aviones",
-      "type": "stat",
-      "gridPos": {
-        "x": 8,
-        "y": 8,
-        "w": 4,
-        "h": 4
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
+          "refId": "planes_max",
+          "expr": "so1_planes_max",
+          "instant": true,
+          "format": "time_series"
+        },
+        {
+          "refId": "planes_mode",
           "expr": "so1_planes_mode",
           "instant": true,
-          "legendFormat": "Modas: {{ties}}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#7EB6FF"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
+          "format": "time_series"
         },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value_and_name",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Se muestran todos los empates en la etiqueta; el número representa el menor valor modal."
-    },
-    {
-      "id": 3,
-      "title": "Máximo de barcos",
-      "type": "stat",
-      "gridPos": {
-        "x": 12,
-        "y": 8,
-        "w": 4,
-        "h": 4
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
-          "expr": "so1_ships_max",
-          "instant": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#62D4C5"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Incluye todos los reportes almacenados, independientemente del intervalo visible."
-    },
-    {
-      "id": 4,
-      "title": "Mínimo de barcos",
-      "type": "stat",
-      "gridPos": {
-        "x": 16,
-        "y": 8,
-        "w": 4,
-        "h": 4
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
-        {
-          "refId": "A",
+          "refId": "ships_min",
           "expr": "so1_ships_min",
-          "instant": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#62D4C5"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
+          "instant": true,
+          "format": "time_series"
         },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Incluye todos los reportes almacenados, independientemente del intervalo visible."
-    },
-    {
-      "id": 6,
-      "title": "Moda de barcos",
-      "type": "stat",
-      "gridPos": {
-        "x": 20,
-        "y": 8,
-        "w": 4,
-        "h": 4
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
+          "refId": "ships_max",
+          "expr": "so1_ships_max",
+          "instant": true,
+          "format": "time_series"
+        },
+        {
+          "refId": "ships_mode",
           "expr": "so1_ships_mode",
           "instant": true,
-          "legendFormat": "Modas: {{ties}}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#62D4C5"
-          },
-          "noValue": "Sin datos",
-          "unit": "none"
+          "format": "time_series"
         },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value_and_name",
-        "wideLayout": false,
-        "text": {
-          "valueSize": 42,
-          "titleSize": 12
-        }
-      },
-      "description": "Estadística global por reporte. Se muestran todos los empates en la etiqueta; el número representa el menor valor modal."
-    },
-    {
-      "id": 22,
-      "title": "",
-      "type": "text",
-      "transparent": true,
-      "gridPos": {
-        "x": 0,
-        "y": 12,
-        "w": 24,
-        "h": 3
-      },
-      "options": {
-        "mode": "html",
-        "content": "<h3 style=\"margin:6px 0\">Distribución por país</h3><p style=\"margin:0;font-size:13px;line-height:1.5;color:#AEBED0\">Suma de unidades reportadas. Colores por país.</p>"
-      }
-    },
-    {
-      "id": 7,
-      "title": "Top 5 países por aviones",
-      "type": "bargauge",
-      "gridPos": {
-        "x": 0,
-        "y": 15,
-        "w": 12,
-        "h": 7
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
+          "refId": "planes_latest",
+          "expr": "so1_planes_latest",
+          "instant": true,
+          "format": "time_series"
+        },
+        {
+          "refId": "ships_latest",
+          "expr": "so1_ships_latest",
+          "instant": true,
+          "format": "time_series"
+        },
+        {
+          "refId": "planes_rank",
           "expr": "topk(5,so1_planes_sum)",
           "instant": true,
-          "legendFormat": "{{country}}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "min": 0,
-          "unit": "none",
-          "noValue": "Sin datos"
+          "format": "time_series"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "USA"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#7EB6FF"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "RUS"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#C3A5ED"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CHN"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#ED9DAB"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ESP"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#F2C46D"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "GTM"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#62D4C5"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "orientation": "horizontal",
-        "displayMode": "basic",
-        "showUnfilled": false,
-        "valueMode": "color",
-        "namePlacement": "left",
-        "barSizing": "auto",
-        "minVizHeight": 16,
-        "maxVizHeight": 40,
-        "text": {
-          "valueSize": 25,
-          "titleSize": 14
-        }
-      },
-      "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos.",
-      "transformations": []
-    },
-    {
-      "id": 8,
-      "title": "Top 5 países por barcos",
-      "type": "bargauge",
-      "gridPos": {
-        "x": 12,
-        "y": 15,
-        "w": 12,
-        "h": 7
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
+          "refId": "ships_rank",
           "expr": "topk(5,so1_ships_sum)",
           "instant": true,
-          "legendFormat": "{{country}}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "min": 0,
-          "unit": "none",
-          "noValue": "Sin datos"
+          "format": "time_series"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "USA"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#7EB6FF"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "RUS"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#C3A5ED"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CHN"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#ED9DAB"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ESP"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#F2C46D"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "GTM"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#62D4C5"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "orientation": "horizontal",
-        "displayMode": "basic",
-        "showUnfilled": false,
-        "valueMode": "color",
-        "namePlacement": "left",
-        "barSizing": "auto",
-        "minVizHeight": 16,
-        "maxVizHeight": 40,
-        "text": {
-          "valueSize": 25,
-          "titleSize": 14
-        }
-      },
-      "description": "Suma acumulada de unidades reportadas por país desde el inicio del conjunto de datos.",
-      "transformations": []
-    },
-    {
-      "id": 23,
-      "title": "",
-      "type": "text",
-      "transparent": true,
-      "gridPos": {
-        "x": 0,
-        "y": 22,
-        "w": 24,
-        "h": 3
-      },
-      "options": {
-        "mode": "html",
-        "content": "<h3 style=\"margin:6px 0;color:#F2C46D\">España <span style=\"font-size:13px;color:#AEBED0\">/ ESP · país asignado</span></h3><p style=\"margin:0;font-size:13px;line-height:1.5;color:#AEBED0\">Último estado observado cada 5 s. Intervalo seleccionable.</p>"
-      }
-    },
-    {
-      "id": 9,
-      "title": "Reportes de España",
-      "type": "stat",
-      "gridPos": {
-        "x": 0,
-        "y": 25,
-        "w": 4,
-        "h": 7
-      },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "so1-p3-prometheus"
-      },
-      "targets": [
         {
-          "refId": "A",
-          "expr": "so1_country_reports_total{country=\"ESP\"}",
-          "instant": true
+          "refId": "reports",
+          "expr": "so1_country_reports_total",
+          "instant": true,
+          "format": "time_series"
         }
       ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#F2C46D"
-          },
-          "unit": "none",
-          "noValue": "Sin datos"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "text": {
-          "valueSize": 48
-        }
-      },
-      "description": "Reportes únicos de ESP acumulados desde el inicio del conjunto de datos. No se limita al intervalo visible."
+      "options": {}
     },
     {
       "id": 10,
-      "title": "Aviones en España",
+      "title": "España · Aviones / historial observado",
       "type": "timeseries",
       "gridPos": {
-        "x": 4,
+        "x": 0,
         "y": 25,
-        "w": 10,
+        "w": 12,
         "h": 7
       },
       "datasource": {
@@ -765,16 +162,16 @@
           "sort": "none"
         }
       },
-      "description": "Último reporte según fecha del evento, muestreado cada 5 s. Los escalones representan estados observados; no son un conteo de eventos por segundo."
+      "description": "Último reporte según fecha del evento, muestreado cada 5 s. Los escalones representan estados observados; no son un conteo de eventos por segundo. La selección de país en la consola no modifica estas series del país asignado ESP."
     },
     {
       "id": 11,
-      "title": "Barcos en España",
+      "title": "España · Barcos / historial observado",
       "type": "timeseries",
       "gridPos": {
-        "x": 14,
+        "x": 12,
         "y": 25,
-        "w": 10,
+        "w": 12,
         "h": 7
       },
       "datasource": {
@@ -830,26 +227,10 @@
           "sort": "none"
         }
       },
-      "description": "Último reporte según fecha del evento, muestreado cada 5 s. Los escalones representan estados observados; no son un conteo de eventos por segundo."
-    },
-    {
-      "id": 24,
-      "title": "",
-      "type": "text",
-      "transparent": true,
-      "gridPos": {
-        "x": 0,
-        "y": 32,
-        "w": 24,
-        "h": 3
-      },
-      "options": {
-        "mode": "html",
-        "content": "<p style=\"margin:8px 0;color:#AEBED0;font-size:12px\">Actualización cada 10 s · Historial local de 2 horas · Los rankings suman unidades reportadas, no vehículos únicos. Los agregados globales permanecen al cambiar el intervalo.</p>"
-      }
+      "description": "Último reporte según fecha del evento, muestreado cada 5 s. Los escalones representan estados observados; no son un conteo de eventos por segundo. La selección de país en la consola no modifica estas series del país asignado ESP."
     }
   ],
-  "description": "Estadísticas acumuladas desde la creación del conjunto de datos. Series temporales muestreadas cada 5 segundos, con retención local de 2 horas. País asignado ESP. Los Top 5 suman unidades reportadas, no unidades únicas.",
+  "description": "Consola interactiva por país. Agregados históricos globales y series de España. Mapa de referencias geográficas sin posiciones ni rutas de vehículos.",
   "timezone": "browser",
   "graphTooltip": 1
 }
