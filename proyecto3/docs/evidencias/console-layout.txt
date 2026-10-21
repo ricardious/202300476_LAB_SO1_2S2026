@@ -1,0 +1,3 @@
+1920x900: {"position": "static", "overflow": "auto", "footerTop": 870, "contentBottom": 870, "pageHeight": 900, "viewport": 900, "scroll": 402}
+1366x768: {"position": "static", "overflow": "auto", "footerTop": 738, "contentBottom": 738, "pageHeight": 768, "viewport": 768, "scroll": 534}
+390x844: {"position": "static", "overflow": "auto", "footerTop": 814, "contentBottom": 814, "pageHeight": 844, "viewport": 844, "scroll": 772}

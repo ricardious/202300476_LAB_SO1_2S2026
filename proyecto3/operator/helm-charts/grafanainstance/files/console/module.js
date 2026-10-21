@@ -29,7 +29,13 @@ System.register(["react", "@grafana/data"], function (exports) {
     return records(data, ref).filter(r => r.value !== null)
       .sort((a, b) => b.value - a.value || (a.labels.country || "").localeCompare(b.labels.country || ""));
   }
+  // Grafana 13 kiosk keeps a viewport-sized shell. Contain dashboard scrolling
+  // in its page wrapper so the sibling footer never overlays the panel grid.
+  // Restrict this shell adjustment to dashboards containing this console.
   const css = `
+body:has(.so1-console) div:has(+ [data-testid="public-dashboard-footer"]){overflow:auto;min-height:0}
+body:has(.so1-console) [data-testid="public-dashboard-footer"]{position:static;flex-shrink:0}
+
 .so1-console{--ink:#dcece9;--muted:#9db6bd;--air:#81baf2;--sea:#77d7d2;--focus:#f2bf77;color:var(--ink);background:#0b232e;border:1px solid #35505a;border-radius:7px;font-family:"Segoe UI",Arial,sans-serif;height:100%;overflow:auto;container-type:inline-size;scrollbar-color:#35505a #0b232e}
 .so1-console *{box-sizing:border-box}.so1-console h1,.so1-console h2,.so1-console h3,.so1-console p{margin:0}.so1-console button{font:inherit;cursor:pointer}.so1-console button:focus-visible,.so1-console [role=button]:focus-visible{outline:2px solid var(--focus);outline-offset:3px}.so1-console .mono{font-family:"Liberation Mono",Consolas,monospace;font-variant-numeric:tabular-nums}.so1-console .muted{color:var(--muted)}
 .so1-console .masthead{display:flex;justify-content:space-between;align-items:center;padding:20px 26px;border-bottom:1px solid #35505a;gap:12px}.so1-console .identity{display:flex;align-items:center;gap:16px}.so1-console .identity svg{width:46px;height:46px;flex:none}.so1-console h1{font-size:25px;letter-spacing:1px;font-weight:650}.so1-console .subtitle{color:var(--muted);font-size:12px;margin-top:4px}.so1-console .status{text-align:right;font-size:12px;line-height:1.8}.so1-console .status strong{color:var(--sea);font-weight:500}.so1-console .warning{color:#ffd39c;padding:10px 24px;border-bottom:1px solid #8c6840;background:#3b3024;font-size:13px}
