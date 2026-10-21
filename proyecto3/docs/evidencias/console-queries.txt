@@ -1,0 +1,16 @@
+2026-10-21T04:44:38.160279+00:00
+Grafana 13.2.1
+Dashboard aprovisionado: M.U.M.N. · Consola de operaciones
+OK so1_planes_min
+OK so1_planes_max
+OK so1_planes_mode
+OK so1_ships_min
+OK so1_ships_max
+OK so1_ships_mode
+OK so1_planes_latest
+OK so1_ships_latest
+OK topk(5,so1_planes_sum)
+OK topk(5,so1_ships_sum)
+OK so1_country_reports_total
+OK so1_planes_latest{country="ESP"}
+OK so1_ships_latest{country="ESP"}

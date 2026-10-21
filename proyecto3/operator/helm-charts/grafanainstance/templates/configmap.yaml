@@ -10,3 +10,14 @@ data:
     \ true\n  options:\n    path: /etc/so1-dashboards\n"
   dashboard.json: |-
 {{ .Files.Get "files/dashboard.json" | indent 4 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{ .Release.Name }}-console-plugin'
+data:
+{{- range $path, $_ := .Files.Glob "files/console/*" }}
+  {{ base $path }}: |-
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}
