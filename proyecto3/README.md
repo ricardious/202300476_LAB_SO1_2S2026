@@ -164,6 +164,7 @@ El flujo Dapr utiliza un pod adicional con dos contenedores. Su arquitectura y l
 
 - [Manual técnico](docs/MANUAL_TECNICO.md)
 - [Guía de instalación](docs/GUIA_INSTALACION.md)
+- [Paso a paso de encendido y demostración](docs/PASO_A_PASO_ENCENDIDO.md)
 - [Operador de Valkey y Grafana](operator/README.md)
 - [Integración con Dapr](docs/DAPR.md)
 - [Contrato REST](proto/openapi.yaml)
