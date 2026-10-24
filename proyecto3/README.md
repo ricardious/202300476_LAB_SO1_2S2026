@@ -6,35 +6,6 @@ Sistema distribuido para la recepción, procesamiento y visualización de report
 
 La aplicación recibe reportes de cinco países, procesa los eventos mediante RabbitMQ y almacena estadísticas en Valkey. Grafana presenta los indicadores a través de Prometheus. El despliegue utiliza Kubernetes local y un operador basado en Helm para administrar Valkey y Grafana.
 
-## Encendido rápido
-
-```bash
-# Entrar al proyecto
-bash
-cd /mnt/development/orca/workspaces/202300476_LAB_SO1_2S2026/pompano/proyecto3
-
-# Encender todo
-make up
-
-# Mostrar usuarios y contraseñas
-make credentials
-
-# Revisar el estado de los componentes
-make status
-
-# Preparar los comandos de Kubernetes
-source scripts/env.sh
-
-# Comprobar que Valkey tiene datos
-k exec valkey-0 -- valkey-cli DBSIZE
-
-# Generar la alerta de Falco
-k exec deploy/api-rust -- cat /app/secretos/prueba.txt
-
-# Mostrar la alerta
-k logs daemonset/falco --since=1m
-```
-
 ## Arquitectura
 
 ```mermaid
