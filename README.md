@@ -16,3 +16,5 @@ de Guatemala.
 
 Cada proyecto mantiene su código, documentación, scripts y evidencias dentro
 de su propia carpeta.
+
+[Comandos para encender el Proyecto 3](proyecto3/README.md#encendido-rápido).
